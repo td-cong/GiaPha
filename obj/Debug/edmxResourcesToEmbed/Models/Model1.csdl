@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="GiaPhaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="GiaPhaEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Anhs" EntityType="GiaPhaModel.Anh" />
+    <EntitySet Name="LoaiTinTucs" EntityType="GiaPhaModel.LoaiTinTuc" />
+    <EntitySet Name="PhaKies" EntityType="GiaPhaModel.PhaKy" />
+    <EntitySet Name="ThanhViens" EntityType="GiaPhaModel.ThanhVien" />
+    <EntitySet Name="TinTucs" EntityType="GiaPhaModel.TinTuc" />
+    <EntitySet Name="TocUocs" EntityType="GiaPhaModel.TocUoc" />
+    <EntitySet Name="VoChongs" EntityType="GiaPhaModel.VoChong" />
+    <AssociationSet Name="FK_TinTuc_TinTuc" Association="GiaPhaModel.FK_TinTuc_TinTuc">
+      <End Role="LoaiTinTuc" EntitySet="LoaiTinTucs" />
+      <End Role="TinTuc" EntitySet="TinTucs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ThanhVien_ThanhVien" Association="GiaPhaModel.FK_ThanhVien_ThanhVien">
+      <End Role="VoChong" EntitySet="VoChongs" />
+      <End Role="ThanhVien" EntitySet="ThanhViens" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Anh">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AnhDongHo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="AnhThanhVien" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="LoaiTinTuc">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TenLoaiTinTuc" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="GhiChu" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="TinTucs" Relationship="GiaPhaModel.FK_TinTuc_TinTuc" FromRole="LoaiTinTuc" ToRole="TinTuc" />
+  </EntityType>
+  <EntityType Name="PhaKy">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PhaKy1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="ThanhVien">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PID" Type="Int32" />
+    <Property Name="HoTen" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="NamSinh" Type="Int32" />
+    <Property Name="NamMat" Type="Int32" />
+    <Property Name="GioiTinh" Type="Boolean" />
+    <Property Name="VoChong" Type="Int32" />
+    <Property Name="DiaPhuong" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="LyLich" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Avt" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="VoChong1" Relationship="GiaPhaModel.FK_ThanhVien_ThanhVien" FromRole="ThanhVien" ToRole="VoChong" />
+  </EntityType>
+  <EntityType Name="TinTuc">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TinTuc1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IdLoaiTinTuc" Type="Int32" />
+    <Property Name="TieuDe" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="NoiDung" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="TacGia" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="LoaiTinTuc" Relationship="GiaPhaModel.FK_TinTuc_TinTuc" FromRole="TinTuc" ToRole="LoaiTinTuc" />
+  </EntityType>
+  <EntityType Name="TocUoc">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TocUoc1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="VoChong">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="HoTen" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="ThanhViens" Relationship="GiaPhaModel.FK_ThanhVien_ThanhVien" FromRole="VoChong" ToRole="ThanhVien" />
+  </EntityType>
+  <Association Name="FK_TinTuc_TinTuc">
+    <End Type="GiaPhaModel.LoaiTinTuc" Role="LoaiTinTuc" Multiplicity="0..1" />
+    <End Type="GiaPhaModel.TinTuc" Role="TinTuc" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LoaiTinTuc">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TinTuc">
+        <PropertyRef Name="IdLoaiTinTuc" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ThanhVien_ThanhVien">
+    <End Type="GiaPhaModel.VoChong" Role="VoChong" Multiplicity="0..1" />
+    <End Type="GiaPhaModel.ThanhVien" Role="ThanhVien" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="VoChong">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="ThanhVien">
+        <PropertyRef Name="VoChong" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

@@ -1,0 +1,111 @@
+﻿
+@{
+    ViewBag.Title = "Phả Đồ";
+}
+@model IEnumerable<GiaPha.Models.ThanhVien>
+<main aria-labelledby="title">
+
+    <script src="~/Scripts/orgchart.js"></script>
+    <div id="tree" class=""></div>
+    <script>
+       window.onload = function () {
+
+    var familyGroupTag = {
+        group: true,
+        template: "group"
+    };
+
+    var familyGroupTag3 = {
+        group: true,
+        template: "group3"
+    };
+
+    OrgChart.templates.group.link = '<path stroke-linejoin="round" stroke="#aeaeae" stroke-width="1px" fill="none" d="M{xa},{ya} {xb},{yb} {xc},{yc} L{xd},{yd}"/>';
+    btnMinimize =
+                '<svg fill="#aeaeae" x="410" y="17" height="24" width="24" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"' +
+                    'viewBox="0 0 485 485" style="enable-background:new 0 0 485 485;" xml:space="preserve">' +
+                   '<path d="M0,0v485h485V0H0z M455,455H30V30h425V455z"/>' +
+                   '<polygon points="311.683,349.411 205.12,242.5 311.683,135.589 290.435,114.411 162.762,242.5 290.435,370.589 	"/>' +
+                '</svg>';
+    btnMaximize =
+                '<svg fill="#aeaeae" x="198" y="47" height="24" width="24" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"' +
+                    'viewBox="0 0 485 485" style="enable-background:new 0 0 485 485;" xml:space="preserve">' +
+                    '<path d="M0,0v485h485V0H0z M455,455H30V30h425V455z"/>' +
+                    '<polygon points="194.565,370.589 322.237,242.5 194.565,114.411 173.317,135.589 279.88,242.5 173.317,349.411 	"/>' +
+                '</svg>';
+    btnMinimize3 =
+                '<svg fill="#aeaeae" x="630" y="17" height="24" width="24" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"' +
+                    'viewBox="0 0 485 485" style="enable-background:new 0 0 485 485;" xml:space="preserve">' +
+                   '<path d="M0,0v485h485V0H0z M455,455H30V30h425V455z"/>' +
+                   '<polygon points="311.683,349.411 205.12,242.5 311.683,135.589 290.435,114.411 162.762,242.5 290.435,370.589 	"/>' +
+                '</svg>';
+
+            OrgChart.templates.group.min = Object.assign({}, OrgChart.templates.group);
+            OrgChart.templates.group.min.name = '<text data-width="230" data-text-overflow="multiline" style="font-size: 24px;" fill="#aeaeae" x="125" y="65" text-anchor="middle">{val}</text>';
+            OrgChart.templates.group.minBtn = btnMinimize +
+                '<rect data-btn-min="{val}" x="410" y="17" height="24" width="24" fill="red" fill-opacity="0" opastroke-width="1" stroke="#aeaeae"></rect>';
+            OrgChart.templates.group3 = Object.assign({}, OrgChart.templates.group);
+            OrgChart.templates.group3.minBtn = btnMinimize3 +
+                '<rect data-btn-min="{val}" x="630" y="17" height="24" width="24" fill="red" fill-opacity="0" opastroke-width="1" stroke="#aeaeae"></rect>';
+            OrgChart.templates.group.min.maxBtn = btnMaximize +
+                '<rect data-btn-max="{val}" x="198" y="47" height="24" width="24" fill="red" fill-opacity="0" opastroke-width="1" stroke="#aeaeae"></rect>';
+
+    var chart = new OrgChart(document.getElementById("tree"), {
+        template: "diva",
+        enableDragDrop: true,
+        nodeBinding: {
+            field_0: "HoTen",
+            field_1: "NamSinh",
+            img_0: "Ảnh truyền thần",
+            minBtn: "id",
+            maxBtn: "id"
+        },
+        tags: {
+            f1: familyGroupTag,
+            f2: familyGroupTag,
+            f3: familyGroupTag3,
+            f4: familyGroupTag,
+            f5: familyGroupTag
+        },
+
+    });
+
+    nodes = [
+            @foreach (var item in Model) {
+                        var node = $"{{ id: {item.ID}, pid: {(item.PID > 0 ? item.PID : 0)}, \"Họ tên\": \"{item.HoTen}\", \"Năm sinh\": \"{(item.NamSinh.Value.ToString("") ?? "Không rõ")}\", \"Ảnh truyền thần\": \"{(item.Avt?.Length>0 ? item.Avt : "/Content/img/avt.jpg")}\", \"Vợ (Chồng)\": \"{item.VoChong ?? "Không có thông tin"}\" }},";
+                        @Html.Raw(node);
+                    }
+        ];
+
+
+        chart.on('redraw', (sender) => {
+                    let minBtns = document.querySelectorAll('*[data-btn-min]');
+
+                    minBtns.forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            chart.minimize(btn.getAttribute('data-btn-min'));
+                        });
+                    });
+
+                    let maxBtns = document.querySelectorAll('*[data-btn-max]');
+
+                    maxBtns.forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            chart.maximize(btn.getAttribute('data-btn-max'));
+                        });
+                    });
+
+                });
+
+
+        chart.load(nodes);
+
+    };
+
+
+    </script>
+</main>

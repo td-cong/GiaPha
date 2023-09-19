@@ -1,0 +1,38 @@
+﻿
+@{
+    ViewBag.Title = "Phả Đồ";
+}
+@model IEnumerable<GiaPha.Models.ThanhVien>
+<main aria-labelledby="title">
+    
+    <script src="~/Scripts/orgchart.js"></script>
+    
+   
+
+    <div id="tree" class=""></div>
+    <script>
+       window.onload = function () {
+            var chart = new OrgChart(document.getElementById("tree"), {
+                template: 'rony',
+                enableSearch: false,
+                nodeBinding: {
+                    img_0: "Ảnh truyền thần",
+                    field_0: "Họ tên",
+                    field_1: "Năm sinh"
+                 
+                      
+
+                },
+                nodes: [
+                    @foreach (var item in Model) {
+                        var node = $"{{ id: {item.ID}, pid: {(item.PID > 0 ? item.PID : 0)}, \"Họ tên\": \"{item.HoTen}\", \"Năm sinh\": \"{(item.NamSinh.Value.ToString("") ?? "Không rõ")}\", \"Ảnh truyền thần\": \"{(item.Avt?.Length>0 ? item.Avt : "/Content/img/avt.jpg")}\", \"Vợ (Chồng)\": \"{item.VoChong ?? "Không có thông tin"}\" }},";
+                        @Html.Raw(node);
+
+                    }
+                ]
+            });
+        }
+
+    </script>
+</main>
+ 

@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="GiaPhaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Anh">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AnhDongHo" Type="nvarchar" MaxLength="50" />
+    <Property Name="AnhThanhVien" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="LoaiTinTuc">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TenLoaiTinTuc" Type="nvarchar" MaxLength="50" />
+    <Property Name="GhiChu" Type="nchar" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="PhaKy">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PhaKy" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="ThanhVien">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PID" Type="int" />
+    <Property Name="HoTen" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="NamSinh" Type="int" />
+    <Property Name="NamMat" Type="int" />
+    <Property Name="GioiTinh" Type="bit" />
+    <Property Name="VoChong" Type="int" />
+    <Property Name="DiaPhuong" Type="nvarchar" MaxLength="500" />
+    <Property Name="LyLich" Type="nvarchar(max)" />
+    <Property Name="Avt" Type="nvarchar" MaxLength="500" />
+  </EntityType>
+  <EntityType Name="TinTuc">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TinTuc" Type="nvarchar" MaxLength="50" />
+    <Property Name="IdLoaiTinTuc" Type="int" />
+    <Property Name="TieuDe" Type="nvarchar" MaxLength="500" />
+    <Property Name="NoiDung" Type="nvarchar(max)" />
+    <Property Name="TacGia" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="TocUoc">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TocUoc" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="VoChong">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="HoTen" Type="nvarchar" MaxLength="100" />
+  </EntityType>
+  <Association Name="FK_ThanhVien_ThanhVien">
+    <End Role="VoChong" Type="Self.VoChong" Multiplicity="0..1" />
+    <End Role="ThanhVien" Type="Self.ThanhVien" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="VoChong">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="ThanhVien">
+        <PropertyRef Name="VoChong" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TinTuc_TinTuc">
+    <End Role="LoaiTinTuc" Type="Self.LoaiTinTuc" Multiplicity="0..1" />
+    <End Role="TinTuc" Type="Self.TinTuc" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LoaiTinTuc">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TinTuc">
+        <PropertyRef Name="IdLoaiTinTuc" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="GiaPhaModelStoreContainer">
+    <EntitySet Name="Anh" EntityType="Self.Anh" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="LoaiTinTuc" EntityType="Self.LoaiTinTuc" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PhaKy" EntityType="Self.PhaKy" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ThanhVien" EntityType="Self.ThanhVien" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TinTuc" EntityType="Self.TinTuc" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TocUoc" EntityType="Self.TocUoc" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="VoChong" EntityType="Self.VoChong" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_ThanhVien_ThanhVien" Association="Self.FK_ThanhVien_ThanhVien">
+      <End Role="VoChong" EntitySet="VoChong" />
+      <End Role="ThanhVien" EntitySet="ThanhVien" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TinTuc_TinTuc" Association="Self.FK_TinTuc_TinTuc">
+      <End Role="LoaiTinTuc" EntitySet="LoaiTinTuc" />
+      <End Role="TinTuc" EntitySet="TinTuc" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

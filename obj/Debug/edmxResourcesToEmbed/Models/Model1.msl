@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="GiaPhaModelStoreContainer" CdmEntityContainer="GiaPhaEntities">
+    <EntitySetMapping Name="Anhs">
+      <EntityTypeMapping TypeName="GiaPhaModel.Anh">
+        <MappingFragment StoreEntitySet="Anh">
+          <ScalarProperty Name="AnhThanhVien" ColumnName="AnhThanhVien" />
+          <ScalarProperty Name="AnhDongHo" ColumnName="AnhDongHo" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LoaiTinTucs">
+      <EntityTypeMapping TypeName="GiaPhaModel.LoaiTinTuc">
+        <MappingFragment StoreEntitySet="LoaiTinTuc">
+          <ScalarProperty Name="GhiChu" ColumnName="GhiChu" />
+          <ScalarProperty Name="TenLoaiTinTuc" ColumnName="TenLoaiTinTuc" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PhaKies">
+      <EntityTypeMapping TypeName="GiaPhaModel.PhaKy">
+        <MappingFragment StoreEntitySet="PhaKy">
+          <ScalarProperty Name="PhaKy1" ColumnName="PhaKy" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ThanhViens">
+      <EntityTypeMapping TypeName="GiaPhaModel.ThanhVien">
+        <MappingFragment StoreEntitySet="ThanhVien">
+          <ScalarProperty Name="Avt" ColumnName="Avt" />
+          <ScalarProperty Name="LyLich" ColumnName="LyLich" />
+          <ScalarProperty Name="DiaPhuong" ColumnName="DiaPhuong" />
+          <ScalarProperty Name="VoChong" ColumnName="VoChong" />
+          <ScalarProperty Name="GioiTinh" ColumnName="GioiTinh" />
+          <ScalarProperty Name="NamMat" ColumnName="NamMat" />
+          <ScalarProperty Name="NamSinh" ColumnName="NamSinh" />
+          <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+          <ScalarProperty Name="PID" ColumnName="PID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TinTucs">
+      <EntityTypeMapping TypeName="GiaPhaModel.TinTuc">
+        <MappingFragment StoreEntitySet="TinTuc">
+          <ScalarProperty Name="TacGia" ColumnName="TacGia" />
+          <ScalarProperty Name="NoiDung" ColumnName="NoiDung" />
+          <ScalarProperty Name="TieuDe" ColumnName="TieuDe" />
+          <ScalarProperty Name="IdLoaiTinTuc" ColumnName="IdLoaiTinTuc" />
+          <ScalarProperty Name="TinTuc1" ColumnName="TinTuc" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TocUocs">
+      <EntityTypeMapping TypeName="GiaPhaModel.TocUoc">
+        <MappingFragment StoreEntitySet="TocUoc">
+          <ScalarProperty Name="TocUoc1" ColumnName="TocUoc" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VoChongs">
+      <EntityTypeMapping TypeName="GiaPhaModel.VoChong">
+        <MappingFragment StoreEntitySet="VoChong">
+          <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

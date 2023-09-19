@@ -1,0 +1,102 @@
+﻿
+@{
+    ViewBag.Title = "Phả Đồ";
+
+    var lpid = Model.OrderBy(i => i.PID).Select(i => i.PID).Distinct().ToList();
+}
+@model IEnumerable<GiaPha.Models.ThanhVien>
+<style>
+
+
+    #tree {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+<main aria-labelledby="title">
+
+
+    <link href="https://fonts.googleapis.com/css?family=Gochi+Hand" rel="stylesheet">
+
+    <script src="~/Scripts/orgchart.js"></script>
+
+    <div id="tree" style="height:1000px;"></div>
+</main>
+<script>
+    window.onload = function () {
+        btnMinimize =
+            '<svg fill="#aeaeae" x="410" y="17" height="24" width="24" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"' +
+            'viewBox="0 0 485 485" style="enable-background:new 0 0 485 485;" xml:space="preserve">' +
+            '<path d="M0,0v485h485V0H0z M455,455H30V30h425V455z"/>' +
+            '<polygon points="311.683,349.411 205.12,242.5 311.683,135.589 290.435,114.411 162.762,242.5 290.435,370.589 	"/>' +
+            '</svg>';
+        btnMaximize =
+            '<svg fill="#aeaeae" x="198" y="47" height="24" width="24" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"' +
+            'viewBox="0 0 485 485" style="enable-background:new 0 0 485 485;" xml:space="preserve">' +
+            '<path d="M0,0v485h485V0H0z M455,455H30V30h425V455z"/>' +
+            '<polygon points="194.565,370.589 322.237,242.5 194.565,114.411 173.317,135.589 279.88,242.5 173.317,349.411 	"/>' +
+            '</svg>';
+        btnMinimize3 =
+            '<svg fill="#aeaeae" x="630" y="17" height="24" width="24" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"' +
+            'viewBox="0 0 485 485" style="enable-background:new 0 0 485 485;" xml:space="preserve">' +
+            '<path d="M0,0v485h485V0H0z M455,455H30V30h425V455z"/>' +
+            '<polygon points="311.683,349.411 205.12,242.5 311.683,135.589 290.435,114.411 162.762,242.5 290.435,370.589 	"/>' +
+            '</svg>';
+
+        var nodes = [
+                @foreach (var item in Model)
+                {
+                    // Nếu là vợ/chông thì thêm tags partner là OrgChartJs nó hiểu node này là vợ/chồng
+                    var tags = item.VoChong > 0 ? $", tags: [\"partner\"]" : "";
+                    var pid = item.VoChong > 0 ? item.VoChong : item.PID;
+                    // Tìm vợ chồng của pid để đặt ppid, có ppid thì nó mới biết nằm giữa 2 cái
+                    var ppItem = Model.FirstOrDefault(x =>
+                        x.ID != item.ID
+                        && x.VoChong == item.PID
+                    );
+                    var ppidString = ppItem != null ? $", ppid: {ppItem.ID}" : "";
+                    // Render item
+                    var node = $"{{ id: {item.ID}, pid: \"{pid}\", \"Họ tên\": \"{item.HoTen}\", \"Ảnh\": \"{(item.Avt?.Length > 0 ? item.Avt : "/Content/img/avt.jpg")}\"{tags}{ppidString} }},\n";
+                    @Html.Raw(node);
+                    // Nếu dùng chung trường PID để xác định cả cha cả vợ chồng thì
+                }
+            ];
+        
+        var chart = new OrgChart(document.getElementById("tree"), {
+            template: "diva",
+            enableDragDrop: true,
+            nodeBinding: {
+                field_0: "Họ tên",
+                field_1: "pid",
+                img_0: "Ảnh",
+            },
+        });
+
+
+        chart.on('redraw', (sender) => {
+            let minBtns = document.querySelectorAll('*[data-btn-min]');
+
+            minBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    chart.minimize(btn.getAttribute('data-btn-min'));
+                });
+            });
+
+            let maxBtns = document.querySelectorAll('*[data-btn-max]');
+
+            maxBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    chart.maximize(btn.getAttribute('data-btn-max'));
+                });
+            });
+        });
+
+
+        chart.load(nodes);
+
+    };
+</script>

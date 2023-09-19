@@ -1,0 +1,192 @@
+﻿@model GiaPha.Models.TinTuc
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+
+
+@if (ViewBag.User != null)
+    {
+        <div>@ViewBag.User.UserName</div>
+    }
+
+
+<div class="container">
+    <div class="row" style="margin-top:50px">
+        <div class="col-md-7">
+            <div class="card"><img class="card-img-top" src="~/Content/img/nhatho.png" style="width: 100%; height: auto;"></div>
+        </div>
+        <div class="col-md-5">
+            <div class="title-content">
+                @Html.DisplayFor(model => model.TieuDe)
+            </div>
+            <div class="title-content">
+                @Html.DisplayFor(model => model.NoiDung)
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="col-md-12" align="center" style="margin-top:20px; margin-bottom:20px"><div class="tab-page-long active"><a href="/?gpdh=1&amp;Tin-tuc-dong-ho.html">Tin tức dòng họ</a></div></div>
+    <div class="col-md-12">
+        <div class="row">
+
+            <div class="col-md-4">
+                <div class="card">
+                    <a href="/?tintuc=11&amp;linh-thieng-va-dac-sac--le-gi%E1%BB%97-to-ho-bui-lang-xuan-bang.html"><img src="~/Content/img/Tin/19092021-Gio-to-ho-Bui-2020.JPG" alt=" Lễ giỗ tổ họ TRẦN" class="card-img-top card-img-top_home"></a>
+                    <div class="card-body">
+                        <h5 class="card-title"><a href="/?tintuc=11&amp;linh-thieng-va-dac-sac--le-gi%E1%BB%97-to-ho-bui-lang-xuan-bang.html"> Lễ giỗ tổ họ TRẦN</a></h5>
+                        <p class="card-text">Đại lễ giỗ Tổ họ Trần Việt Nam là sự kiện trọng đại trong đời sống tâm linh của bà con họ Trần Việt Nam được tổ chức hàng năm vào ngày 14 tháng Giêng âm lịch. Đây là nghi thức thiêng liêng mang ý nghĩa nhân văn sâu sắc, gắn kết tình cảm huyết thống con cháu họ Trần Việt Nam hướng về cội nguồn, phát huy hào khí Đông A muôn đời tỏa sáng, đoàn kết muôn dân trăm họ trong đại gia đình các dân tộc Việt Nam. Tôn vinh và phát huy bản sắc văn hoá nhà Trần - văn hóa dân tộc Việt Nam, góp phần xây dựng đất nước giàu mạnh, xã hội công bằng, dân chủ , văn minh.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card">
+                    <a href="/?tintuc=10&amp;gioi-thieu-website-gia-pha-ho-bui-xuan-bang.html"><img src="~/Content/img/Tin/19092021-Gioi-thieu-website.jpg" alt="Giới thiệu website gia phả họ Trần" class="card-img-top card-img-top_home"></a>
+                    <div class="card-body">
+                        <h5 class="card-title"><a href=".......">Giới thiệu website gia phả họ Trần</a></h5>
+                        <p class="card-text">Trong xã hội công nghệ thông tin hiện nay, internet đã trở thành phổ biến, dễ sử dụng. Một số dòng họ đã gửi gia phả lên trang web Việt nam gia phả, một số lập trang web để lưu trữ gia phả của dòng họ mình. Vì vậy website Gia phả họ Trần là mạng gia phả riêng của dòng họ Trần để con cháu các chi nhánh của họ ta ở khắp mọi miền đất nước đã có thể đọc và hiểu biết về sự nghiệp của các đời trước cũng như quan hệ huyết thống giữa các thành viên trong họ.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card">
+                    <a href="/?tintuc=9&amp;gia-pha-va-nha-tho-ho.html"><img src="~/Content/img/Tin/19092021-Gia-pha-va-nha-tho-ho.jpg" alt="Gia phả và nhà thờ họ" class="card-img-top card-img-top_home"></a>
+                    <div class="card-body">
+                        <h5 class="card-title"><a href="/?tintuc=9&amp;gia-pha-va-nha-tho-ho.html">Gia phả và nhà thờ họ</a></h5>
+                        <p class="card-text">Thật cảm động khi nhìn thấy từ gia phả những lời nhắn nhủ, răn dạy đạo đức của các bậc tổ tiên đối với con cháu cho đến hôm nay vẫn còn nóng hổi ý nghĩa: "Con cháu nhà ta, ai nấy đều phải biết tôn trọng lời dạy của ông bà, phải lấy việc cày cấy, đọc sách, học hành làm nghiệp... phải lấy điều hiếu thuận làm đầu, thì sẽ hạnh phúc". Ngoài việc ghi chép đầy đủ lịch sử của gia tộc và thế thứ các nhánh, các chi của mỗi dòng họ, gia phả còn mang giá trị nhân văn sâu sắc.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="col-md-12" align="center" style="margin-top:20px; margin-bottom:20px"><div class="tab-page-long active"><a href="/?gpdh=4&amp;Hinh-anh-dong-ho.html">Thư viện ảnh</a></div></div>
+    <div class="col-md-12">
+        <div class="row">
+
+            <div class="col-md-3">
+                <a href="/?hinhanh=5&amp;le-don-bang-di-tich-kien-truc-nghe-thuat-&amp;-lich-su.html">
+                    <div class="card">
+                        <img src="~/Content/img/Tin/24062022-Le-ruoc-bang-di-tich-lich-su (79).jpg" alt="Lễ đón bằng Di tích Kiến trúc nghệ thuật &amp; Lịch sử" class="card-img-top" style="object-fit: cover;height: 165px">
+                        <div class="overlay"><div class="text"></div></div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-3">
+                <a href="/?hinhanh=3&amp;le-don-nhan-danh-hieu-dong-ho-van-hoa.html">
+                    <div class="card">
+                        <img src="~/Content/img/Tin/19092021-Don-dong-ho-van-hoa (78).jpg" alt="Lễ đón nhận danh hiệu Dòng họ văn hóa" class="card-img-top" style="object-fit: cover;height: 165px">
+                        <div class="overlay"><div class="text"></div></div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-3">
+                <a href="/?hinhanh=1&amp;nha-tho-dai-ton-ho-bui-xuan-bang.html">
+                    <div class="card">
+                        <img src="~/Content/img/Tin/17092021-nha-tho-dai-ton.jpg" alt="Nhà thờ Đại tôn họ Bùi Xuân Bảng" class="card-img-top" style="object-fit: cover;height: 165px">
+                        <div class="overlay"><div class="text"></div></div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-3">
+                <a href="/?hinhanh=2&amp;nha-tho-chi-duoi-ho-bui-xuan-bang.html">
+                    <div class="card">
+                        <img src="~/Content/img/Tin/17092021-cac-chi.jpg" alt="Nhà thờ chi dưới họ Bùi Xuân Bảng" class="card-img-top" style="object-fit: cover;height: 165px">
+                        <div class="overlay"><div class="text"></div></div>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="col-md-12" align="center" style="margin-top:20px; margin-bottom:20px"><div class="tab-page-long active"><a href="/?gpdh=8&amp;Video-dong-ho.html">Video dòng họ</a></div></div>
+    <div class="col-md-12">
+        <div class="row">
+
+            <div class="col-md-3">
+                <a href="/?video=25&amp;test-chuc-nang-up-video.html">
+                    <div class="card">
+                        <img src="~/Content/img/Tin/0.jpg" alt="Test chức năng up video" title="Test chức năng up video" class="card-img-top" style="object-fit: cover;height: 165px">
+                        <div class="overlay" align="center"><div class="text"></div></div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-3">
+                <a href="/?video=13&amp;ho-bui-xuan-bang-_-lich-su-hinh-thanh-va-phat-trien.html">
+                    <div class="card">
+                        <img src="~/Content/img/Tin/0(1).jpg" alt="........." title="Họ Trần - Lịch sử hình thành và phát triển" class="card-img-top" style="object-fit: cover;height: 165px">
+                        <div class="overlay" align="center"><div class="text"></div></div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-3">
+                <a href="/?video=26&amp;test.html">
+                    <div class="card">
+                        <img src="~/Content/img/Tin/0(2).jpg" alt="Test" title="Test" class="card-img-top" style="object-fit: cover;height: 165px">
+                        <div class="overlay" align="center"><div class="text">Test</div></div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-3">
+                <a href="/?video=16&amp;ho-bui-xuan-bang-don-danh-hieu-dong-ho-van-hoa.html">
+                    <div class="card">
+                        <img src="~/Content/img/Tin/0(3).jpg" alt="Họ Trần đón danh hiệu Dòng họ văn hóa" title="Họ Bùi Xuân Bảng đón danh hiệu Dòng họ văn hóa" class="card-img-top" style="object-fit: cover;height: 165px">
+                        <div class="overlay" align="center"><div class="text"></div></div>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="col-md-12" align="center" style="margin-top:30px; margin-bottom:20px"><div class="tab-page-long active"><a href="/#">Nhà thờ họ</a></div></div>
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <div class="row" style="padding-top: 5px;">
+            <div class="col-md-2"><img src="~/Content/img/logo-footer.png" width="150px"></div>
+            <div class="col-md-5">
+                <p class="footer-title">HỌ TRẦN</p>
+                <p class="footer-text"><b>Địa chỉ:</b> Xã </p>
+                <p class="footer-text"><b>Trưởng tộc:</b>- <b>Điện thoại:</b></p>
+                <p class="footer-text"><b>Quản lý website:</b>  - <b>Điện thoại:</b> </p>
+            </div>
+            <div class="col-md-5">
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul>
+                            <li><a href="/?gpdh=1&amp;Tin-tuc-dong-ho.html" target="_self">Tin tức</a></li>
+                            <li><a href="/?gpdh=2&amp;Pha-ky-dong-ho.html" target="_self">Phả ký</a></li>
+                            <li><a href="/?gpdh=3&amp;Toc-uoc-dong-ho.html" target="_self">Tộc ước</a></li>
+                            <li><a href="/?gpdh=8&amp;Video-dong-ho.html" target="_self">Video</a></li>
+                        </ul>
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>

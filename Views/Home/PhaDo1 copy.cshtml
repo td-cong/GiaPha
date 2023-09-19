@@ -1,0 +1,145 @@
+﻿
+@{
+    ViewBag.Title = "Phả Đồ";
+
+    var lpid = Model.OrderBy(i => i.PID).Select(i => i.PID).Distinct().ToList();
+}
+@model IEnumerable<GiaPha.Models.ThanhVien>
+<style>
+
+
+    #tree {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+<main aria-labelledby="title">
+
+
+    <link href="https://fonts.googleapis.com/css?family=Gochi+Hand" rel="stylesheet">
+
+    <script src="~/Scripts/orgchart.js"></script>
+
+    <div id="tree" style="height:1000px;"></div>
+</main>
+<script>
+    window.onload = function () {
+        OrgChart.templates.group.link = '<path stroke-linejoin="round" stroke="#aeaeae" stroke-width="1px" fill="none" d="M{xa},{ya} {xb},{yb} {xc},{yc} L{xd},{yd}"/>';
+        btnMinimize =
+            '<svg fill="#aeaeae" x="410" y="17" height="24" width="24" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"' +
+            'viewBox="0 0 485 485" style="enable-background:new 0 0 485 485;" xml:space="preserve">' +
+            '<path d="M0,0v485h485V0H0z M455,455H30V30h425V455z"/>' +
+            '<polygon points="311.683,349.411 205.12,242.5 311.683,135.589 290.435,114.411 162.762,242.5 290.435,370.589 	"/>' +
+            '</svg>';
+        btnMaximize =
+            '<svg fill="#aeaeae" x="198" y="47" height="24" width="24" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"' +
+            'viewBox="0 0 485 485" style="enable-background:new 0 0 485 485;" xml:space="preserve">' +
+            '<path d="M0,0v485h485V0H0z M455,455H30V30h425V455z"/>' +
+            '<polygon points="194.565,370.589 322.237,242.5 194.565,114.411 173.317,135.589 279.88,242.5 173.317,349.411 	"/>' +
+            '</svg>';
+        btnMinimize3 =
+            '<svg fill="#aeaeae" x="630" y="17" height="24" width="24" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"' +
+            'viewBox="0 0 485 485" style="enable-background:new 0 0 485 485;" xml:space="preserve">' +
+            '<path d="M0,0v485h485V0H0z M455,455H30V30h425V455z"/>' +
+            '<polygon points="311.683,349.411 205.12,242.5 311.683,135.589 290.435,114.411 162.762,242.5 290.435,370.589 	"/>' +
+            '</svg>';
+
+        OrgChart.templates.group.min = Object.assign({}, OrgChart.templates.group);
+        OrgChart.templates.group.min.name = '<text data-width="230" data-text-overflow="multiline" style="font-size: 24px;" fill="#aeaeae" x="125" y="65" text-anchor="middle">{val}</text>';
+        OrgChart.templates.group.minBtn = btnMinimize +
+            '<rect data-btn-min="{val}" x="410" y="17" height="24" width="24" fill="red" fill-opacity="0" opastroke-width="1" stroke="#aeaeae"></rect>';
+        OrgChart.templates.group3 = Object.assign({}, OrgChart.templates.group);
+        OrgChart.templates.group3.minBtn = btnMinimize3 +
+            '<rect data-btn-min="{val}" x="630" y="17" height="24" width="24" fill="red" fill-opacity="0" opastroke-width="1" stroke="#aeaeae"></rect>';
+        OrgChart.templates.group.min.maxBtn = btnMaximize +
+            '<rect data-btn-max="{val}" x="198" y="47" height="24" width="24" fill="red" fill-opacity="0" opastroke-width="1" stroke="#aeaeae"></rect>';
+
+        var nodes = [
+                @{
+                    var rootNode = Model.FirstOrDefault(x => x.PID == null);
+                    var voChongItems = Model.Where(x => x.VoChong > 0);
+                    var coVoChongIds = new List<int?>();
+                }
+                // Render vợ chồng trước
+                @foreach (var item in voChongItems)
+                {
+                    // Nếu chưa tạo nhóm bằng PID của thằng này thì mới tạo
+                    if (!coVoChongIds.Contains(item.PID))
+                    {
+                        // Thêm vào danh sách ID đã tạo nhóm
+                        coVoChongIds.Add(item.PID);
+                        // Render data nhóm
+                        // Tìm thằng cha nó để biết ông nó là ai
+                        var grandPaId = Model.FirstOrDefault(x => x.ID == item.PID)?.PID ?? 0;
+                        var group = $"{{ id: \"f{item.PID}\", pid: \"{grandPaId}\", tags: [\"f{item.PID}\", \"group\"] }},\n";
+                        @Html.Raw(group);
+                    }
+                    // Render item
+                    var node = $"{{ id: {item.ID}, pid: \"{item.PID}\", stpid: \"f{item.PID}\", \"Họ tên\": \"{item.HoTen}\", \"Ảnh\": \"{(item.Avt?.Length > 0 ? item.Avt : "/Content/img/avt.jpg")}\" }},\n";
+                    @Html.Raw(node);
+                }
+                // Render người trong họ mà là vợ chồng của đám trên
+                @foreach (var itemID in coVoChongIds)
+                {
+                    var item = Model.FirstOrDefault(x => x.ID == itemID);
+                    var node = $"{{ id: {item.ID}, pid: \"{item.PID}\", stpid: \"f{item.ID}\", \"Họ tên\": \"{item.HoTen}\", \"Ảnh\": \"{(item.Avt?.Length > 0 ? item.Avt : "/Content/img/avt.jpg")}\" }},\n";
+                    @Html.Raw(node);
+                }
+                // Số còn lại mà ko phải đám vợ chồng trên
+                @{
+                    var soConLai = Model.Where(x => !(x.VoChong > 0) && !coVoChongIds.Contains(x.ID));
+                }
+                @foreach (var item in soConLai)
+                {
+                    var pId = (coVoChongIds.Contains(item.PID) ? "f" : "") + item.PID;
+                    var node = $"{{ id: {item.ID}, pid: \"{pId}\", \"Họ tên\": \"{item.HoTen}\", \"Ảnh\": \"{(item.Avt?.Length > 0 ? item.Avt : "/Content/img/avt.jpg")}\" }},\n";
+                    @Html.Raw(node);
+                }
+            ];
+        
+        var chart = new OrgChart(document.getElementById("tree"), {
+            template: "diva",
+            enableDragDrop: true,
+            nodeBinding: {
+                field_0: "Họ tên",
+                field_1: "pid",
+                field_2: "stpid",
+                img_0: "Ảnh",
+                minBtn: "id",
+                maxBtn: "id"
+            },
+            tags: {
+                "group": {
+                    template: "group",
+                },
+            }
+        });
+
+
+        chart.on('redraw', (sender) => {
+            let minBtns = document.querySelectorAll('*[data-btn-min]');
+
+            minBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    chart.minimize(btn.getAttribute('data-btn-min'));
+                });
+            });
+
+            let maxBtns = document.querySelectorAll('*[data-btn-max]');
+
+            maxBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    chart.maximize(btn.getAttribute('data-btn-max'));
+                });
+            });
+        });
+
+
+        chart.load(nodes);
+
+    };
+</script>
