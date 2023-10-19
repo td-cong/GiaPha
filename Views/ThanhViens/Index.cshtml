@@ -3,80 +3,79 @@
 @{
     ViewBag.Title = "Quản lý thành viên";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var VoChongList = (List<GiaPha.Models.VoChong>)ViewBag.VoChongList;
 }
 
 <h2>Quản lý thành viên</h2>
 
 <p>
-    @Html.ActionLink("Thêm mới", "Create")
+    @Html.ActionLink("+ Thêm mới", "Create", null, new { @class = "btn btn-success" })
 </p>
-<table class="table">
-    <tr>
-        <th>
-           Mã người cha
-        </th>
-        <th>
-           Họ tên
-        </th>
-        <th>
-          Năm sinh
-        </th>
-        <th>
-           Năm mất
-        </th>
-        <th>
-          Giới tính
-        </th>
-        <th>
-           Vợ (Chồng)
-        </th>
-        <th>
-           Địa phương cư trú
-        </th>
-        <th>
-            Ảnh đại diện
-        </th>
-        <th>
-           Lý lịch
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.PID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.HoTen)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NamSinh)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NamMat)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.GioiTinh)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.VoChong)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DiaPhuong)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Avt)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LyLich)
-        </td>
-        <td>
-            @Html.ActionLink("Sửa", "Edit", new { id = item.ID }) |
-            @Html.ActionLink("Chi tiết", "Details", new { id = item.ID }) |
-            @Html.ActionLink("Xóa", "Delete", new { id = item.ID })
-        </td>
-    </tr>
-}
+<table class="table table-bordered table-light table-striped table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                Cha
+            </th>
+            <th>
+                Họ tên
+            </th>
+            <th>
+                Năm sinh
+            </th>
+            <th>
+                Năm mất
+            </th>
+            <th>
+                Giới tính
+            </th>
+            <th>
+                Vợ (Chồng)
+            </th>
+            <th>
+                Địa phương cư trú
+            </th>
+            <th>
+                Lý lịch
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+        var parent = Model.FirstOrDefault(x => x.ID == item.PID);
+        var voChong = Model.FirstOrDefault(x => x.ID == item.VoChong);
+        <tr>
+            <td>
+                [@Html.DisplayFor(modelItem => item.PID)] @(parent?.HoTen ?? "")
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HoTen)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NamSinh)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NamMat)
+            </td>
+            <td>
+                @(item.GioiTinh == true ? "Nam" : "Nữ")
+            </td>
+            <td>
+                [@Html.DisplayFor(modelItem => item.VoChong)] @(voChong?.HoTen ?? "")
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DiaPhuong)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LyLich)
+            </td>
+            <td>
+                @Html.ActionLink("Sửa", "Edit", new { id = item.ID }) |
+                @Html.ActionLink("Chi tiết", "Details", new { id = item.ID }) |
+                @Html.ActionLink("Xóa", "Delete", new { id = item.ID }, new { @class = "text-danger" })
+            </td>
+        </tr>
+    }
 
 </table>

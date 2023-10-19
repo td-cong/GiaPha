@@ -18,6 +18,7 @@ namespace GiaPha.Controllers
         // GET: ThanhViens
         public ActionResult Index()
         {
+            ViewBag.VoChongList = db.VoChongs.ToList();
             return View(db.ThanhViens.ToList());
         }
 
