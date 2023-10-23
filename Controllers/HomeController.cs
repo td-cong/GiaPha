@@ -27,9 +27,10 @@ namespace GiaPha.Controllers
         {
             return View(db.ThanhViens.ToList());
         }
-        public ActionResult PhaDo1()
+        public ActionResult PhaDo1(int top = 0)
         {
-            return View(db.ThanhViens.ToList());
+            var data = db.ThanhViens.AsNoTracking().ToList();
+            return View(data);
         }
 
         public ActionResult Login()

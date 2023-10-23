@@ -18,7 +18,7 @@ namespace GiaPha.Controllers
         // GET: ThanhViens
         public ActionResult Index()
         {
-            ViewBag.VoChongList = db.VoChongs.ToList();
+            ViewBag.VoChongList = db.VoChongs.AsNoTracking().ToList();
             return View(db.ThanhViens.ToList());
         }
 
@@ -40,6 +40,8 @@ namespace GiaPha.Controllers
         // GET: ThanhViens/Create
         public ActionResult Create()
         {
+            ViewBag.ThanhVienList = db.ThanhViens.AsNoTracking().ToList();
+            ViewBag.VoChongList = db.VoChongs.AsNoTracking().ToList();
             return View();
         }
 
@@ -67,6 +69,8 @@ namespace GiaPha.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            ViewBag.ThanhVienList = db.ThanhViens.AsNoTracking().ToList();
+            ViewBag.VoChongList = db.VoChongs.AsNoTracking().ToList();
             ThanhVien thanhVien = db.ThanhViens.Find(id);
             if (thanhVien == null)
             {
