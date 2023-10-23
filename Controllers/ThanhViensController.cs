@@ -29,6 +29,8 @@ namespace GiaPha.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            ViewBag.ThanhVienList = db.ThanhViens.AsNoTracking().ToList();
+            ViewBag.VoChongList = db.VoChongs.AsNoTracking().ToList();
             ThanhVien thanhVien = db.ThanhViens.Find(id);
             if (thanhVien == null)
             {

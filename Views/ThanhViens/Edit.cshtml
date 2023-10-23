@@ -9,7 +9,6 @@
 
 <h4 class="my-3">Cập nhật thông tin thành viên</h4>
 <hr />
-
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -21,7 +20,7 @@
         <div class="row">
             <div class="form-group col-md-6">
                 <strong>Cha</strong>
-                @Html.DropDownListFor(model => model.PID, new SelectList(ThanhVienList, "ID", "HoTen"), new { @class = "form-control" })
+                @Html.DropDownListFor(model => model.PID, new SelectList(ThanhVienList, "ID", "HoTen"), "- Chọn -", new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.PID, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -58,7 +57,7 @@
             </div>
             <div class="form-group col-md-6">
                 <strong>Vợ (chồng)</strong>
-                @Html.DropDownListFor(model => model.VoChong, new SelectList(ThanhVienList, "ID", "HoTen"), new { @class = "form-control" })
+                @Html.DropDownListFor(model => model.VoChong, new SelectList(ThanhVienList, "ID", "HoTen"), "- Chọn -", new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.VoChong, "", new { @class = "text-danger" })
             </div>
         </div>
