@@ -65,9 +65,9 @@ body.bg-about{
 	.logo_img{width:250px}
 }
 @media (min-width:1200px){
-	.bgtren{height:369px}
-	.logo{display: block; margin:auto; width:100%;vertical-align: middle; padding-top:60px}
-	.logo_img{width:400px}
+	.bgtren{height:180px}
+	.logo{display: block; margin:auto; width:100%;vertical-align: middle; padding-top:20px}
+	.logo_img{width:160px}
 }
 @media (min-width:1600px){
 	.bgtren{height:500px}
