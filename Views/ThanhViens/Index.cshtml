@@ -16,10 +16,10 @@
     <thead class="thead-dark">
         <tr>
             <th>
-                Cha
+                Họ tên
             </th>
             <th>
-                Họ tên
+                Cha
             </th>
             <th>
                 Năm sinh
@@ -48,10 +48,13 @@
         var voChong = Model.FirstOrDefault(x => x.ID == item.VoChong);
         <tr>
             <td>
-                [@Html.DisplayFor(modelItem => item.PID)] @(parent?.HoTen ?? "")
+                @if (item.Avt != null && item.Avt.Length > 0)
+                {
+                    <img src="@(item.Avt)" width="28" />
+                }@Html.DisplayFor(modelItem => item.HoTen)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.HoTen)
+                [@Html.DisplayFor(modelItem => item.PID)] @(parent?.HoTen ?? "")
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.NamSinh)

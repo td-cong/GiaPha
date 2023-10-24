@@ -49,20 +49,20 @@ body.bg-about{
 
 @media only screen and (max-width: 767px){
 	.bgtren{height:180px}
-	.logo{display: block; margin:auto; width:100%;vertical-align: middle; padding-top:10px; padding-bottom:20px}
-	.logo_img {width:200px}
+	.logo{display: block; margin:auto; width:100%;vertical-align: middle; padding-top:20px}
+	.logo_img{width:160px}
 	.bgtren{max-height:200px; background-image:url("img/logo-footer.png"); background-repeat: no-repeat; margin:auto}
 	.link-content-more{margin-top:5px;}
 }
 @media (min-width:768px) and (max-width:991px){
-	.bgtren{height:250px}
-	.logo{display: block; margin:auto; width:100%;vertical-align: middle; padding-top:10px; padding-bottom:20px}
-	.logo_img {width:200px; padding-top:20px}
+	.bgtren{height:180px}
+	.logo{display: block; margin:auto; width:100%;vertical-align: middle; padding-top:20px}
+	.logo_img{width:160px}
 }
 @media (min-width:992px) and (max-width:1199px){
-	.bgtren{height:300px}
-	.logo{display: block; margin:auto; width:100%;vertical-align: middle; padding-top:50px}
-	.logo_img{width:250px}
+	.bgtren{height:180px}
+	.logo{display: block; margin:auto; width:100%;vertical-align: middle; padding-top:20px}
+	.logo_img{width:160px}
 }
 @media (min-width:1200px){
 	.bgtren{height:180px}
@@ -70,9 +70,9 @@ body.bg-about{
 	.logo_img{width:160px}
 }
 @media (min-width:1600px){
-	.bgtren{height:500px}
-	.logo{display: block; margin:auto; width:100%;vertical-align: middle; padding-top:60px}
-	.logo_img{width:500px}
+	.bgtren{height:210px}
+	.logo{display: block; margin:auto; width:100%;vertical-align: middle; padding-top:30px}
+	.logo_img{width:180px}
 }
 .justify-content-center{-ms-flex-pack:center!important;justify-content:center!important}
 .justify-content-between{-ms-flex-pack:justify!important;justify-content:space-between!important}
@@ -632,4 +632,12 @@ body.bg-about{
   font-weight: 600;
   text-decoration:none;
   text-transform:uppercase;
+}
+#login,
+.copyright
+{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.copyright {
+    font-weight: 600;
 }

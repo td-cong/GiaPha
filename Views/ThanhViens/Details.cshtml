@@ -9,20 +9,31 @@
 
 <h4 class="my-3">Thông tin chi tiết thành viên</h4>
 <hr />
-<div class="form">
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
+<div class="container">
+    @if (Model.Avt != null && Model.Avt.Length > 0)
+    {
+        <div class="row">
+            <div class="col-12">
+                <div style="border: 1px solid #aaa; padding: 5px; width: 138px; background-color: #fff">
+                    <img src="@(Model.Avt)"
+                         width="128"
+                         title="Ảnh"
+                         alt="Ảnh" />
+                </div>
+            </div>
+        </div>
+    }
     <div class="row">
+        <div class="form-group col-md-6">
+            <strong>Họ tên</strong>
+            @Html.EditorFor(model => model.HoTen, new { htmlAttributes = new { @class = "form-control w-100", @disabled = true } })
+        </div>
         <div class="form-group col-md-6">
             <strong>Cha</strong>
             @Html.DropDownListFor(model => model.PID, new SelectList(ThanhVienList, "ID", "HoTen"), "Không có thông tin", new { @class = "form-control", @disabled = true })
         </div>
     </div>
     <div class="row">
-        <div class="form-group col-md-12">
-            <strong>Họ tên</strong>
-            @Html.EditorFor(model => model.HoTen, new { htmlAttributes = new { @class = "form-control w-100", @disabled = true } })
-        </div>
     </div>
     <div class="row">
         <div class="form-group col-md-6">
