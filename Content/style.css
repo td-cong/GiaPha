@@ -1,31 +1,11 @@
-﻿@font-face {
-  font-family: HurmeGeometricSans4;
-  src: url("font/iCielHurmeGeometricSans4-Regular.otf") format("opentype");
-}
-
-@font-face {
-  font-family: HurmeGeometricSans4;
-  font-weight: bold;
-  src: url("font/iCielHurmeGeometricSans4-Bold.otf") format("opentype");
-}
-@font-face {
-  font-family: HurmeGeometricSans4-Oblique;
-  src: url("font/iCielHurmeGeometricSans4-RegularOblique.otf") format("opentype");
-}
-
-@font-face {
-  font-family: HurmeGeometricSans4-Oblique;
-  font-weight: bold;
-  src: url("font/iCielHurmeGeometricSans4-BoldOblique.otf") format("opentype");
-}
-body {
+﻿body {
   margin: 0;
   padding: 0;
   background-image: url("img/main_bg.jpg");
   background-repeat: no-repeat;
   background-color: #fff;
   background-position: top left;
-  font-family: "HurmeGeometricSans4";  
+  font-family: Roboto, 'Segoe UI', Tahoma, sans-serif;  
   font-weight: 400;
   color: #212529;
   text-align: left;
@@ -92,7 +72,7 @@ body.bg-about{
   background-image: url("img/tab-bg-active.png");
 }
 .tab-page a{
-  font-family: "HurmeGeometricSans4";
+  font-family: Roboto, 'Segoe UI', Tahoma, sans-serif;  
   font-size: 16px;
   color: #fff;
   font-weight: bold;
@@ -119,7 +99,7 @@ body.bg-about{
   background-image: url("img/tab-bg-long1.png");
 }
 .tab-page-long1 a{
-  font-family: "HurmeGeometricSans4";
+  font-family: Roboto, 'Segoe UI', Tahoma, sans-serif;  
   font-size: 22px;
   color: #5e784f;
   font-weight: bold;
@@ -129,14 +109,15 @@ body.bg-about{
 .tab-page-long1 a:hover{
   text-decoration: none;
 }
-.tab-page-long{
-  background-image: url("img/tab-bg-long.png");
-  background-repeat: no-repeat;
-  background-position: top left;
-  width: 225px;
-  height: 60px;
-  text-align: center;
-  line-height: 42px;
+.tab-page-long {
+    background-image: url("img/tab-bg-long.png");
+    background-repeat: no-repeat;
+    background-position: top left;
+    width: 225px;
+    height: 60px;
+    text-align: center;
+    line-height: 42px;
+    filter: drop-shadow(3px 3px 1px rgba(0,0,0,.45));
 }
 .tab-page-long.active{
   background-image: url("img/tab-bg-long-active.png");
@@ -144,14 +125,15 @@ body.bg-about{
 .tab-page-long:hover{
   background-image: url("img/tab-bg-long-active.png");
 }
-.tab-page-long a{
-  font-family: "HurmeGeometricSans4";
-  font-size: 15px;
-  color: #fff;
-  font-weight: bold;
-  text-transform: uppercase;
-  text-decoration: none;
-}
+    .tab-page-long a {
+        font-family: Roboto, 'Segoe UI', Tahoma, sans-serif;
+        font-size: 20px;
+        color: #fff !important;
+        text-shadow: 1px 1px rgba(0,0,0,.75);
+        font-weight: bold;
+        text-transform: uppercase;
+        text-decoration: none;
+    }
 .tab-page-long a:hover{
   text-decoration: none;
 }
@@ -172,7 +154,7 @@ body.bg-about{
   background-image: url("img/xemtiep1.png");
 }
 .xemtiep a{
-  font-family: "HurmeGeometricSans4";
+  font-family: Roboto, 'Segoe UI', Tahoma, sans-serif;  
   font-size: 13px;
   color: #5e784f;
   text-transform: uppercase;
@@ -188,7 +170,7 @@ body.bg-about{
   background-position: bottom;
 }
 .footer-title{
-  font-family: "HurmeGeometricSans4";
+  font-family: Roboto, 'Segoe UI', Tahoma, sans-serif;  
   color: #f5cf7c;
   font-size: 16px;
   font-weight: bold;
@@ -196,7 +178,7 @@ body.bg-about{
 .footer-text{
   padding: 0px;
   margin: 0;
-  font-family: "HurmeGeometricSans4";
+  font-family: Roboto, 'Segoe UI', Tahoma, sans-serif;  
   color: #f5cf7c;
   font-size: 13px;
   font-weight: normal;
@@ -215,7 +197,7 @@ body.bg-about{
   text-decoration:none;
 }
 .title-content{
-  font-family: "HurmeGeometricSans4";
+  font-family: Roboto, 'Segoe UI', Tahoma, sans-serif;  
   font-size: 13px;
   color: #4c4c4c;
   text-align:justify;
@@ -228,11 +210,11 @@ body.bg-about{
 .card{
   border: none;
   background: none;
-  font-family: "HurmeGeometricSans4";  
+  font-family: Roboto, 'Segoe UI', Tahoma, sans-serif;    
   text-decoration:none;
 }
 .card-title a{
-  font-family: "HurmeGeometricSans4";
+  font-family: Roboto, 'Segoe UI', Tahoma, sans-serif;  
   font-size: 15px;
   padding: 5px 0 5px 0;
   margin: 0;
@@ -247,7 +229,7 @@ body.bg-about{
   text-decoration:none;
 }
 .card-text{
-  font-family: "HurmeGeometricSans4";
+  font-family: Roboto, 'Segoe UI', Tahoma, sans-serif;  
   font-size: 13px;
   color: #4c4c4c;
   font-weight: normal;
@@ -304,7 +286,7 @@ body.bg-about{
   text-decoration:none;
 }
 .tintuc-dec{
-  font-family: "HurmeGeometricSans4";
+  font-family: Roboto, 'Segoe UI', Tahoma, sans-serif;  
   font-weight: normal;
   font-size: 13px;
   padding: 15px 0 15px 0;
@@ -594,7 +576,7 @@ body.bg-about{
 }
 .title-content-giapha{
   font-size: 22px;
-  font-family: "HurmeGeometricSans4";
+  font-family: Roboto, 'Segoe UI', Tahoma, sans-serif;  
   color: #5e784f;
   font-weight: 600;
   text-decoration:none;
@@ -602,7 +584,7 @@ body.bg-about{
 }
 .title-content-giapha1{
   font-size: 16px;
-  font-family: "HurmeGeometricSans4";
+  font-family: Roboto, 'Segoe UI', Tahoma, sans-serif;  
   color: #ab7c2c;
   font-weight: 600;
   text-decoration:none;
@@ -610,7 +592,7 @@ body.bg-about{
 }
 .title-content-giapha1 a{
   font-size: 16px;
-  font-family: "HurmeGeometricSans4";
+  font-family: Roboto, 'Segoe UI', Tahoma, sans-serif;  
   color: #5e784f;
   font-weight: 600;
   text-decoration:none;
@@ -621,13 +603,13 @@ body.bg-about{
 }
 .title-content-giapha2{
   font-size: 14px;
-  font-family: "HurmeGeometricSans4";
+  font-family: Roboto, 'Segoe UI', Tahoma, sans-serif;  
   color: #5e784f;
   text-decoration:none;
 }
 .title-content-hinhanh{
   font-size: 18px;
-  font-family: "HurmeGeometricSans4";
+  font-family: Roboto, 'Segoe UI', Tahoma, sans-serif;  
   color: #5e784f;
   font-weight: 600;
   text-decoration:none;

@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Gia phả</title>
+    <title>@ViewBag.Title - Gia phả số</title>
     @Styles.Render("~/Content/css")
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     @Scripts.Render("~/bundles/modernizr")
@@ -15,7 +15,7 @@
     <div class="bgtren"><div class="logo" align="center"><a href="/"><img src="~/Content/img/logo.png" class="logo_img"></a></div></div>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
         <div class="container">
-            @Html.ActionLink("Nhà thờ họ", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            <a href="/Home" class="navbar-brand"><i class="bi bi-bank"></i> Trang chủ</a>
             <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
