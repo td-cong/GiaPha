@@ -5,6 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     var VoChongList = (List<GiaPha.Models.VoChong>)ViewBag.VoChongList;
 }
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
 
 <h4 class="my-3">Quản lý thành viên</h4>
 <hr />
@@ -12,34 +13,18 @@
 <p>
     @Html.ActionLink("+ Thêm mới", "Create", null, new { @class = "btn btn-success" })
 </p>
-<table class="table table-bordered table-light table-striped table-hover">
+<table id="table" class="table table-bordered table-light table-striped table-hover">
     <thead class="thead-dark">
         <tr>
-            <th>
-                Họ tên
-            </th>
-            <th>
-                Con của cụ
-            </th>
-            <th>
-                Năm sinh
-            </th>
-            <th>
-                Năm mất
-            </th>
-            <th>
-                Giới tính
-            </th>
-            <th>
-                Vợ (Chồng)
-            </th>
-            <th>
-                Địa phương cư trú
-            </th>
-            <th>
-                Lý lịch
-            </th>
-            <th style="min-width: 150px"></th>
+            <th style="min-width: 150px">Họ tên</th>
+            <th style="min-width: 100px">Con của cụ</th>
+            <th>Năm sinh</th>
+            <th>Năm mất</th>
+            <th>Giới tính</th>
+            <th style="min-width: 100px">Vợ (chồng)</th>
+            <th>Địa phương cư trú</th>
+            @*<th>Lý lịch </th>*@
+            <th style="min-width: 120px"></th>
         </tr>
     </thead>
     @foreach (var item in Model)
@@ -53,8 +38,8 @@
                     <img src="@(item.Avt)" width="28" />
                 }@Html.DisplayFor(modelItem => item.HoTen)
             </td>
-            <td>
-                [@Html.DisplayFor(modelItem => item.PID)] @(parent?.HoTen ?? "")
+            <td title="@(item.PID)">
+                @(parent?.HoTen ?? "")
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.NamSinh)
@@ -65,15 +50,15 @@
             <td>
                 @(item.GioiTinh == true ? "Nam" : "Nữ")
             </td>
-            <td>
-                [@Html.DisplayFor(modelItem => item.VoChong)] @(voChong?.HoTen ?? "")
+            <td title="@(item.VoChong)">
+                @(voChong?.HoTen ?? "")
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DiaPhuong)
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.LyLich)
-            </td>
+            </td>*@
             <td>
                 @Html.ActionLink("Sửa", "Edit", new { id = item.ID }) |
                 @Html.ActionLink("Chi tiết", "Details", new { id = item.ID }) |
@@ -81,5 +66,13 @@
             </td>
         </tr>
     }
-
 </table>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+<script>
+    var dataTable = new DataTable('#table', {
+        language: {
+            url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json'
+        }
+    });
+</script>
