@@ -54,11 +54,23 @@ namespace GiaPha.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,PID,HoTen,NamSinh,NamMat,GioiTinh,VoChong,DiaPhuong,LyLich,Avt")] ThanhVien thanhVien)
+        public ActionResult Create([Bind(Include = "ID,PID,HoTen,NamSinh,NamMat,GioiTinh,VoChong,DiaPhuong,LyLich,Avt")] ThanhVien thanhVien, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
                 db.ThanhViens.Add(thanhVien);
+                db.SaveChanges();
+                if (file != null)
+                {
+                    // Xử lý tên file tránh trường hợp tên file có chứa ký tự gây lỗi
+                    string fileName = Common.XuLyTenFile(file);
+                    var folderPath = $"\\Files\\ThanhVien\\{thanhVien.ID}\\";
+                    // Gọi hàm lưu file
+                    Common.LuuFile(file, fileName, folderPath, true);
+                    // Lưu vị trí file vào trường Avt
+                    thanhVien.Avt = (folderPath + fileName).Replace("\\", "/");
+                }
+                db.Entry(thanhVien).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

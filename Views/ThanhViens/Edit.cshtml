@@ -18,17 +18,56 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
         <div class="row">
-            <div class="form-group col-md-6">
-                <strong>Cha</strong>
-                @Html.DropDownListFor(model => model.PID, new SelectList(ThanhVienList, "ID", "HoTen"), "- Chọn -", new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.PID, "", new { @class = "text-danger" })
+            <div class="col-md-12 d-flex justify-content-center py-2">
+                <div class="d-flex flex-column justify-content-center" style="border: 1px solid #aaa; padding: 5px; width: 138px; background-color: #fff">
+                    <div class="align-self-start" style="width: 128px; min-height: 160px; text-align: center;">
+                        <img id="imgAvatar"
+                             class="@(Model.Avt?.Length > 0 ? "" : "d-none")"
+                             src="@(Model.Avt ?? "")"
+                             width="128"
+                             style="min-width: 128px; min-height: 160px"
+                             title="Ảnh hiện tại"
+                             alt="Chưa có ảnh" />
+                        <span id="spanNoImg" class="text-muted align-self-center @(Model.Avt?.Length > 0 ? "d-none" : "")">CHƯA CÓ ẢNH</span>
+                    </div>
+                    <div class="align-self-end" style="width: 128px; text-align: center;">
+                        <label for="file" style="cursor: pointer">
+                            <a class="text-decoration-none"><i class="bi bi-folder2-open"></i> Chọn ảnh</a>
+                            <input type="file" id="file" name="file" style="display:none">
+                        </label>
+                        <script>
+                            document.getElementById('file').addEventListener('change', handleFileSelect, false);
+                            function handleFileSelect(evt) {
+                                var files = evt.target.files;
+                                var f = files[0];
+                                var reader = new FileReader();
+                                reader.onload = (
+                                    function (theFile) {
+                                        return function (e) {
+                                            document.getElementById('imgAvatar').src = e.target.result;
+                                            document.getElementById('imgAvatar').classList.remove("d-none");
+                                            document.getElementById('spanNoImg').classList.add("d-none");
+                                        };
+                                    }
+                                )(f);
+                                reader.readAsDataURL(f);
+                            }
+                        </script>
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(model => model.Avt, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="row">
-            <div class="form-group col-md-12">
+            <div class="form-group col-md-6">
                 <strong>Họ tên</strong>
                 @Html.EditorFor(model => model.HoTen, new { htmlAttributes = new { @class = "form-control w-100" } })
                 @Html.ValidationMessageFor(model => model.HoTen, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group col-md-6">
+                <strong>Con của cụ</strong>
+                @Html.DropDownListFor(model => model.PID, new SelectList(ThanhVienList, "ID", "HoTen"), "- Chọn -", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.PID, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="row">
@@ -45,7 +84,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-12">
                 <strong>Giới tính</strong><br>
                 <div class="form-check form-check-inline">
                     @Html.RadioButtonFor(model => model.GioiTinh, true, new { @class = "form-check-input" }) Nam
@@ -55,11 +94,6 @@
                 </div>
                 @Html.ValidationMessageFor(model => model.GioiTinh, "", new { @class = "text-danger" })
             </div>
-            <div class="form-group col-md-6">
-                <strong>Vợ (chồng)</strong>
-                @Html.DropDownListFor(model => model.VoChong, new SelectList(ThanhVienList, "ID", "HoTen"), "- Chọn -", new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.VoChong, "", new { @class = "text-danger" })
-            </div>
         </div>
         <div class="row">
             <div class="form-group col-md-6">
@@ -67,24 +101,10 @@
                 @Html.EditorFor(model => model.DiaPhuong, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.DiaPhuong, "", new { @class = "text-danger" })
             </div>
-
             <div class="form-group col-md-6">
-                <strong>Ảnh đại diện</strong>
-                <div class="row">
-                    <div class="col-md-4 p-0">
-                        <div style="border: 1px solid #aaa; padding: 5px; width: 138px; background-color: #fff">
-                            <img src="@(Model.Avt)"
-                                 width="128"
-                                 title="Ảnh hiện tại"
-                                 alt="Ảnh" />
-                        </div>
-                    </div>
-                    <div class="col-md-8 p-0">
-                        @Html.EditorFor(model => model.Avt, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.TextBox("file", "", new { type = "file", @class = "form-control" })
-                    </div>
-                </div>
-                @Html.ValidationMessageFor(model => model.Avt, "", new { @class = "text-danger" })
+                <strong>Vợ (chồng)</strong>
+                @Html.DropDownListFor(model => model.VoChong, new SelectList(ThanhVienList, "ID", "HoTen"), "- Chọn -", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.VoChong, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="row">

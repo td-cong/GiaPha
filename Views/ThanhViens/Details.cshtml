@@ -10,26 +10,33 @@
 <h4 class="my-3">Thông tin chi tiết thành viên</h4>
 <hr />
 <div class="container">
-    @if (Model.Avt != null && Model.Avt.Length > 0)
-    {
-        <div class="row">
-            <div class="col-12">
-                <div style="border: 1px solid #aaa; padding: 5px; width: 138px; background-color: #fff">
-                    <img src="@(Model.Avt)"
-                         width="128"
-                         title="Ảnh"
-                         alt="Ảnh" />
-                </div>
+    <div class="row">
+        <div class="col-md-12 d-flex justify-content-center py-2">
+            <div class="d-flex justify-content-center" style="border: 1px solid #aaa; padding: 5px; width: 138px; background-color: #fff">
+                <label for="file" style="width: 128px; min-height: 160px; text-align: center;">
+                    @if (Model.Avt?.Length > 0)
+                    {
+                        <img src="@(Model.Avt)"
+                             width="128"
+                             style="min-width: 128px; min-height: 160px"
+                             title="Ảnh hiện tại"
+                             alt="Chưa có ảnh" />
+                    }
+                    else
+                    {
+                        <span class="text-muted">CHƯA CÓ ẢNH</span>
+                    }
+                </label>
             </div>
         </div>
-    }
+    </div>
     <div class="row">
         <div class="form-group col-md-6">
             <strong>Họ tên</strong>
             @Html.EditorFor(model => model.HoTen, new { htmlAttributes = new { @class = "form-control w-100", @disabled = true } })
         </div>
         <div class="form-group col-md-6">
-            <strong>Con cụ</strong>
+            <strong>Con của cụ</strong>
             @Html.DropDownListFor(model => model.PID, new SelectList(ThanhVienList, "ID", "HoTen"), "Không có thông tin", new { @class = "form-control", @disabled = true })
         </div>
     </div>
@@ -47,7 +54,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-12">
             <strong>Giới tính</strong><br>
             <div class="form-check form-check-inline">
                 @Html.RadioButtonFor(model => model.GioiTinh, true, new { @class = "form-check-input", @disabled = true }) Nam
@@ -56,12 +63,12 @@
                 @Html.RadioButtonFor(model => model.GioiTinh, false, new { @class = "form-check-input", @disabled = true }) Nữ
             </div>
         </div>
+    </div>
+    <div class="row">
         <div class="form-group col-md-6">
             <strong>Vợ (chồng)</strong>
             @Html.DropDownListFor(model => model.VoChong, new SelectList(ThanhVienList, "ID", "HoTen"), "Không có thông tin", new { @class = "form-control", @disabled = true })
         </div>
-    </div>
-    <div class="row">
         <div class="form-group col-md-6">
             <strong>Địa phương</strong>
             @Html.EditorFor(model => model.DiaPhuong, new { htmlAttributes = new { @class = "form-control", @disabled = true } })
