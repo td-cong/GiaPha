@@ -15,6 +15,13 @@ namespace GiaPha.Controllers
         private GiaPhaEntities db = new GiaPhaEntities();
 
         // GET: TinTucs
+        public ActionResult Index()
+        {
+            var tinTucs = db.TinTucs.Include(t => t.LoaiTinTuc);
+            return View(tinTucs.ToList());
+        }
+
+        // GET: TinTucs
         public ActionResult QuanLy()
         {
             var tinTucs = db.TinTucs.Include(t => t.LoaiTinTuc);
@@ -37,7 +44,6 @@ namespace GiaPha.Controllers
         }
 
         // GET: TinTucs/Create
-
         public ActionResult Create()
         {
             ViewBag.IdLoaiTinTuc = new SelectList(db.LoaiTinTucs, "ID", "TenLoaiTinTuc");
@@ -49,7 +55,7 @@ namespace GiaPha.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,TinTuc1,IdLoaiTinTuc,TieuDe,NoiDung,TacGia")] TinTuc tinTuc)
+        public ActionResult Create([Bind(Include = "ID,IdLoaiTinTuc,TieuDe,NoiDung,TacGia,AnhDaiDien,TinNoiBat,TrangThai")] TinTuc tinTuc)
         {
             if (ModelState.IsValid)
             {
@@ -83,7 +89,7 @@ namespace GiaPha.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,TinTuc1,IdLoaiTinTuc,TieuDe,NoiDung,TacGia")] TinTuc tinTuc)
+        public ActionResult Edit([Bind(Include = "ID,IdLoaiTinTuc,TieuDe,NoiDung,TacGia,AnhDaiDien,TinNoiBat,TrangThai")] TinTuc tinTuc)
         {
             if (ModelState.IsValid)
             {
@@ -120,15 +126,7 @@ namespace GiaPha.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-        public ActionResult Index()
-        {
-            TinTuc tinTuc = db.TinTucs.FirstOrDefault();
-            if (tinTuc == null)
-            {
-                return HttpNotFound();
-            }
-            return View(tinTuc);
-        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

@@ -31,6 +31,7 @@ namespace GiaPha.Models
         public virtual DbSet<ThanhVien> ThanhViens { get; set; }
         public virtual DbSet<TinTuc> TinTucs { get; set; }
         public virtual DbSet<TocUoc> TocUocs { get; set; }
+        public virtual DbSet<Video> Videos { get; set; }
         public virtual DbSet<VoChong> VoChongs { get; set; }
     }
 }

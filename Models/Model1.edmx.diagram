@@ -6,12 +6,13 @@
     <edmx:Diagrams>
       <Diagram DiagramId="1e7710ad1eaf48fdadf9e31a3fb4cf5b" Name="Diagram1">
         <EntityTypeShape EntityType="GiaPhaModel.Anh" Width="1.5" PointX="0.75" PointY="5.75" />
-        <EntityTypeShape EntityType="GiaPhaModel.LoaiTinTuc" Width="1.5" PointX="5.75" PointY="1.25" />
+        <EntityTypeShape EntityType="GiaPhaModel.LoaiTinTuc" Width="1.5" PointX="5.75" PointY="1.5" />
         <EntityTypeShape EntityType="GiaPhaModel.PhaKy" Width="1.5" PointX="2.75" PointY="5.75" />
         <EntityTypeShape EntityType="GiaPhaModel.ThanhVien" Width="1.5" PointX="3" PointY="1" />
         <EntityTypeShape EntityType="GiaPhaModel.TinTuc" Width="1.5" PointX="8" PointY="1" />
         <EntityTypeShape EntityType="GiaPhaModel.TocUoc" Width="1.5" PointX="5.75" PointY="4.75" />
-        <EntityTypeShape EntityType="GiaPhaModel.VoChong" Width="1.5" PointX="1.125" PointY="1.5" />
+        <EntityTypeShape EntityType="GiaPhaModel.Video" Width="1.5" PointX="7.75" PointY="4.75" />
+        <EntityTypeShape EntityType="GiaPhaModel.VoChong" Width="1.5" PointX="0.75" PointY="1.75" />
         <AssociationConnector Association="GiaPhaModel.FK_TinTuc_TinTuc" />
         <AssociationConnector Association="GiaPhaModel.FK_ThanhVien_ThanhVien" />
       </Diagram>

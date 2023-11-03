@@ -13,9 +13,6 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.TinTuc1)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.TieuDe)
         </th>
         <th>
@@ -23,6 +20,15 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.TacGia)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AnhDaiDien)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TinNoiBat)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TrangThai)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.LoaiTinTuc.TenLoaiTinTuc)
@@ -33,9 +39,6 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.TinTuc1)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.TieuDe)
         </td>
         <td>
@@ -43,6 +46,15 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.TacGia)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AnhDaiDien)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TinNoiBat)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TrangThai)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.LoaiTinTuc.TenLoaiTinTuc)

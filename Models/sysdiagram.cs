@@ -12,17 +12,12 @@ namespace GiaPha.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class TinTuc
+    public partial class sysdiagram
     {
-        public int ID { get; set; }
-        public Nullable<int> IdLoaiTinTuc { get; set; }
-        public string TieuDe { get; set; }
-        public string NoiDung { get; set; }
-        public string TacGia { get; set; }
-        public string AnhDaiDien { get; set; }
-        public Nullable<bool> TinNoiBat { get; set; }
-        public string TrangThai { get; set; }
-    
-        public virtual LoaiTinTuc LoaiTinTuc { get; set; }
+        public string name { get; set; }
+        public int principal_id { get; set; }
+        public int diagram_id { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

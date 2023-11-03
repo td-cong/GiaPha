@@ -10,8 +10,10 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="AnhDongHo" Type="nvarchar" MaxLength="50" />
-          <Property Name="AnhThanhVien" Type="nvarchar" MaxLength="50" />
+          <Property Name="TieuDe" Type="nvarchar" MaxLength="50" />
+          <Property Name="DuongDan" Type="nvarchar(max)" />
+          <Property Name="MoTa" Type="nvarchar(max)" />
+          <Property Name="TrangThai" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="LoaiTinTuc">
           <Key>
@@ -48,11 +50,13 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="TinTuc" Type="nvarchar" MaxLength="50" />
           <Property Name="IdLoaiTinTuc" Type="int" />
           <Property Name="TieuDe" Type="nvarchar" MaxLength="500" />
           <Property Name="NoiDung" Type="nvarchar(max)" />
           <Property Name="TacGia" Type="nvarchar" MaxLength="50" />
+          <Property Name="AnhDaiDien" Type="nvarchar(max)" />
+          <Property Name="TinNoiBat" Type="bit" />
+          <Property Name="TrangThai" Type="nvarchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="TocUoc">
           <Key>
@@ -60,6 +64,16 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TocUoc" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Video">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TieuDe" Type="nvarchar" MaxLength="50" />
+          <Property Name="DuongDan" Type="nvarchar(max)" />
+          <Property Name="MoTa" Type="nvarchar(max)" />
+          <Property Name="TrangThai" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="VoChong">
           <Key>
@@ -99,6 +113,7 @@
           <EntitySet Name="ThanhVien" EntityType="Self.ThanhVien" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TinTuc" EntityType="Self.TinTuc" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TocUoc" EntityType="Self.TocUoc" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Video" EntityType="Self.Video" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VoChong" EntityType="Self.VoChong" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_ThanhVien_ThanhVien" Association="Self.FK_ThanhVien_ThanhVien">
             <End Role="VoChong" EntitySet="VoChong" />
@@ -120,6 +135,7 @@
           <EntitySet Name="ThanhViens" EntityType="GiaPhaModel.ThanhVien" />
           <EntitySet Name="TinTucs" EntityType="GiaPhaModel.TinTuc" />
           <EntitySet Name="TocUocs" EntityType="GiaPhaModel.TocUoc" />
+          <EntitySet Name="Videos" EntityType="GiaPhaModel.Video" />
           <EntitySet Name="VoChongs" EntityType="GiaPhaModel.VoChong" />
           <AssociationSet Name="FK_TinTuc_TinTuc" Association="GiaPhaModel.FK_TinTuc_TinTuc">
             <End Role="LoaiTinTuc" EntitySet="LoaiTinTucs" />
@@ -135,8 +151,10 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AnhDongHo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AnhThanhVien" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TieuDe" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DuongDan" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MoTa" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TrangThai" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="LoaiTinTuc">
           <Key>
@@ -175,11 +193,13 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TinTuc1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IdLoaiTinTuc" Type="Int32" />
           <Property Name="TieuDe" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="NoiDung" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="TacGia" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AnhDaiDien" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TinNoiBat" Type="Boolean" />
+          <Property Name="TrangThai" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="LoaiTinTuc" Relationship="GiaPhaModel.FK_TinTuc_TinTuc" FromRole="TinTuc" ToRole="LoaiTinTuc" />
         </EntityType>
         <EntityType Name="TocUoc">
@@ -188,6 +208,16 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TocUoc1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Video">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TieuDe" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DuongDan" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MoTa" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TrangThai" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="VoChong">
           <Key>
@@ -230,8 +260,10 @@
           <EntitySetMapping Name="Anhs">
             <EntityTypeMapping TypeName="GiaPhaModel.Anh">
               <MappingFragment StoreEntitySet="Anh">
-                <ScalarProperty Name="AnhThanhVien" ColumnName="AnhThanhVien" />
-                <ScalarProperty Name="AnhDongHo" ColumnName="AnhDongHo" />
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+                <ScalarProperty Name="MoTa" ColumnName="MoTa" />
+                <ScalarProperty Name="DuongDan" ColumnName="DuongDan" />
+                <ScalarProperty Name="TieuDe" ColumnName="TieuDe" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -272,11 +304,13 @@
           <EntitySetMapping Name="TinTucs">
             <EntityTypeMapping TypeName="GiaPhaModel.TinTuc">
               <MappingFragment StoreEntitySet="TinTuc">
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+                <ScalarProperty Name="TinNoiBat" ColumnName="TinNoiBat" />
+                <ScalarProperty Name="AnhDaiDien" ColumnName="AnhDaiDien" />
                 <ScalarProperty Name="TacGia" ColumnName="TacGia" />
                 <ScalarProperty Name="NoiDung" ColumnName="NoiDung" />
                 <ScalarProperty Name="TieuDe" ColumnName="TieuDe" />
                 <ScalarProperty Name="IdLoaiTinTuc" ColumnName="IdLoaiTinTuc" />
-                <ScalarProperty Name="TinTuc1" ColumnName="TinTuc" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -285,6 +319,17 @@
             <EntityTypeMapping TypeName="GiaPhaModel.TocUoc">
               <MappingFragment StoreEntitySet="TocUoc">
                 <ScalarProperty Name="TocUoc1" ColumnName="TocUoc" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Videos">
+            <EntityTypeMapping TypeName="GiaPhaModel.Video">
+              <MappingFragment StoreEntitySet="Video">
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+                <ScalarProperty Name="MoTa" ColumnName="MoTa" />
+                <ScalarProperty Name="DuongDan" ColumnName="DuongDan" />
+                <ScalarProperty Name="TieuDe" ColumnName="TieuDe" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

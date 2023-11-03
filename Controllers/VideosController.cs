@@ -10,107 +10,107 @@ using GiaPha.Models;
 
 namespace GiaPha.Controllers
 {
-    public class AnhsController : Controller
+    public class VideosController : Controller
     {
         private GiaPhaEntities db = new GiaPhaEntities();
 
-        // GET: Anhs
+        // GET: Videos
         public ActionResult Index()
         {
-            return View(db.Anhs.ToList());
+            return View(db.Videos.ToList());
         }
 
-        // GET: Anhs/Details/5
+        // GET: Videos/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Anh anh = db.Anhs.Find(id);
-            if (anh == null)
+            Video video = db.Videos.Find(id);
+            if (video == null)
             {
                 return HttpNotFound();
             }
-            return View(anh);
+            return View(video);
         }
 
-        // GET: Anhs/Create
+        // GET: Videos/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Anhs/Create
+        // POST: Videos/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,TieuDe,DuongDan,MoTa,TrangThai")] Anh anh)
+        public ActionResult Create([Bind(Include = "ID,TieuDe,DuongDan,MoTa,TrangThai")] Video video)
         {
             if (ModelState.IsValid)
             {
-                db.Anhs.Add(anh);
+                db.Videos.Add(video);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(anh);
+            return View(video);
         }
 
-        // GET: Anhs/Edit/5
+        // GET: Videos/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Anh anh = db.Anhs.Find(id);
-            if (anh == null)
+            Video video = db.Videos.Find(id);
+            if (video == null)
             {
                 return HttpNotFound();
             }
-            return View(anh);
+            return View(video);
         }
 
-        // POST: Anhs/Edit/5
+        // POST: Videos/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,TieuDe,DuongDan,MoTa,TrangThai")] Anh anh)
+        public ActionResult Edit([Bind(Include = "ID,TieuDe,DuongDan,MoTa,TrangThai")] Video video)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(anh).State = EntityState.Modified;
+                db.Entry(video).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(anh);
+            return View(video);
         }
 
-        // GET: Anhs/Delete/5
+        // GET: Videos/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Anh anh = db.Anhs.Find(id);
-            if (anh == null)
+            Video video = db.Videos.Find(id);
+            if (video == null)
             {
                 return HttpNotFound();
             }
-            return View(anh);
+            return View(video);
         }
 
-        // POST: Anhs/Delete/5
+        // POST: Videos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Anh anh = db.Anhs.Find(id);
-            db.Anhs.Remove(anh);
+            Video video = db.Videos.Find(id);
+            db.Videos.Remove(video);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

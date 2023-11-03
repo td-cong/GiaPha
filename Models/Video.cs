@@ -12,17 +12,12 @@ namespace GiaPha.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class TinTuc
+    public partial class Video
     {
         public int ID { get; set; }
-        public Nullable<int> IdLoaiTinTuc { get; set; }
         public string TieuDe { get; set; }
-        public string NoiDung { get; set; }
-        public string TacGia { get; set; }
-        public string AnhDaiDien { get; set; }
-        public Nullable<bool> TinNoiBat { get; set; }
+        public string DuongDan { get; set; }
+        public string MoTa { get; set; }
         public string TrangThai { get; set; }
-    
-        public virtual LoaiTinTuc LoaiTinTuc { get; set; }
     }
 }

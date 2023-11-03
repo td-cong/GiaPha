@@ -1,35 +1,30 @@
-﻿@model GiaPha.Models.TinTuc
-
+﻿@model IEnumerable<GiaPha.Models.TinTuc>
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Quản lý thành viên";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var VoChongList = (List<GiaPha.Models.VoChong>)ViewBag.VoChongList;
+    var danhSachTin = Model;
+    var tinNoiBat = danhSachTin.Where(x => x.TinNoiBat == true).OrderByDescending(x => x.ID).FirstOrDefault();
+    var dsTinKhac = danhSachTin.Where(x => x.ID != tinNoiBat.ID);
 }
 
-
-<p>
-    @Html.ActionLink("Sửa", "Edit", new { id = Model.ID }) |
-    @Html.ActionLink("Quay lại", "Index")
-</p>
-
-
-
 @if (ViewBag.User != null)
-    {
-        <div>@ViewBag.User.UserName</div>
-    }
+{
+    <div>@ViewBag.User.UserName</div>
+}
 
 
 <div class="container">
     <div class="row" style="margin-top:50px">
-        <div class="col-md-7">
-            <div class="card"><img class="card-img-top" src="~/Content/img/nhatho.png" style="width: 100%; height: auto;"></div>
-        </div>
         <div class="col-md-5">
+            <div class="card"><img class="card-img-top" src="@Html.Raw(tinNoiBat.AnhDaiDien)" style="width: 100%; height: auto;"></div>
+        </div>
+        <div class="col-md-7">
             <div class="title-content">
-                @Html.DisplayFor(model => model.TieuDe)
+                @Html.Raw(tinNoiBat.TieuDe)
             </div>
             <div class="title-content">
-                @Html.DisplayFor(model => model.NoiDung)
+                @Html.Raw(tinNoiBat.NoiDung)
             </div>
         </div>
     </div>
@@ -38,37 +33,18 @@
     <div class="col-md-12" align="center" style="margin-top:20px; margin-bottom:20px"><div class="tab-page-long active"><a href="/?gpdh=1&amp;Tin-tuc-dong-ho.html">Tin tức dòng họ</a></div></div>
     <div class="col-md-12">
         <div class="row">
-
-            <div class="col-md-4">
-                <div class="card">
-                    <a href="/?tintuc=11&amp;linh-thieng-va-dac-sac--le-gi%E1%BB%97-to-ho-bui-lang-xuan-bang.html"><img src="~/Content/img/Tin/19092021-Gio-to-ho-Bui-2020.JPG" alt=" Lễ giỗ tổ họ TRẦN" class="card-img-top card-img-top_home"></a>
-                    <div class="card-body">
-                        <h5 class="card-title"><a href="/?tintuc=11&amp;linh-thieng-va-dac-sac--le-gi%E1%BB%97-to-ho-bui-lang-xuan-bang.html"> Lễ giỗ tổ họ TRẦN</a></h5>
-                        <p class="card-text">Đại lễ giỗ Tổ họ Trần Việt Nam là sự kiện trọng đại trong đời sống tâm linh của bà con họ Trần Việt Nam được tổ chức hàng năm vào ngày 14 tháng Giêng âm lịch. Đây là nghi thức thiêng liêng mang ý nghĩa nhân văn sâu sắc, gắn kết tình cảm huyết thống con cháu họ Trần Việt Nam hướng về cội nguồn, phát huy hào khí Đông A muôn đời tỏa sáng, đoàn kết muôn dân trăm họ trong đại gia đình các dân tộc Việt Nam. Tôn vinh và phát huy bản sắc văn hoá nhà Trần - văn hóa dân tộc Việt Nam, góp phần xây dựng đất nước giàu mạnh, xã hội công bằng, dân chủ , văn minh.</p>
+            @foreach (var item in dsTinKhac)
+            {
+                <div class="col-md-4">
+                    <div class="card">
+                        <a href="/tintucs/detail/@(item.ID)"><img src="@(item.AnhDaiDien)" alt="@(item.TieuDe)" class="card-img-top card-img-top_home"></a>
+                        <div class="card-body">
+                            <h5 class="card-title"><a href="/tintucs/detail/@(item.ID)"> @item.TieuDe</a></h5>
+                            <p class="card-text">@(item.NoiDung)</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="card">
-                    <a href="/?tintuc=10&amp;gioi-thieu-website-gia-pha-ho-bui-xuan-bang.html"><img src="~/Content/img/Tin/19092021-Gioi-thieu-website.jpg" alt="Giới thiệu website gia phả họ Trần" class="card-img-top card-img-top_home"></a>
-                    <div class="card-body">
-                        <h5 class="card-title"><a href=".......">Giới thiệu website gia phả họ Trần</a></h5>
-                        <p class="card-text">Trong xã hội công nghệ thông tin hiện nay, internet đã trở thành phổ biến, dễ sử dụng. Một số dòng họ đã gửi gia phả lên trang web Việt nam gia phả, một số lập trang web để lưu trữ gia phả của dòng họ mình. Vì vậy website Gia phả họ Trần là mạng gia phả riêng của dòng họ Trần để con cháu các chi nhánh của họ ta ở khắp mọi miền đất nước đã có thể đọc và hiểu biết về sự nghiệp của các đời trước cũng như quan hệ huyết thống giữa các thành viên trong họ.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="card">
-                    <a href="/?tintuc=9&amp;gia-pha-va-nha-tho-ho.html"><img src="~/Content/img/Tin/19092021-Gia-pha-va-nha-tho-ho.jpg" alt="Gia phả và nhà thờ họ" class="card-img-top card-img-top_home"></a>
-                    <div class="card-body">
-                        <h5 class="card-title"><a href="/?tintuc=9&amp;gia-pha-va-nha-tho-ho.html">Gia phả và nhà thờ họ</a></h5>
-                        <p class="card-text">Thật cảm động khi nhìn thấy từ gia phả những lời nhắn nhủ, răn dạy đạo đức của các bậc tổ tiên đối với con cháu cho đến hôm nay vẫn còn nóng hổi ý nghĩa: "Con cháu nhà ta, ai nấy đều phải biết tôn trọng lời dạy của ông bà, phải lấy việc cày cấy, đọc sách, học hành làm nghiệp... phải lấy điều hiếu thuận làm đầu, thì sẽ hạnh phúc". Ngoài việc ghi chép đầy đủ lịch sử của gia tộc và thế thứ các nhánh, các chi của mỗi dòng họ, gia phả còn mang giá trị nhân văn sâu sắc.</p>
-                    </div>
-                </div>
-            </div>
-
+            }
         </div>
     </div>
 </div>
@@ -93,7 +69,7 @@
                             <li><a href="/?gpdh=8&amp;Video-dong-ho.html" target="_self">Video</a></li>
                         </ul>
                     </div>
-                   
+
                 </div>
             </div>
         </div>

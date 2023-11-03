@@ -15,7 +15,9 @@ namespace GiaPha.Models
     public partial class Anh
     {
         public int ID { get; set; }
-        public string AnhDongHo { get; set; }
-        public string AnhThanhVien { get; set; }
+        public string TieuDe { get; set; }
+        public string DuongDan { get; set; }
+        public string MoTa { get; set; }
+        public string TrangThai { get; set; }
     }
 }
