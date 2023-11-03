@@ -19,6 +19,13 @@ namespace GiaPha.Controllers
         {
             return View(db.Anhs.ToList());
         }
+        
+        // GET: Anhs
+        public ActionResult QuanLy()
+        {
+            if (Session["User"] == null) return RedirectToAction("Index");
+            return View(db.Anhs.ToList());
+        }
 
         // GET: Anhs/Details/5
         public ActionResult Details(int? id)
@@ -38,6 +45,7 @@ namespace GiaPha.Controllers
         // GET: Anhs/Create
         public ActionResult Create()
         {
+            if (Session["User"] == null) return RedirectToAction("Index");
             return View();
         }
 
@@ -46,13 +54,25 @@ namespace GiaPha.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,TieuDe,DuongDan,MoTa,TrangThai")] Anh anh)
+        public ActionResult Create([Bind(Include = "ID,TieuDe,DuongDan,MoTa,TrangThai")] Anh anh, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
                 db.Anhs.Add(anh);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                if (file != null)
+                {
+                    // Xử lý tên file tránh trường hợp tên file có chứa ký tự gây lỗi
+                    string fileName = Common.XuLyTenFile(file);
+                    var folderPath = $"\\Files\\Anh\\{anh.ID}\\";
+                    // Gọi hàm lưu file
+                    Common.LuuFile(file, fileName, folderPath, true);
+                    // Lưu vị trí file vào trường Avt
+                    anh.DuongDan = (folderPath + fileName).Replace("\\", "/");
+                }
+                db.Entry(anh).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("QuanLy");
             }
 
             return View(anh);
@@ -61,6 +81,7 @@ namespace GiaPha.Controllers
         // GET: Anhs/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (Session["User"] == null) return RedirectToAction("Index");
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -78,13 +99,23 @@ namespace GiaPha.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,TieuDe,DuongDan,MoTa,TrangThai")] Anh anh)
+        public ActionResult Edit([Bind(Include = "ID,TieuDe,DuongDan,MoTa,TrangThai")] Anh anh, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
+                if (file != null)
+                {
+                    // Xử lý tên file tránh trường hợp tên file có chứa ký tự gây lỗi
+                    string fileName = Common.XuLyTenFile(file);
+                    var folderPath = $"\\Files\\Anh\\{anh.ID}\\";
+                    // Gọi hàm lưu file
+                    Common.LuuFile(file, fileName, folderPath, true);
+                    // Lưu vị trí file vào trường Avt
+                    anh.DuongDan = (folderPath + fileName).Replace("\\", "/");
+                }
                 db.Entry(anh).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("QuanLy");
             }
             return View(anh);
         }
@@ -92,6 +123,7 @@ namespace GiaPha.Controllers
         // GET: Anhs/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (Session["User"] == null) return RedirectToAction("Index");
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -112,7 +144,7 @@ namespace GiaPha.Controllers
             Anh anh = db.Anhs.Find(id);
             db.Anhs.Remove(anh);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("QuanLy");
         }
 
         protected override void Dispose(bool disposing)

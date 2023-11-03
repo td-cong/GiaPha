@@ -22,12 +22,15 @@
             </button>
             <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
-                    <li>@Html.ActionLink("Quản lý thành viên", "Index", "ThanhViens", new { area = "" }, new { @class = "nav-link" })</li>
+                    @if (currentUser != null)
+                    {
+                        <li>@Html.ActionLink("Quản lý thành viên", "Index", "ThanhViens", new { area = "" }, new { @class = "nav-link" })</li>
+                    }
                     @*<li>@Html.ActionLink("Phả đồ v1", "PhaDo", "Home", new { area = "" }, new { @class = "nav-link" })</li>*@
                     <li>@Html.ActionLink("Tin tức", "Index", "TinTucs", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("Phả ký", "Index", "PhaKys", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("Tộc ước", "Index", "TocUocs", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Thư viện ảnh-video", "Index", "Anhs", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Thư viện ảnh", "Index", "Anhs", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("Phả đồ", "PhaDo1", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                 </ul>
                 <ul class="navbar-nav justify-content-end">

@@ -16,7 +16,7 @@
         </div>
         <div class="col-md-7">
             <div class="title-content">
-                @Html.Raw(tinNoiBat.TieuDe)
+                <a class="h5 text-decoration-none" href="/tintucs/detail/@(tinNoiBat.ID)">@Html.Raw(tinNoiBat.TieuDe)</a>
             </div>
             <div class="title-content">
                 @Html.Raw(tinNoiBat.NoiDung)
@@ -31,9 +31,9 @@
             @foreach (var item in dsTinKhac)
             {
                 <div class="col-md-4">
-                    <div class="card">
+                    <div class="card bg-transparent border-0">
                         <a href="/tintucs/detail/@(item.ID)"><img src="@(item.AnhDaiDien)" alt="@(item.TieuDe)" class="card-img-top card-img-top_home"></a>
-                        <div class="card-body">
+                        <div class="card-body" style="height: 310px; overflow: hidden;">
                             <h5 class="card-title"><a href="/tintucs/detail/@(item.ID)"> @item.TieuDe</a></h5>
                             <p class="card-text">@(item.NoiDung)</p>
                         </div>
