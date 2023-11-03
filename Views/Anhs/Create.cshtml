@@ -1,0 +1,90 @@
+﻿@model GiaPha.Models.Anh
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Ảnh hoạt động</h2>
+<div class="row">
+    <div class="col-md-12 d-flex justify-content-center py-2">
+        <div class="d-flex flex-column justify-content-center" style="border: 1px solid #aaa; padding: 5px; width: 138px; background-color: #fff">
+            <div class="align-self-start" style="width: 128px; min-height: 160px; text-align: center;">
+                <img id="imgAvatar"
+                     class="d-none"
+                     src=""
+                     width="128"
+                     style="min-width: 128px; min-height: 160px"
+                   
+                     alt="Chưa có ảnh" />
+                <span id="spanNoImg" class="text-muted align-self-center">ẢNH HOẠT ĐỘNG</span>
+            </div>
+            <div class="align-self-end" style="width: 128px; text-align: center;">
+                <label for="file" style="cursor: pointer">
+                    <a class="text-decoration-none"><i class="bi bi-folder2-open"></i> Chọn ảnh</a>
+                    <input type="file" id="file" name="file" style="display:none">
+                </label>
+                <script>
+                     document.getElementById('file').addEventListener('change', handleFileSelect, false);
+                     function handleFileSelect(evt) {
+                         var files = evt.target.files;
+                         var f = files[0];
+                         var reader = new FileReader();
+                         reader.onload = (
+                             function (theFile) {
+                                 return function (e) {
+                                     document.getElementById('imgAvatar').src = e.target.result;
+                                     document.getElementById('imgAvatar').classList.remove("d-none");
+                                     document.getElementById('spanNoImg').classList.add("d-none");
+                                 };
+                             }
+                         )(f);
+                         reader.readAsDataURL(f);
+                     }
+                </script>
+            </div>
+            @Html.HiddenFor(model => model.AnhDongHo, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        @Html.ValidationMessageFor(model => model.AnhDongHo, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Anh</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.AnhDongHo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.AnhDongHo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.AnhDongHo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.AnhThanhVien, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.AnhThanhVien, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.AnhThanhVien, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

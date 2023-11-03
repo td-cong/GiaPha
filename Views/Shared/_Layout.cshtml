@@ -12,7 +12,7 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <div class="bgtren"><div class="logo" align="center"><a href="/"><img src="~/Content/img/logo.png" class="logo_img"></a></div></div>
+    @*<div class="bgtren"><div class="logo" align="center"><a href="/"><img src="~/Content/img/logo.png" class="logo_img"></a></div></div>*@
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm" style="background-color: #d9aa71;">
         <div class="container">
             <a href="/Home" class="navbar-brand"><i class="bi bi-bank"></i> Trang chủ</a>
@@ -23,10 +23,12 @@
             <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
                     <li>@Html.ActionLink("Quản lý thành viên", "Index", "ThanhViens", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Phả đồ v1", "PhaDo", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Phả ký", "Index", "PhaKys", new { area = "" }, new { @class = "nav-link" })</li>
+                    @*<li>@Html.ActionLink("Phả đồ v1", "PhaDo", "Home", new { area = "" }, new { @class = "nav-link" })</li>*@
                     <li>@Html.ActionLink("Tin tức", "Index", "TinTucs", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Phả đồ v2", "PhaDo1", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Phả ký", "Index", "PhaKys", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Tộc ước", "Index", "TocUocs", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Thư viện ảnh-video", "Index", "Anhs", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Phả đồ", "PhaDo1", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                 </ul>
                 <ul class="navbar-nav justify-content-end">
                     @if (currentUser != null)

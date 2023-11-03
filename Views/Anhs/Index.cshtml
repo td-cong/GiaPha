@@ -1,0 +1,73 @@
+﻿@model IEnumerable<GiaPha.Models.Anh>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("+ Thêm mới", "Create", null, new { @class = "btn btn-success" })
+</p>
+<table class="table">
+    <tr>
+        <th>
+          Ảnh
+        </th>
+        <th>
+          
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AnhDongHo)
+            </td>
+            <td>
+               
+            </td>
+            <td>
+                @Html.ActionLink("Sửa", "Edit", new { id = item.ID }) |
+                @Html.ActionLink("Chi tiết", "Details", new { id = item.ID }) |
+                @Html.ActionLink("Xoá", "Delete", new { id = item.ID })
+            </td>
+        </tr>
+    }
+
+</table>
+<table class="table">
+<p>
+    @Html.ActionLink("+ Thêm mới", "Create", null, new { @class = "btn btn-success" })
+
+    <tr>
+        <th>
+           
+        </th>
+        <th>
+            Video
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+               
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AnhThanhVien)
+            </td>
+            <td>
+                @Html.ActionLink("Sửa", "Edit", new { id = item.ID }) |
+                @Html.ActionLink("Chi tiết", "Details", new { id = item.ID }) |
+                @Html.ActionLink("Xoá", "Delete", new { id = item.ID })
+            </td>
+        </tr>
+    }
+
+    </table>

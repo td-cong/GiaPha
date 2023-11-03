@@ -127,6 +127,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Common.cs" />
+    <Compile Include="Controllers\AnhsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PhaKysController.cs" />
     <Compile Include="Controllers\ThanhViensController.cs" />
@@ -711,6 +712,11 @@
     <Content Include="Views\Home\PhaDo1 - Copy.cshtml" />
     <Content Include="Scripts\jquery-3.7.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.7.1.min.map" />
+    <Content Include="Views\Anhs\Create.cshtml" />
+    <Content Include="Views\Anhs\Delete.cshtml" />
+    <Content Include="Views\Anhs\Details.cshtml" />
+    <Content Include="Views\Anhs\Edit.cshtml" />
+    <Content Include="Views\Anhs\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
