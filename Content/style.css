@@ -622,3 +622,12 @@ body.bg-about{
 .copyright {
     font-weight: 600;
 }
+.tintuc-thugon{
+
+
+text-overflow: ellipsis;
+overflow: hidden;
+-webkit-line-clamp: 3;
+-webkit-box-orient: vertical;
+display: -webkit-box;
+}
