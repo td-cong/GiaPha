@@ -1,57 +1,31 @@
 ﻿@model GiaPha.Models.Anh
 
 @{
-    ViewBag.Title = "Delete";
+    var controllerName = "Anhs";
+    var controllerTitle = "ảnh";
+    ViewBag.Title = "Xóa " + controllerTitle;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Delete</h2>
+<h4 class="my-3">@(ViewBag.Title)</h4>
+<hr />
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Anh</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.TieuDe)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TieuDe)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DuongDan)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DuongDan)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.MoTa)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.MoTa)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TrangThai)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TrangThai)
-        </dd>
-
-    </dl>
-
-    @using (Html.BeginForm()) {
-        @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
-        </div>
-    }
+<div class="">
+    <img id="imgAnh"
+         class="@(Model.DuongDan?.Length > 0 ? "" : "d-none")"
+         src="@(Model.DuongDan ?? "")"
+         style="max-width: 100%; max-height: 100%"
+         title="Ảnh hiện tại"
+         alt="Chưa có ảnh" />
 </div>
+<div class="my-3 text-danger">Bạn chắc chắn xóa nội dung này? Thao tác này sẽ không thể hoàn tác!</div>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-actions no-color">
+        <button type="submit" class="btn btn-danger"><i class="bi bi-x-circle"></i> Xác nhận xóa</button>
+        <a class="btn btn-secondary" href="@Url.Action("/QuanLy")">Quay lại</a>
+    </div>
+}

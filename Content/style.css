@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   background-image: url("img/main_bg.jpg");
-  background-repeat: no-repeat;
+  background-repeat: repeat-y;
   background-color: #fff;
   background-position: top left;
   font-family: Roboto, 'Segoe UI', Tahoma, sans-serif;  
@@ -208,8 +208,6 @@ body.bg-about{
   font-size: 22px;
 }
 .card{
-  border: none;
-  background: none;
   font-family: Roboto, 'Segoe UI', Tahoma, sans-serif;    
   text-decoration:none;
 }
@@ -622,12 +620,28 @@ body.bg-about{
 .copyright {
     font-weight: 600;
 }
-.tintuc-thugon{
+.carousel [class^="carousel-control"][class$="icon"] {
+    border-radius: 50%;
+    background-color: rgba(101, 70, 32, .9);
+    outline: 3px solid rgba(101, 70, 32, .9);
+}
+.carousel .carousel-caption {
+    background-color: rgba(101, 70, 32, .75);
+    padding: 5px;
+}
+.carousel .carousel-item .carousel-image-wrapper {
+    height: 600px;
+    background-color: rgba(217, 170, 113, .80);
+}
+    .carousel .carousel-item .carousel-image-wrapper img {
+        max-height: 600px;
+        width: auto;
+    }
 
-
-text-overflow: ellipsis;
-overflow: hidden;
--webkit-line-clamp: 3;
--webkit-box-orient: vertical;
-display: -webkit-box;
+.image-card {
+    cursor: pointer;
+    min-width: 250px;
+}
+.image-card img {
+    height: 160px;
 }

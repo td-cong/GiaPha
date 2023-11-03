@@ -727,6 +727,7 @@
     <Content Include="Views\Videos\Details.cshtml" />
     <Content Include="Views\Videos\Edit.cshtml" />
     <Content Include="Views\Videos\Index.cshtml" />
+    <Content Include="Views\Anhs\QuanLy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

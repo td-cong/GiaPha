@@ -1,66 +1,92 @@
 ﻿@model GiaPha.Models.Anh
 
 @{
-    ViewBag.Title = "Edit";
+    var controllerName = "Anhs";
+    var controllerTitle = "ảnh";
+    ViewBag.Title = "Sửa " + controllerTitle;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit</h2>
+<h4 class="my-3">@(ViewBag.Title)</h4>
+<hr />
 
-
-@using (Html.BeginForm())
+@using (Html.BeginForm("Edit", controllerName, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Anh</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.ID)
+    @Html.HiddenFor(model => model.ID)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.TieuDe, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.TieuDe, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.TieuDe, "", new { @class = "text-danger" })
-            </div>
-        </div>
+<div class="form">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.DuongDan, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DuongDan, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DuongDan, "", new { @class = "text-danger" })
+    <div class="row">
+        <div class="col-md-12 d-flex justify-content-center py-2">
+            <div class="w-100 d-flex flex-column justify-content-center" style="border: 1px solid #aaa; padding: 5px; height: 320px; background-color: #fff">
+                <div class="align-self-start justify-content-center" style="min-height: 160px; text-align: center;">
+                    <img id="imgAnh"
+                         class="@(Model.DuongDan?.Length > 0 ? "" : "d-none")"
+                         src="@(Model.DuongDan ?? "")"
+                         style="max-width: 100%; max-height: 100%"
+                         title="Ảnh hiện tại"
+                         alt="Chưa có ảnh" />
+                    <span id="spanNoImg" class="text-muted align-self-center @(Model.DuongDan?.Length > 0 ? "d-none" : "")">CHƯA CÓ ẢNH</span>
+                </div>
+                <div class="align-self-end" style="width: 100%; text-align: center;">
+                    <label for="file" style="cursor: pointer">
+                        <a class="text-decoration-none"><i class="bi bi-folder2-open"></i> Chọn ảnh</a>
+                        <input type="file" id="file" name="file" style="display:none">
+                    </label>
+                    <script>
+                        document.getElementById('file').addEventListener('change', handleFileSelect, false);
+                        function handleFileSelect(evt) {
+                            var files = evt.target.files;
+                            var f = files[0];
+                            var reader = new FileReader();
+                            reader.onload = (
+                                function (theFile) {
+                                    return function (e) {
+                                        document.getElementById('imgAnh').src = e.target.result;
+                                        document.getElementById('imgAnh').classList.remove("d-none");
+                                        document.getElementById('spanNoImg').classList.add("d-none");
+                                    };
+                                }
+                            )(f);
+                            reader.readAsDataURL(f);
+                        }
+                    </script>
+                </div>
             </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.MoTa, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.MoTa, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.MoTa, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.TrangThai, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.TrangThai, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.TrangThai, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
+            @Html.ValidationMessageFor(model => model.DuongDan, "", new { @class = "text-danger" })
         </div>
     </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
+    <div class="row">
+        <div class="form-group col-md-12">
+            <strong>Tiêu đề</strong>
+            @Html.EditorFor(model => model.TieuDe, new { htmlAttributes = new { @class = "form-control w-100" } })
+            @Html.ValidationMessageFor(model => model.TieuDe, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-12">
+            <strong>Mô tả</strong>
+            @Html.TextAreaFor(model => model.MoTa, new { @class = "form-control", @row = "5" })
+            @Html.ValidationMessageFor(model => model.MoTa, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="row d-none">
+        <div class="form-group col-md-12">
+            <strong>Trạng thái</strong>
+            @Html.EditorFor(model => model.TrangThai, new { htmlAttributes = new { @class = "form-control w-100" } })
+            @Html.ValidationMessageFor(model => model.TrangThai, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group my-3">
+        <div class="col-md-12 text-center">
+            <button type="submit" class="btn btn-primary"><i class="bi bi-floppy-fill"></i> Lưu</button>
+            <a class="btn btn-secondary" href="@Url.Action("/QuanLy")">Quay lại</a>
+        </div>
+    </div>
 </div>
+}
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

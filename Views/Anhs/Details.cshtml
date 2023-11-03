@@ -1,51 +1,41 @@
 ﻿@model GiaPha.Models.Anh
 
+
 @{
-    ViewBag.Title = "Details";
+    var controllerName = "Anhs";
+    var controllerTitle = "ảnh";
+    ViewBag.Title = "Xem " + controllerTitle;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+<h4 class="my-3">@(ViewBag.Title)</h4>
+<hr />
+<div class="container">
+    <div class="row">
+        <img id="imgAnh"
+             class="@(Model.DuongDan?.Length > 0 ? "" : "d-none")"
+             src="@(Model.DuongDan ?? "")"
+             style="max-width: 100%; max-height: 100%"
+             title="Ảnh hiện tại"
+             alt="Ảnh lỗi" />
+    </div>
+    <div class="row">
+        <div class="form-group col-md-12">
+            <strong>Tiêu đề</strong>
+            @Html.EditorFor(model => model.TieuDe, new { htmlAttributes = new { @class = "form-control w-100", @disabled = true } })
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-12">
+            <strong>Mô tả</strong>
+            @Html.TextAreaFor(model => model.MoTa, new { @class = "form-control", @row = "5", @disabled = true })
+        </div>
+    </div>
 
-<div>
-    <h4>Anh</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.TieuDe)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TieuDe)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DuongDan)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DuongDan)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.MoTa)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.MoTa)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TrangThai)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TrangThai)
-        </dd>
-
-    </dl>
+    <div class="form-group my-3">
+        <div class="col-md-12 text-center">
+            <a class="btn btn-outline-primary" href="@Url.Action("Edit", new { id = Model.ID })"><i class="bi bi-pencil-square"></i> Sửa</a>
+            <a class="btn btn-secondary" href="@Url.Action("QuanLy")">Quay lại</a>
+        </div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

@@ -1,52 +1,82 @@
 ﻿@model IEnumerable<GiaPha.Models.Anh>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Thư viện ảnh";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var dataList = (List<GiaPha.Models.Anh>)Model;
+    var currentUser = (GiaPha.Controllers.HomeController.TaiKhoan)Session["User"];
 }
 
-<h2>Index</h2>
+<main>
+    <div class="container">
+        <div class="row g-0">
+            <div class="col-md-12" align="center" style="margin-top:20px; margin-bottom:20px">
+                <div class="tab-page-long active"><a href"">Thư viện ảnh</a></div>
+                @if (currentUser != null)
+                {
+                    <a href="/Anhs/QuanLy" class="btn btn-primary my-2"><i class="bi bi-card-list"></i> Quản lý thư viện</a>
+                }
+            </div>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.TieuDe)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DuongDan)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.MoTa)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TrangThai)
-        </th>
-        <th></th>
-    </tr>
+            <div id="carouselAnh" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-indicators d-none">
+                    @foreach (var item in dataList)
+                    {
+                        <button type="button"
+                                data-bs-target="#carouselAnh"
+                                data-bs-slide-to="@(dataList.IndexOf(item))"
+                                class="@(dataList.IndexOf(item) == 0 ? "active" : "")"
+                                aria-current="@(dataList.IndexOf(item) == 0 ? "true" : "")"
+                                aria-label="Ảnh @(item.ID)">
+                        </button>
+                    }
+                </div>
+                <div class="carousel-inner">
+                    @foreach (var item in dataList)
+                    {
+                        <div class="carousel-item @(dataList.IndexOf(item) == 0 ? "active" : "")" data-bs-interval="10000">
+                            <div class="carousel-image-wrapper w-100 d-flex justify-content-center align-items-center">
+                                <img src="@(item.DuongDan)" class="d-block" alt="@(item.TieuDe)">
+                            </div>
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5 class="m-1">@(item.TieuDe)</h5>
+                                @if (item.MoTa?.Length > 0)
+                                {<p>@(item.MoTa)</p>}
+                            </div>
+                        </div>
+                    }
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselAnh" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Trước</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselAnh" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Sau</span>
+                </button>
+            </div>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.TieuDe)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DuongDan)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MoTa)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TrangThai)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
-}
-
-</table>
+            <div class="col-12 mt-3 p-0">
+                <div class="d-flex flex-row flex-nowrap overflow-x-auto">
+                    @foreach (var item in dataList)
+                    {
+                        <a href="#carouselAnh"
+                           class="image-card card mx-1 ml-0"
+                           data-bs-target="#carouselAnh"
+                           data-bs-slide-to="@(dataList.IndexOf(item))"
+                           aria-current="@(dataList.IndexOf(item) == 0 ? "true" : "")">
+                            <img src="@(item.DuongDan)"
+                                 class="card-img-top"
+                                 alt="@(item.TieuDe)">
+                            <div class="card-body">
+                                <h6 class="card-title">@(item.TieuDe)</h6>
+                                @if (item.MoTa?.Length > 0)
+                                {<p class="card-text">@(item.MoTa)</p>}
+                            </div>
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
