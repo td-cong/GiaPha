@@ -5,70 +5,53 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+<h2>Thông tin chi tiết tin tức</h2>
 
 <div>
-    
-        <h4>TinTuc</h4>
-        <hr />
+
+
+    <hr />
+    <dl class="dl-horizontal">
+        <div class="form-group col-md-6">
+            <strong>Ảnh đại diện</strong>
+            @Html.EditorFor(model => model.AnhDaiDien, new { htmlAttributes = new { @class = "form-control w-100", @disabled = true } })
+        </div>
         <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(model => model.TieuDe)
-            </dt>
+            <div class="form-group col-md-6">
+                <strong>Tiêu đề</strong>
+                @Html.EditorFor(model => model.TieuDe, new { htmlAttributes = new { @class = "form-control w-100", @disabled = true } })
+            </div>
 
-            <dd>
-                @Html.DisplayFor(model => model.TieuDe)
-            </dd>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.NoiDung)
-            </dt>
+            <dl class="dl-horizontal">
 
-            <dd>
-                @Html.DisplayFor(model => model.NoiDung)
-            </dd>
+                <strong>Nội dung</strong>
+                @Html.DisplayFor(model => model.NoiDung, new { htmlAttributes = new { @class = "form-control w-100", @disabled = true } })
 
-            <dt>
-                @Html.DisplayNameFor(model => model.TacGia)
-            </dt>
 
-            <dd>
-                @Html.DisplayFor(model => model.TacGia)
-            </dd>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.AnhDaiDien)
-            </dt>
+                <dl class="dl-horizontal">
+                    <div class="form-group col-md-6">
+                        <strong>Ảnh đại diện</strong>
+                        @Html.EditorFor(model => model.AnhDaiDien, new { htmlAttributes = new { @class = "form-control w-100", @disabled = true } })
+                    </div>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.TrangThai)
+                    </dt>
 
-            <dd>
-                @Html.DisplayFor(model => model.AnhDaiDien)
-            </dd>
+                    <dd>
+                        @Html.DisplayFor(model => model.TrangThai)
+                    </dd>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.TinNoiBat)
-            </dt>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.LoaiTinTuc.TenLoaiTinTuc)
+                    </dt>
 
-            <dd>
-                @Html.DisplayFor(model => model.TinNoiBat)
-            </dd>
+                    <dd>
+                        @Html.DisplayFor(model => model.LoaiTinTuc.TenLoaiTinTuc)
+                    </dd>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.TrangThai)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.TrangThai)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.LoaiTinTuc.TenLoaiTinTuc)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.LoaiTinTuc.TenLoaiTinTuc)
-            </dd>
-
-        </dl>
+                </dl>
 </div>
 <p>
     @Html.ActionLink("Sửa", "Edit", new { id = Model.ID }) |

@@ -1,8 +1,7 @@
 ﻿﻿@model IEnumerable<GiaPha.Models.TinTuc>
 @{
-    ViewBag.Title = "Quản lý thành viên";
+    ViewBag.Title = "Tin tức";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var VoChongList = (List<GiaPha.Models.VoChong>)ViewBag.VoChongList;
     var danhSachTin = Model;
     var tinNoiBat = danhSachTin?.Where(x => x.TinNoiBat == true)?.OrderByDescending(x => x.ID)?.FirstOrDefault();
     var dsTinKhac = danhSachTin?.Where(x => x.ID != (tinNoiBat?.ID ?? 0));
