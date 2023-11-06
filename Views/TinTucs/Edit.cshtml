@@ -5,26 +5,26 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Tin tức</h2>
+<h2>Cập nhật tin tức</h2>
 
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
-        <h4>TinTuc</h4>
+
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.ID)
 
         @*<div class="form-group">
-            @Html.LabelFor(model => model.IdLoaiTinTuc, "IdLoaiTinTuc", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("IdLoaiTinTuc", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.IdLoaiTinTuc, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
+                @Html.LabelFor(model => model.IdLoaiTinTuc, "IdLoaiTinTuc", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("IdLoaiTinTuc", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.IdLoaiTinTuc, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
 
         <div class="form-group">
             <strong>Tiêu đề</strong>
@@ -59,14 +59,14 @@
         </div>
 
         @*<div class="form-group">
-            <strong>Loại tin</strong>
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.TinNoiBat)
-                    @Html.ValidationMessageFor(model => model.TinNoiBat, "", new { @class = "text-danger" })
+                <strong>Loại tin</strong>
+                <div class="col-md-10">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.TinNoiBat)
+                        @Html.ValidationMessageFor(model => model.TinNoiBat, "", new { @class = "text-danger" })
+                    </div>
                 </div>
-            </div>
-        </div>*@
+            </div>*@
 
         <div class="form-group">
             <strong>Trạng thái</strong>
@@ -77,17 +77,18 @@
         </div>
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Lưu" class="btn btn-default" />
-            </div>
+            
         </div>
     </div>
+    <div class="col-md-12 text-center">
+        <button type="submit" class="btn btn-primary"><i class="bi bi-floppy-fill"></i> Lưu</button>
+        <a class="btn btn-secondary" href="@Url.Action("/Index")">Quay lại</a>
+    </div>
+
 }
 
-<div>
-    @Html.ActionLink("Quay lại", "Index")
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+
