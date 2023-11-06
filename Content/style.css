@@ -628,6 +628,7 @@ body.bg-about{
 .carousel .carousel-caption {
     background-color: rgba(101, 70, 32, .75);
     padding: 5px;
+    backdrop-filter: blur(3px);
 }
 .carousel .carousel-item .carousel-image-wrapper {
     height: 600px;
@@ -636,6 +637,17 @@ body.bg-about{
     .carousel .carousel-item .carousel-image-wrapper img {
         max-height: 600px;
         width: auto;
+        z-index: 0;
+    }
+    .carousel .carousel-item .carousel-image-wrapper .carousel-image-backdrop {
+        background-size: cover;
+        filter: blur(90px);
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 0;
     }
 
 .image-card {
@@ -644,4 +656,15 @@ body.bg-about{
 }
 .image-card img {
     height: 160px;
+}
+
+a.nav-link.active {
+    font-weight: 700;
+    margin-left: -3px;
+    border-bottom: 3px solid var(--bs-green);
+}
+
+.page-bg {
+    background: url("img/page-bg.png");
+    background-size: cover;
 }

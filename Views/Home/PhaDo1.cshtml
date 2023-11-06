@@ -15,34 +15,14 @@
 </style>
 <main aria-labelledby="title">
 
-
     <link href="https://fonts.googleapis.com/css?family=Gochi+Hand" rel="stylesheet">
 
     <script src="~/Scripts/orgchart.js"></script>
 
-    <div id="tree" style="height:1000px;"></div>
+    <div id="tree" style="height:calc(100vh - 64px)"></div>
 </main>
 <script>
     window.onload = function () {
-        btnMinimize =
-            '<svg fill="#aeaeae" x="410" y="17" height="24" width="24" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"' +
-            'viewBox="0 0 485 485" style="enable-background:new 0 0 485 485;" xml:space="preserve">' +
-            '<path d="M0,0v485h485V0H0z M455,455H30V30h425V455z"/>' +
-            '<polygon points="311.683,349.411 205.12,242.5 311.683,135.589 290.435,114.411 162.762,242.5 290.435,370.589 	"/>' +
-            '</svg>';
-        btnMaximize =
-            '<svg fill="#aeaeae" x="198" y="47" height="24" width="24" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"' +
-            'viewBox="0 0 485 485" style="enable-background:new 0 0 485 485;" xml:space="preserve">' +
-            '<path d="M0,0v485h485V0H0z M455,455H30V30h425V455z"/>' +
-            '<polygon points="194.565,370.589 322.237,242.5 194.565,114.411 173.317,135.589 279.88,242.5 173.317,349.411 	"/>' +
-            '</svg>';
-        btnMinimize3 =
-            '<svg fill="#aeaeae" x="630" y="17" height="24" width="24" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"' +
-            'viewBox="0 0 485 485" style="enable-background:new 0 0 485 485;" xml:space="preserve">' +
-            '<path d="M0,0v485h485V0H0z M455,455H30V30h425V455z"/>' +
-            '<polygon points="311.683,349.411 205.12,242.5 311.683,135.589 290.435,114.411 162.762,242.5 290.435,370.589 	"/>' +
-            '</svg>';
-
         var nodes = [
                 @foreach (var item in allData)
                 {
@@ -54,9 +34,10 @@
                         x.ID != item.ID
                         && x.VoChong == item.PID
                     );
-                    var ppidString = ppItem != null ? $", ppid: {ppItem.ID}" : "";
+                    //var ppidString = ppItem != null ? $", ppid: {ppItem.ID}" : "";
+                    var ppidString = "";
                     // Render item
-                    var node = $"{{ id: {item.ID}, pid: \"{pid}\", \"Họ tên\": \"{item.HoTen}\", \"Ảnh\": \"{(item.Avt?.Length > 0 ? item.Avt : "/Content/img/avt.jpg")}\"{tags}{ppidString} }},\n";
+                    var node = $"{{ id: {item.ID}, pid: \"{pid}\", \"Họ tên\": \"{item.HoTen}\", \"Năm sinh - Năm mất\": \"{item.NamSinh} {(item.NamMat != null ? " - " + item.NamMat : "")}\", \"img\": \"{(item.Avt?.Length > 0 ? item.Avt : "/Content/img/avt.jpg")}\"{tags}{ppidString} }},\n";
                     @Html.Raw(node);
                     // Nếu dùng chung trường PID để xác định cả cha cả vợ chồng thì
                 }
@@ -65,10 +46,11 @@
         var chart = new OrgChart(document.getElementById("tree"), {
             template: "diva",
             enableDragDrop: true,
+            scaleInitial: OrgChart.match.width,
             nodeBinding: {
                 field_0: "Họ tên",
-                field_1: "pid",
-                img_0: "Ảnh",
+                field_1: "Năm sinh - Năm mất",
+                img_0: "img",
             },
         });
 
@@ -100,3 +82,26 @@
 
     };
 </script>
+
+<style>
+    [data-n-id] rect {
+        fill: #016e25;
+    }
+    [data-n-id] circle {
+        stroke: #016e25;
+    }
+    #tree > svg {
+        background-color: #d9aa7166;
+        background-image: url(/Content/img/page-bg.png);
+        background-size: cover;
+    }
+    [data-l-id] path {
+        stroke: #000;
+        stroke-width: 3px;
+    }
+    .boc-edit-form-header,
+    .boc-img-button,
+    .boc-button {
+        background-color: #016e25 !important;
+    }
+</style>

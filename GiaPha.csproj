@@ -266,6 +266,7 @@
     <Content Include="Content\img\logo.png" />
     <Content Include="Content\img\main_bg.jpg" />
     <Content Include="Content\img\nhatho.png" />
+    <Content Include="Content\img\page-bg.png" />
     <Content Include="Content\img\tab-bg-long-active.png" />
     <Content Include="Content\img\tab-bg-long.png" />
     <Content Include="Content\style.css" />

@@ -14,7 +14,7 @@
                 <div class="tab-page-long active"><a href"">Thư viện ảnh</a></div>
                 @if (currentUser != null)
                 {
-                    <a href="/Anhs/QuanLy" class="btn btn-primary my-2"><i class="bi bi-card-list"></i> Quản lý thư viện</a>
+                    <a href="/Anhs/QuanLy" class="btn btn-dark my-2"><i class="bi bi-card-list"></i> Quản lý thư viện</a>
                 }
             </div>
 
@@ -34,9 +34,10 @@
                 <div class="carousel-inner">
                     @foreach (var item in dataList)
                     {
-                        <div class="carousel-item @(dataList.IndexOf(item) == 0 ? "active" : "")" data-bs-interval="10000">
-                            <div class="carousel-image-wrapper w-100 d-flex justify-content-center align-items-center">
-                                <img src="@(item.DuongDan)" class="d-block" alt="@(item.TieuDe)">
+                        <div class="carousel-item @(dataList.IndexOf(item) == 0 ? "active" : "")" data-bs-interval="5000">
+                            <div class="carousel-image-wrapper w-100 d-flex justify-content-center align-items-center position-relative">
+                                <div class="d-block carousel-image-backdrop" style="background: no-repeat center url(@(item.DuongDan)); background-size: cover; filter: blur(90px); height: 100%; width: 100%; position: absolute; top: 0; left: 0; z-index: 0"></div>
+                                <img class="d-block carousel-image-display" src="@(item.DuongDan)" alt="@(item.TieuDe)">
                             </div>
                             <div class="carousel-caption d-none d-md-block">
                                 <h5 class="m-1">@(item.TieuDe)</h5>
