@@ -3,7 +3,7 @@
     var currentUri = HttpContext.Current.Request.Url.AbsoluteUri ?? HttpContext.Current.Request.Url.Scheme + HttpContext.Current.Request.Url.Host + HttpContext.Current.Request.Path ?? "";
     string activeClass(string target)
     {
-        return currentUri.Contains(target) ? " active" : "";
+        return currentUri.ToLower().Contains(target.ToLower()) ? " active" : "";
     }
 }
 <!DOCTYPE html>
@@ -29,20 +29,24 @@
                 <ul class="navbar-nav flex-grow-1">
                     @if (currentUser != null)
                     {
-                        <li>@Html.ActionLink("Quản lý thành viên", "Index", "ThanhViens", new { area = "" }, new { @class = "nav-link" + activeClass("ThanhViens") })</li>
+                        <li>@Html.ActionLink("Quản lý thành viên", "Index", "ThanhViens", new { area = "" }, new { @class = "nav-link" + activeClass("/ThanhViens") })</li>
                     }
                     @*<li>@Html.ActionLink("Phả đồ v1", "PhaDo", "Home", new { area = "" }, new { @class = "nav-link" })</li>*@
-                    <li>@Html.ActionLink("Tin tức", "Index", "TinTucs", new { area = "" }, new { @class = "nav-link" + activeClass("TinTucs") })</li>
-                    <li>@Html.ActionLink("Phả ký", "Index", "PhaKys", new { area = "" }, new { @class = "nav-link" + activeClass("PhaKys") })</li>
-                    <li>@Html.ActionLink("Tộc ước", "Index", "TocUocs", new { area = "" }, new { @class = "nav-link" + activeClass("TocUocs") })</li>
-                    <li>@Html.ActionLink("Thư viện ảnh", "Index", "Anhs", new { area = "" }, new { @class = "nav-link" + activeClass("Anhs") })</li>
-                    <li>@Html.ActionLink("Phả đồ", "PhaDo1", "Home", new { area = "" }, new { @class = "nav-link" + activeClass("PhaDo") })</li>
+                    <li>@Html.ActionLink("Tin tức", "Index", "TinTucs", new { area = "" }, new { @class = "nav-link" + activeClass("/TinTucs") })</li>
+                    <li>@Html.ActionLink("Phả ký", "Index", "PhaKys", new { area = "" }, new { @class = "nav-link" + activeClass("/PhaKys") })</li>
+                    <li>@Html.ActionLink("Tộc ước", "TocUoc", "Home", new { area = "" }, new { @class = "nav-link" + activeClass("/TocUoc") })</li>
+                    <li>@Html.ActionLink("Thư viện ảnh", "Index", "Anhs", new { area = "" }, new { @class = "nav-link" + activeClass("/Anhs") })</li>
+                    <li>@Html.ActionLink("Phả đồ", "PhaDo1", "Home", new { area = "" }, new { @class = "nav-link" + activeClass("/PhaDo") })</li>
                 </ul>
                 <ul class="navbar-nav justify-content-end">
                     @if (currentUser != null)
                     {
                         <li><span class="nav-link fw-bold"><i class="bi bi-person-circle"></i> @currentUser.UserName</span></li>
-                        <li>@Html.ActionLink("[Đăng xuất]", "Logout", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                        <li><a href="@Url.Action("Logout", "Home")" class="nav-link"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a></li>
+                    }
+                    else
+                    {
+                        <li><a href="@Url.Action("Login", "Home")" class="nav-link"><i class="bi bi-box-arrow-in-right"></i> Đăng nhập</a></li>
                     }
                 </ul>
             </div>
@@ -50,27 +54,34 @@
     </nav>
     @Scripts.Render("~/bundles/jquery")
     <div class="container body-content">
-        @RenderBody()<footer class="footer">
-            <div class="container">
-                <div class="row" style="padding-top: 5px;">
+        @RenderBody()
+        <footer class="footer mt-3">
+            <div class="container py-5">
+                <div class="row">
                     <div class="col-md-2"><img src="~/Content/img/logo-footer.png" width="150"></div>
                     <div class="col-md-5">
-                        <p class="footer-title">HỌ TRẦN</p>
-                        <p class="footer-text"><b>Địa chỉ:</b> Xã </p>
-                        <p class="footer-text"><b>Trưởng tộc:</b>- <b>Điện thoại:</b></p>
-                        <p class="footer-text"><b>Quản lý website:</b>  - <b>Điện thoại:</b> </p>
+                        <p class="footer-title fs-5">GIA PHẢ SỐ</p>
+                        <p class="footer-text fs-6"><b>DÒNG HỌ GIÀNG</b></p>
+                        <p class="footer-text"><b>- Địa chỉ:</b> Xã Suối Giàng - Huyện Văn Chấn - Tỉnh Yên Bái </p>
+                        <p class="footer-text"><b>- Trưởng tộc:</b> Giàng A Trưởng  - <b>Điện thoại:</b> 0123 45 78</p>
+                        <p class="footer-text"><b>- Quản lý website:</b> Giàng A Quản - <b>Điện thoại:</b>  0123 45 78</p>
                     </div>
                     <div class="col-md-5">
                         <div class="row">
                             <div class="col-md-6">
                                 <ul>
-                                    <li><a href="/TinTucs" target="_self">Tin tức</a></li>
-                                    <li><a href="/PhaKys" target="_self">Phả ký</a></li>
-                                    <li><a href="/TocUocs" target="_self">Tộc ước</a></li>
-                                    <li><a href="/Anhs" target="_self">Ảnh</a></li>
+                                    <li><a href="/TinTucs" target="_self"><i class="bi bi-caret-right-fill"></i> Tin tức</a></li>
+                                    <li><a href="/PhaKys" target="_self"><i class="bi bi-caret-right-fill"></i> Phả ký</a></li>
+                                    <li><a href="/Home/TocUoc" target="_self"><i class="bi bi-caret-right-fill"></i> Tộc ước</a></li>
                                 </ul>
                             </div>
-
+                            <div class="col-md-6">
+                                <ul>
+                                    <li><a href="/Home/PhaDo1" target="_self"><i class="bi bi-caret-right-fill"></i> Phả đồ</a></li>
+                                    <li><a href="/Anhs" target="_self"><i class="bi bi-caret-right-fill"></i> Ảnh</a></li>
+                                    <li><a href="javascript:alert('Đang xây dựng');" target="_self"><i class="bi bi-caret-right-fill"></i> Video</a></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -78,7 +89,7 @@
         </footer>
         <hr />
         <footer>
-            <p class="copyright">&copy; @DateTime.Now.Year - Phát triển bởi <a class="text-success" href="https://yenbai.net.vn">Trung tâm Chuyển đổi số tỉnh Yên Bái</a></p>
+            <p class="copyright my-2">&copy; @DateTime.Now.Year - Phát triển bởi <a class="text-success" target="_blank" href="https://yenbai.net.vn">Trung tâm Chuyển đổi số tỉnh Yên Bái</a></p>
         </footer>
     </div>
     @Scripts.Render("~/bundles/bootstrap")

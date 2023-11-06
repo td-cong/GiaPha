@@ -21,9 +21,16 @@ namespace GiaPha.Controllers
             return View(tinTucs.ToList());
         }
 
+        public ActionResult DanhSach()
+        {
+            var tinTucs = db.TinTucs.Include(t => t.LoaiTinTuc);
+            return View(tinTucs.ToList());
+        }
+
         // GET: TinTucs
         public ActionResult QuanLy()
         {
+            if (Session["User"] == null) return RedirectToAction("Login", "Home");
             var tinTucs = db.TinTucs.Include(t => t.LoaiTinTuc);
             return View(tinTucs.ToList());
         }

@@ -16,11 +16,12 @@ namespace GiaPha.Controllers
 
         public ActionResult Index()
         {
-            if (Session["User"] != null)
-                return View();
-            else
-                return RedirectToAction("Login");
+            return View();
+        }
 
+        public ActionResult TocUoc()
+        {
+            return View();
         }
 
         public ActionResult PhaDo()

@@ -14,12 +14,20 @@
     }
 </style>
 <main aria-labelledby="title">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12" align="center" style="margin-top:20px; margin-bottom:5px"><div class="tab-page-long active"><a href"">Phả đồ</a></div></div>
+        </div>
+        <div class="row">
+            <link href="https://fonts.googleapis.com/css?family=Gochi+Hand" rel="stylesheet">
 
-    <link href="https://fonts.googleapis.com/css?family=Gochi+Hand" rel="stylesheet">
+            <script src="~/Scripts/orgchart.js"></script>
 
-    <script src="~/Scripts/orgchart.js"></script>
-
-    <div id="tree" style="height:calc(100vh - 64px)"></div>
+            <div class="col-md-12">
+                <div id="tree" style="height:calc(100vh - 160px)"></div>
+            </div>
+        </div>
+    </div>
 </main>
 <script>
     window.onload = function () {
@@ -93,7 +101,7 @@
     #tree > svg {
         background-color: #d9aa7166;
         background-image: url(/Content/img/page-bg.png);
-        background-size: cover;
+        background-size: 100% 100%;
     }
     [data-l-id] path {
         stroke: #000;

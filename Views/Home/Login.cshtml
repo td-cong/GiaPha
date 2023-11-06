@@ -5,8 +5,10 @@
 <div id="login">
     <div class="container my-3">
         <div class="row justify-content-center">
-            <div class="login-container bg-white col-md-4 col-sm-10 col-xs-12 col-12 ml-auto mr-auto p-4 border rounded shadow-sm">
-                <h3 class="text-center">ĐĂNG NHẬP</h3>
+            <div class="login-container col-md-4 col-sm-10 col-xs-12 col-12 ml-auto mr-auto p-4 my-5 rounded shadow-sm page-bg">
+                <h4 class="text-center">ĐĂNG NHẬP</h4>
+                <h3 class="text-center fw-bolder">GIA PHẢ SỐ</h3>
+                <hr />
                 @using (Html.BeginForm())
                 {
                     @Html.AntiForgeryToken()
@@ -19,10 +21,10 @@
                         <input type="password" name="Password" id="Password" class="form-control" value="admin@123">
                     </div>
                     <div class="form-group my-2">
-                        <label class="fw-bold" for="remember-me"><span>Lưu tên đăng nhập</span> <span><input id="remember-me" name="remember-me" type="checkbox"></span></label><br>
+                        <label class="fw-bold" for="remember-me"><span>Lưu tên đăng nhập</span> <span><input id="remember-me" name="remember-me" type="checkbox" checked></span></label><br>
                     </div>
                     <div class="form-group my-2">
-                        <button type="submit" class="btn btn-primary btn-md"><i class="bi bi-key-fill"></i> Đăng nhập</button>
+                        <button type="submit" class="btn btn-primary btn-md shadow-sm"><i class="bi bi-key-fill"></i> Đăng nhập</button>
                     </div>
                     if (ViewBag.ThongBao != null && ViewBag.ThongBao.Length > 0)
                     {

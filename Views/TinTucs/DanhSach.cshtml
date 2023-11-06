@@ -1,0 +1,38 @@
+﻿﻿@model IEnumerable<GiaPha.Models.TinTuc>
+@{
+    ViewBag.Title = "Tin tức";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var danhSachTin = Model;
+    var currentUser = (GiaPha.Controllers.HomeController.TaiKhoan)Session["User"];
+}
+
+
+<div class="container">
+    <div class="row">
+        @if (currentUser != null)
+        {
+            <div class="col-md-12" align="center" style="margin-top:20px; margin-bottom:20px">
+                <a href="/TinTucs/QuanLy" class="btn btn-dark my-2"><i class="bi bi-card-list"></i> Quản lý tin tức</a>
+            </div>
+        }
+        <div class="col-md-12" align="center" style="margin-top:20px; margin-bottom:20px"><div class="tab-page-long active"><a href="/tintucs/danhsach">Tin tức dòng họ</a></div></div>
+        <div class="col-md-12">
+            @foreach (var item in danhSachTin)
+            {
+                <div class="row page-bg p-3 mb-2">
+                    <div class="col-md-5">
+                        <img class="card-img-top" src="@Html.Raw(item.AnhDaiDien)" style="width: 100%; height: auto;">
+                    </div>
+                    <div class="col-md-7 text-dark">
+                        <div class="title-content">
+                            <a class="h5 text-decoration-none" href="/tintucs/details/@(item.ID)">@Html.Raw(item.TieuDe)</a>
+                        </div>
+                        <div class="title-content" style="max-height: 400px; overflow: auto;">
+                            @Html.Raw(item.NoiDung)
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

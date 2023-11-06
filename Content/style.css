@@ -165,8 +165,8 @@ body.bg-about{
   text-decoration: none;
 }
 .footer{
-  min-height: 220px;
-  background: url("img/bg_footer.png") #ab7c2c repeat-x;
+  min-height: 200px;
+  background: url("img/bg_footer.png") #ab7c2cee repeat-x;
   background-position: bottom;
 }
 .footer-title{
@@ -667,4 +667,5 @@ a.nav-link.active {
 .page-bg {
     background: url("img/page-bg.png");
     background-size: cover;
+    background-size: 100% 100%;
 }

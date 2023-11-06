@@ -23,7 +23,7 @@ namespace GiaPha.Controllers
         // GET: Anhs
         public ActionResult QuanLy()
         {
-            if (Session["User"] == null) return RedirectToAction("Index");
+            if (Session["User"] == null) return RedirectToAction("Login", "Home");
             return View(db.Anhs.ToList());
         }
 

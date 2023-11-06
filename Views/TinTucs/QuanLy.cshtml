@@ -10,49 +10,49 @@
 <p>
     @Html.ActionLink("+ Thêm mới", "Create", null, new { @class = "btn btn-success" })
 </p>
-<table class="table">
-   
+<table id="table" class="table table-bordered table-light table-striped table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th>Ảnh đại diện</th>
+            <th style="min-width: 150px">Tiêu đề</th>
+            <th>Loại tin</th>
+            <th>Trạng thái</th>
+            <th>Tin nổi bật</th>
+            <th style="min-width: 120px"></th>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
 
-  
-
-
-    <table id="table" class="table table-bordered table-light table-striped table-hover">
-        <thead class="thead-dark">
-            <tr>
-                <th>Ảnh đại diện</th>
-                <th style="min-width: 150px">Tiêu đề</th>
-                <th>Loại tin</th>
-                <th>Trạng thái</th>
-                <th style="min-width: 120px"></th>
-            </tr>
-        </thead>
-        @foreach (var item in Model)
-        {
-           
-            <tr>
-                <td>
-                    @if (item.AnhDaiDien != null && item.AnhDaiDien.Length > 0)
-                    {
-                        <img src="@(item.AnhDaiDien)" width="28" loading="lazy" />
-                    }
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TieuDe)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LoaiTinTuc)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TrangThai)
-                </td>
-                <td>
-                    @Html.ActionLink("Sửa", "Edit", new { id = item.ID }) |
-                    @Html.ActionLink("Chi tiết", "Details", new { id = item.ID }) |
-                    @Html.ActionLink("Xoá", "Delete", new { id = item.ID })
-                </td>
-            </tr>
-        }
-    </table>
+        <tr>
+            <td>
+                @if (item.AnhDaiDien != null && item.AnhDaiDien.Length > 0)
+                {
+                    <img src="@(item.AnhDaiDien)" width="28" loading="lazy" />
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TieuDe)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LoaiTinTuc)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TrangThai)
+            </td>
+            <td>
+               @if(item.TinNoiBat == true) {
+                <i class="bi bi-check-circle-fill text-success"></i>
+               }
+            </td>
+            <td>
+                @Html.ActionLink("Sửa", "Edit", new { id = item.ID }) |
+                @Html.ActionLink("Chi tiết", "Details", new { id = item.ID }) |
+                @Html.ActionLink("Xoá", "Delete", new { id = item.ID })
+            </td>
+        </tr>
+    }
+</table>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 <script>

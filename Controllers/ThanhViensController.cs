@@ -20,6 +20,7 @@ namespace GiaPha.Controllers
         // GET: ThanhViens
         public ActionResult Index()
         {
+            if (Session["User"] == null) return RedirectToAction("Login", "Home");
             ViewBag.VoChongList = db.VoChongs.AsNoTracking().ToList();
             return View(db.ThanhViens.ToList());
         }
