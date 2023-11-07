@@ -30,28 +30,31 @@
 
 
 
-                <dl class="dl-horizontal">
-                    <div class="form-group col-md-6">
-                        <strong>Ảnh đại diện</strong>
-                        @Html.EditorFor(model => model.AnhDaiDien, new { htmlAttributes = new { @class = "form-control w-100", @disabled = true } })
+            <dl class="dl-horizontal">
+                <div class="form-group col-md-6">
+                    <strong>Ảnh đại diện</strong>
+                    @Html.EditorFor(model => model.AnhDaiDien, new { htmlAttributes = new { @class = "form-control w-100", @disabled = true } })
+                </div>
+
+                <div class="form-group">
+                    <strong>Loại tin</strong>
+                    <div class="col-md-10">
+                        <div class="checkbox">
+                            @Html.EditorFor(model => model.TinNoiBat)
+                            @Html.ValidationMessageFor(model => model.TinNoiBat, "", new { @class = "text-danger" })
+                        </div>
                     </div>
-                    <dt>
-                        @Html.DisplayNameFor(model => model.TrangThai)
-                    </dt>
+                </div>
 
-                    <dd>
-                        @Html.DisplayFor(model => model.TrangThai)
-                    </dd>
+                <div class="form-group">
+                    <strong>Trạng thái</strong>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.TrangThai, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.TrangThai, "", new { @class = "text-danger" })
+                    </div>
+                </div>
 
-                    <dt>
-                        @Html.DisplayNameFor(model => model.LoaiTinTuc.TenLoaiTinTuc)
-                    </dt>
-
-                    <dd>
-                        @Html.DisplayFor(model => model.LoaiTinTuc.TenLoaiTinTuc)
-                    </dd>
-
-                </dl>
+            </dl>
 </div>
 <p>
     @Html.ActionLink("Sửa", "Edit", new { id = Model.ID }) |

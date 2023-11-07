@@ -22,6 +22,7 @@ namespace GiaPha.Models
         public string AnhDaiDien { get; set; }
         public Nullable<bool> TinNoiBat { get; set; }
         public string TrangThai { get; set; }
+        public string TomTat { get; set; }
     
         public virtual LoaiTinTuc LoaiTinTuc { get; set; }
     }

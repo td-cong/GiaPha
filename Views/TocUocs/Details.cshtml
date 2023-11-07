@@ -1,0 +1,54 @@
+﻿@model GiaPha.Models.TinTuc
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Thông tin chi tiết tin tức</h2>
+
+<div>
+
+
+    <hr />
+    <dl class="dl-horizontal">
+        <div class="form-group col-md-6">
+            <strong>Ảnh đại diện</strong>
+            @Html.EditorFor(model => model.AnhDaiDien, new { htmlAttributes = new { @class = "form-control w-100", @disabled = true } })
+        </div>
+        <dl class="dl-horizontal">
+            <div class="form-group col-md-6">
+                <strong>Tiêu đề</strong>
+                @Html.EditorFor(model => model.TieuDe, new { htmlAttributes = new { @class = "form-control w-100", @disabled = true } })
+            </div>
+
+
+            <dl class="dl-horizontal">
+
+                <strong>Nội dung</strong>
+                @Html.DisplayFor(model => model.NoiDung, new { htmlAttributes = new { @class = "form-control w-100", @disabled = true } })
+
+
+
+                <dl class="dl-horizontal">
+
+                    <div class="form-group col-md-6">
+                        <strong>Trạng thái</strong>
+                        @Html.EditorFor(model => model.TrangThai, new { htmlAttributes = new { @class = "form-control w-100", @disabled = true } })
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <strong>Loại tin tức</strong>
+                        @Html.EditorFor(model => model.LoaiTinTuc, new { htmlAttributes = new { @class = "form-control w-100", @disabled = true } })
+                    </div>
+
+                </dl>
+</div>
+<p>
+    <div class="form-group my-3">
+        <div class="col-md-12 text-center">
+            <a class="btn btn-outline-primary" href="@Url.Action("Edit", new { id = Model.ID })"><i class="bi bi-pencil-square"></i> Sửa</a>
+            <a class="btn btn-secondary" href="@Url.Action("Index")">Quay lại danh sách</a>
+        </div>
+    </div>
+</p>

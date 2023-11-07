@@ -1,0 +1,71 @@
+﻿﻿@model IEnumerable<GiaPha.Models.TocUoc>
+@{
+    ViewBag.Title = "Tộc ước";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var danhSachTin = Model;
+    var tinNoiBat = danhSachTin?.Where(x => x.TinNoiBat == true)?.OrderByDescending(x => x.ID)?.FirstOrDefault();
+    var dsTinKhac = danhSachTin?.Where(x => x.ID != (tinNoiBat?.ID ?? 0));
+}
+
+
+<div class="container">
+    <div class="row" style="margin-top:50px">
+        <div class="col-md-5">
+            <div class="card"><img class="card-img-top" src="@Html.Raw(tinNoiBat.AnhDaiDien)" style="width: 100%; height: auto;"></div>
+        </div>
+        <div class="col-md-7">
+            <div class="title-content">
+                <a class="h5 text-decoration-none" href="/tintucs/detail/@(tinNoiBat.ID)">@Html.Raw(tinNoiBat.TieuDe)</a>
+            </div>
+            <div class="title-content">
+                @Html.Raw(tinNoiBat.NoiDung)
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="col-md-12" align="center" style="margin-top:20px; margin-bottom:20px"><div class="tab-page-long active"><a href="/?gpdh=1&amp;Tin-tuc-dong-ho.html">Tin tức dòng họ</a></div></div>
+    <div class="col-md-12">
+        <div class="row">
+            @foreach (var item in dsTinKhac)
+            {
+                <div class="col-md-4">
+                    <div class="card bg-transparent border-0">
+                        <a href="/tintucs/detail/@(item.ID)"><img src="@(item.AnhDaiDien)" alt="@(item.TieuDe)" class="card-img-top card-img-top_home"></a>
+                        <div class="card-body" style="height: 310px; overflow: hidden;">
+                            <h5 class="card-title"><a href="/tintucs/detail/@(item.ID)"> @item.TieuDe</a></h5>
+                            <p class="card-text">@(item.NoiDung)</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <div class="row" style="padding-top: 5px;">
+            <div class="col-md-2"><img src="~/Content/img/logo-footer.png" width="150px"></div>
+            <div class="col-md-5">
+                <p class="footer-title">HỌ GIÀNG</p>
+                <p class="footer-text"><b>Địa chỉ:</b> Xã </p>
+                <p class="footer-text"><b>Trưởng tộc:</b>- <b>Điện thoại:</b></p>
+                <p class="footer-text"><b>Quản lý website:</b>  - <b>Điện thoại:</b> </p>
+            </div>
+            <div class="col-md-5">
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul>
+                            <li><a href="/?gpdh=1&amp;Tin-tuc-dong-ho.html" target="_self">Tin tức</a></li>
+                            <li><a href="/?gpdh=2&amp;Pha-ky-dong-ho.html" target="_self">Phả ký</a></li>
+                            <li><a href="/?gpdh=3&amp;Toc-uoc-dong-ho.html" target="_self">Tộc ước</a></li>
+                            <li><a href="/?gpdh=8&amp;Video-dong-ho.html" target="_self">Video</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>

@@ -57,6 +57,7 @@
           <Property Name="AnhDaiDien" Type="nvarchar(max)" />
           <Property Name="TinNoiBat" Type="bit" />
           <Property Name="TrangThai" Type="nvarchar" MaxLength="10" />
+          <Property Name="TomTat" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="TocUoc">
           <Key>
@@ -200,6 +201,7 @@
           <Property Name="AnhDaiDien" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="TinNoiBat" Type="Boolean" />
           <Property Name="TrangThai" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="TomTat" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="LoaiTinTuc" Relationship="GiaPhaModel.FK_TinTuc_TinTuc" FromRole="TinTuc" ToRole="LoaiTinTuc" />
         </EntityType>
         <EntityType Name="TocUoc">
@@ -304,6 +306,7 @@
           <EntitySetMapping Name="TinTucs">
             <EntityTypeMapping TypeName="GiaPhaModel.TinTuc">
               <MappingFragment StoreEntitySet="TinTuc">
+                <ScalarProperty Name="TomTat" ColumnName="TomTat" />
                 <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
                 <ScalarProperty Name="TinNoiBat" ColumnName="TinNoiBat" />
                 <ScalarProperty Name="AnhDaiDien" ColumnName="AnhDaiDien" />
