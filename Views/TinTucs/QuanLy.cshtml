@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<GiaPha.Models.TinTuc>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Quản lý tin";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -15,6 +15,7 @@
         <tr>
             <th>Ảnh đại diện</th>
             <th style="min-width: 150px">Tiêu đề</th>
+            <th>Mô tả (Tóm tắt)</th>
             <th>Loại tin</th>
             <th>Trạng thái</th>
             <th>Tin nổi bật</th>
@@ -35,15 +36,19 @@
                 @Html.DisplayFor(modelItem => item.TieuDe)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.TomTat)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.LoaiTinTuc)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TrangThai)
             </td>
             <td>
-               @if(item.TinNoiBat == true) {
-                <i class="bi bi-check-circle-fill text-success"></i>
-               }
+                @if (item.TinNoiBat == true)
+                {
+                    <i class="bi bi-check-circle-fill text-success"></i>
+                }
             </td>
             <td>
                 @Html.ActionLink("Sửa", "Edit", new { id = item.ID }) |

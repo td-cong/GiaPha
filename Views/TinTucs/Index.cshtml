@@ -27,7 +27,7 @@
                 <a class="h5 text-decoration-none" href="/tintucs/details/@(tinNoiBat.ID)">@Html.Raw(tinNoiBat.TieuDe)</a>
             </div>
             <div class="title-content" style="max-height: 400px; overflow: auto;">
-                @Html.Raw(tinNoiBat.NoiDung)
+                @Html.Raw(tinNoiBat.TomTat)
             </div>
         </div>
     </div>
@@ -48,7 +48,7 @@
                         <div class="card-body pb-2 border-0">
                             <h5 class="card-title"><a href="/tintucs/details/@(item.ID)"> @item.TieuDe</a></h5>
                             <p class="card-text" style="height: 310px; overflow: auto;">
-                                @(item.NoiDung)
+                                @(item.TomTat)
                             </p>
                         </div>
                     </div>

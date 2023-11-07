@@ -62,7 +62,7 @@ namespace GiaPha.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,IdLoaiTinTuc,TieuDe,NoiDung,TacGia,AnhDaiDien,TinNoiBat,TrangThai")] TinTuc tinTuc)
+        public ActionResult Create([Bind(Include = "ID,IdLoaiTinTuc,TieuDe,TomTat,NoiDung,TacGia,AnhDaiDien,TinNoiBat,TrangThai")] TinTuc tinTuc)
         {
             if (ModelState.IsValid)
             {
@@ -96,7 +96,7 @@ namespace GiaPha.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,IdLoaiTinTuc,TieuDe,NoiDung,TacGia,AnhDaiDien,TinNoiBat,TrangThai")] TinTuc tinTuc)
+        public ActionResult Edit([Bind(Include = "ID,IdLoaiTinTuc,TieuDe,TomTat,NoiDung,TacGia,AnhDaiDien,TinNoiBat,TrangThai")] TinTuc tinTuc)
         {
             if (ModelState.IsValid)
             {

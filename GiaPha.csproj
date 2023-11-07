@@ -731,6 +731,7 @@
     <Content Include="Views\Anhs\QuanLy.cshtml" />
     <Content Include="Views\Home\TocUoc.cshtml" />
     <Content Include="Views\TinTucs\DanhSach.cshtml" />
+    <Content Include="Views\TinTucs\TomTat.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
