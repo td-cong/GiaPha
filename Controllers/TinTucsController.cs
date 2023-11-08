@@ -62,11 +62,23 @@ namespace GiaPha.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,IdLoaiTinTuc,TieuDe,TomTat,NoiDung,TacGia,AnhDaiDien,TinNoiBat,TrangThai")] TinTuc tinTuc)
+        public ActionResult Create([Bind(Include = "ID,IdLoaiTinTuc,TieuDe,TomTat,NoiDung,TacGia,AnhDaiDien,TinNoiBat,TrangThai")] TinTuc tinTuc, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
                 db.TinTucs.Add(tinTuc);
+                db.SaveChanges();
+                if (file != null)
+                {
+                    // Xử lý tên file tránh trường hợp tên file có chứa ký tự gây lỗi
+                    string fileName = Common.XuLyTenFile(file);
+                    var folderPath = $"\\Files\\TinTuc\\{tinTuc.ID}\\";
+                    // Gọi hàm lưu file
+                    Common.LuuFile(file, fileName, folderPath, true);
+                    // Lưu vị trí file vào trường AnhDaiDien
+                    tinTuc.AnhDaiDien = (folderPath + fileName).Replace("\\", "/");
+                }
+                db.Entry(tinTuc).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -96,10 +108,20 @@ namespace GiaPha.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,IdLoaiTinTuc,TieuDe,TomTat,NoiDung,TacGia,AnhDaiDien,TinNoiBat,TrangThai")] TinTuc tinTuc)
+        public ActionResult Edit([Bind(Include = "ID,IdLoaiTinTuc,TieuDe,TomTat,NoiDung,TacGia,AnhDaiDien,TinNoiBat,TrangThai")] TinTuc tinTuc, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
+                if (file != null)
+                {
+                    // Xử lý tên file tránh trường hợp tên file có chứa ký tự gây lỗi
+                    string fileName = Common.XuLyTenFile(file);
+                    var folderPath = $"\\Files\\TinTuc\\{tinTuc.ID}\\";
+                    // Gọi hàm lưu file
+                    Common.LuuFile(file, fileName, folderPath, true);
+                    // Lưu vị trí file vào trường AnhDaiDien
+                    tinTuc.AnhDaiDien = (folderPath + fileName).Replace("\\", "/");
+                }
                 db.Entry(tinTuc).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
