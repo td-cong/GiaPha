@@ -1,62 +1,20 @@
 ﻿@model GiaPha.Models.TinTuc
 
 @{
-    ViewBag.Title = "Chi tiết";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var tinTuc = Model;
+    ViewBag.Title = tinTuc.TieuDe ?? "Xem tin tức";
 }
 
-<h2>Thông tin chi tiết tin tức</h2>
-
-<div>
-
-
-    <hr />
-    <dl class="dl-horizontal">
-        <div class="form-group">
-            <strong>Ảnh đại diện</strong>
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.AnhDaiDien, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.AnhDaiDien, "", new { @class = "text-danger" })
-            </div>
-        </div>
-       
-            <dl class="dl-horizontal">
-                <strong>Tiêu đề</strong>
-                    <div class="col-md-10">
-                        @Html.DisplayFor(model => model.TieuDe, new { htmlAttributes = new { @class = "form-control w-100", @disabled = true } })
-                    </div>
-</dl>
-            <dl class="dl-horizontal">
-                <strong>Mô tả (Tóm tắt)</strong>
-                <div class="col-md-10">
-                    @Html.DisplayFor(model => model.TomTat, new { htmlAttributes = new { @class = "form-control w-100", @disabled = true } })
-                </div>
-            </dl>
-
-            <dl class="dl-horizontal">
-                <strong>Loại tin</strong>
-                <div class="col-md-10">
-                    @Html.DisplayFor(model => model.TinNoiBat, new { htmlAttributes = new { @class = "form-control w-100", @disabled = true } })
-                </div>
-
-            </dl>
-            <dl class="dl-horizontal">
-
-                <strong>Trạng thái</strong>
-                <div class="col-md-10">
-                    @Html.DisplayFor(model => model.TrangThai, new { htmlAttributes = new { @class = "form-control w-100", @disabled = true } })
-                </div>
-            </dl>
-            <dl class="dl-horizontal">
-
-                <dl class="dl-horizontal">
-                    <strong>Nội dung</strong>
-                    <div class="col-md-10">
-                        @Html.DisplayFor(model => model.NoiDung, new { htmlAttributes = new { @class = "form-control w-100", @disabled = true } })
-                    </div>
-                </dl>
+<div class="my-2">
+    <a class="btn btn-sm btn-dark" href="javascript: history.back();"><i class="bi bi-arrow-left"></i> Quay lại</a>
 </div>
-<p>
-    @*@Html.ActionLink("Sửa", "Edit", new { id = Model.ID }) |*@
-    @Html.ActionLink("Quay lại", "Index")
-</p>
+@if (tinTuc != null)
+{
+    <div class="my-2">
+        <h4 class="my-3"><i class="bi bi-newspaper"></i> @(tinTuc.TieuDe)</h4>
+        <hr />
+        <div class="tin-tuc-summary fw-bold my-2 fst-italic">@Html.Raw(tinTuc.TomTat)</div>
+        <div class="tin-tuc-desc my-2">@Html.Raw(tinTuc.NoiDung)</div>
+    </div>
+}
