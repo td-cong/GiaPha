@@ -5,7 +5,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Cập nhật tin tức</h2>
 
 
 @using (Html.BeginForm("Edit", "TinTucs", FormMethod.Post, new { enctype = "multipart/form-data" }))
@@ -43,6 +42,7 @@
         </div>
         <div class="form-group">
             <strong> Mô tả (Tóm tắt)</strong>
+
             <div class="col-md-10">
                 @Html.EditorFor(model => model.TomTat, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.TomTat, "", new { @class = "text-danger" })
@@ -100,19 +100,18 @@
                 min-height: 500px;
             }
         </style>
-        <div class="form-group">
-
-        </div>
+        
     </div>
+    <br />
     <div class="col-md-12 text-center">
         <button type="submit" class="btn btn-primary"><i class="bi bi-floppy-fill"></i> Lưu</button>
         <a class="btn btn-secondary" href="@Url.Action("/Index")">Quay lại</a>
     </div>
 
-}
+
 
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
-
+}

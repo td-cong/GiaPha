@@ -5,42 +5,48 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Tin tức</h2>
 
 
-@using (Html.BeginForm()) 
+
+@using (Html.BeginForm("Create", "TinTucs", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>TinTuc</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @*<div class="form-group">
+
+<div class="form-horizontal">
+
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @*<div class="form-group">
             @Html.LabelFor(model => model.IdLoaiTinTuc, "IdLoaiTinTuc", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("IdLoaiTinTuc", null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.IdLoaiTinTuc, "", new { @class = "text-danger" })
             </div>
         </div>*@
+    <div class="form-group">
 
-        <div class="form-group">
-            <strong>Tiêu đề</strong>
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.TieuDe, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.TieuDe, "", new { @class = "text-danger" })
-            </div>
+        <strong>Ảnh đại diện</strong>
+        <div class="col-md-10">
+            <input type="file" id="file" name="file">
+            @Html.HiddenFor(model => model.AnhDaiDien)
+            @Html.ValidationMessageFor(model => model.AnhDaiDien, "", new { @class = "text-danger" })
         </div>
-
-        <div class="form-group">
-            <strong>Nội dung</strong>
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.NoiDung, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.NoiDung, "", new { @class = "text-danger" })
-            </div>
+    </div>
+    <div class="form-group">
+        <strong>Tiêu đề</strong>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.TieuDe, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.TieuDe, "", new { @class = "text-danger" })
         </div>
-
-        @*<div class="form-group">
+    </div>
+    <div class="form-group">
+        <strong> Mô tả (Tóm tắt)</strong>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.TomTat, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.TomTat, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    @*<div class="form-group">
             @Html.LabelFor(model => model.TacGia, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.TacGia, new { htmlAttributes = new { @class = "form-control" } })
@@ -48,44 +54,51 @@
             </div>
         </div>*@
 
-        <div class="form-group">
-            <strong>Ảnh đại diện</strong>
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.AnhDaiDien, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.AnhDaiDien, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <strong>Loại tin</strong>
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.TinNoiBat)
-                    @Html.ValidationMessageFor(model => model.TinNoiBat, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <strong>Trạng thái</strong>
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.TrangThai, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.TrangThai, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Tạo mới" class="btn btn-default" />
+    <div class="form-group">
+        <strong>Loại tin</strong>
+        <div class="col-md-10">
+            <div class="checkbox">
+                @Html.EditorFor(model => model.TinNoiBat)
+                @Html.ValidationMessageFor(model => model.TinNoiBat, "", new { @class = "text-danger" })
             </div>
         </div>
     </div>
-}
 
-<div>
-    @Html.ActionLink("Quay lại", "Index")
+    <div class="form-group">
+        <strong>Trạng thái</strong>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.TrangThai, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.TrangThai, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
+    <div class="form-group">
+        <strong>Nội dung</strong>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.NoiDung, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.NoiDung, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#NoiDung'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+    <style>
+        .ck-editor__editable {
+            min-height: 500px;
+        }
+    </style>
 </div>
+    <br />
+    <div class="col-md-12 text-center">
+        <button type="submit" class="btn btn-primary"><i class="bi bi-floppy-fill"></i> Lưu</button>
+        <a class="btn btn-secondary" href="@Url.Action("/Index")">Quay lại</a>
+    </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
 }
