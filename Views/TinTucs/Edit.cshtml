@@ -1,21 +1,22 @@
 ﻿@model GiaPha.Models.TinTuc
 
 @{
-    ViewBag.Title = "Sửa tin";
+    ViewBag.Title = "Sửa tin tức";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
+<h4 class="my-3">@(ViewBag.Title)</h4>
+<hr />
 
 @using (Html.BeginForm("Edit", "TinTucs", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-
     <div class="form-horizontal">
-
-        <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.ID)
+        @Html.HiddenFor(model => model.IdLoaiTinTuc)
+        @Html.HiddenFor(model => model.TrangThai)
 
         @*<div class="form-group">
                 @Html.LabelFor(model => model.IdLoaiTinTuc, "IdLoaiTinTuc", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -27,80 +28,113 @@
 
         <div class="form-group">
             <strong>Ảnh đại diện</strong>
-            <div class="col-md-10">
-                <input type="file" id="file" name="file">
-                @Html.HiddenFor(model => model.AnhDaiDien)
+            <div class="col-md-12">
+                <img id="imgAnh"
+                     class="bg-light border-1 mb-1"
+                     src="@(Model.AnhDaiDien ?? "")"
+                     style="height: 150px"
+                     title="Ảnh đại diện"
+                     alt="Ảnh lỗi" />
+                <div class="input-group">
+                    <label class="input-group-text" for="file" style="cursor:pointer">
+                        <i class="bi bi-folder2-open"></i>&nbsp;Chọn ảnh
+                    </label>
+                    <input type="text" id="AnhDaiDien" name="AnhDaiDien" value="@(Model.AnhDaiDien)" class="form-control form-control pointer-event-none" readonly>
+                </div>
+                <input type="file" id="file" name="file" class="d-none">
                 @Html.ValidationMessageFor(model => model.AnhDaiDien, "", new { @class = "text-danger" })
+                <script>
+                    document.getElementById('file').addEventListener('change', handleFileSelect, false);
+                    function handleFileSelect(evt) {
+                        var files = evt.target.files;
+                        var f = files[0];
+                        var reader = new FileReader();
+                        reader.onload = (
+                            function (theFile) {
+                                document.getElementById('AnhDaiDien').value = theFile.name;
+                                return function (e) {
+                                    document.getElementById('imgAnh').src = e.target.result;
+                                };
+                            }
+                        )(f);
+                        reader.readAsDataURL(f);
+                    }
+                </script>
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group mt-2">
             <strong>Tiêu đề</strong>
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.TieuDe, new { htmlAttributes = new { @class = "form-control" } })
+            <div class="col-md-12">
+                <textarea id="TieuDe" name="TieuDe" class="form-control">@Html.Raw(Model.TieuDe)</textarea>
                 @Html.ValidationMessageFor(model => model.TieuDe, "", new { @class = "text-danger" })
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group mt-2">
             <strong> Mô tả (Tóm tắt)</strong>
-
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.TomTat, new { htmlAttributes = new { @class = "form-control" } })
+            <div class="col-md-12">
+                <textarea id="TomTat" name="TomTat" class="form-control" rows="5">@Html.Raw(Model.TomTat)</textarea>
                 @Html.ValidationMessageFor(model => model.TomTat, "", new { @class = "text-danger" })
             </div>
         </div>
-
-
-
-
-
-
-        @*<div class="form-group">
-                <strong>Loại tin</strong>
-                <div class="col-md-10">
-                    <div class="checkbox">
-                        @Html.EditorFor(model => model.TinNoiBat)
-                        @Html.ValidationMessageFor(model => model.TinNoiBat, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-            </div>*@
-        <div class="form-group">
-            <strong>Loại tin</strong>
-            <div class="col-md-10">
+        <div class="form-group mt-2">
+            <strong>Nổi bật</strong>
+            <div class="col-md-12">
                 <div class="checkbox">
-                    @Html.EditorFor(model => model.TinNoiBat)
+                    <input type="checkbox" @(Model.TinNoiBat == true ? "checked" : "") ) class="form-check" />
                     @Html.ValidationMessageFor(model => model.TinNoiBat, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>
-        <div class="form-group">
-            <strong>Trạng thái</strong>
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.TrangThai, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.TrangThai, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
-        <div class="form-group">
+        <div class="form-group mt-2">
             <strong>Nội dung</strong>
-            <div class="col-md-10">
-                <textarea id="NoiDung" name="NoiDung" class="form-control" rows="10">@(Model.NoiDung)</textarea>
+            <div class="col-md-12 bg-light">
+                <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+                <textarea class="d-none" id="NoiDung" name="NoiDung">@Html.Raw(Model.NoiDung)</textarea>
                 @*@Html.EditorFor(model => model.NoiDung, new { htmlAttributes = new { @class = "form-control" } })*@
                 @Html.ValidationMessageFor(model => model.NoiDung, "", new { @class = "text-danger" })
+                <div id="NoiDungEditor" style="height:400px;">@Html.Raw(Model.NoiDung)</div>
+                <script src="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js"></script>
+                <script src="https://gitcdn.link/repo/LiangCY/quill-image-paste/master/image-paste.min.js"></script>
+                <script src="https://cdn.rawgit.com/kensnyder/quill-image-resize-module/3411c9a7/image-resize.min.js"></script>
+
+                <script>
+                    var toolbarOptions = [
+                        ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+                        ['blockquote', 'code-block'],
+
+                        [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                        [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
+                        [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
+                        [{ 'direction': 'rtl' }],                         // text direction
+
+                        [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+                        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                        ['link', 'image', 'video', 'formula'],          // add's image support
+                        [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+                        [{ 'font': [] }],
+                        [{ 'align': [] }],
+
+                        ['clean']                                         // remove formatting button
+                    ];
+
+                    var noiDungInput = document.querySelector('#NoiDung');
+                    var noiDungEditor = new Quill('#NoiDungEditor', {
+                        modules: {
+                            toolbar: toolbarOptions,
+                            imageResize: {
+                                displaySize: true
+                            },
+                        },
+                        theme: 'snow',
+                        placeholder: 'Nhập nội dung...',
+                    });
+                    noiDungEditor.on('text-change', function () {
+                        noiDungInput.innerHTML = noiDungEditor.root.innerHTML;
+                    });
+                </script>
             </div>
         </div>
-        <script>
-            ClassicEditor
-                .create(document.querySelector('#NoiDung'))
-                .catch(error => {
-                    console.error(error);
-                });
-        </script>
-        <style>
-            .ck-editor__editable {
-                min-height: 500px;
-            }
-        </style>
-        
     </div>
     <br />
     <div class="col-md-12 text-center">
@@ -111,7 +145,7 @@
 
 
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
 }

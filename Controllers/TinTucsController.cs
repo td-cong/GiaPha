@@ -126,7 +126,7 @@ namespace GiaPha.Controllers
                 }
                 db.Entry(tinTuc).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("QuanLy");
             }
             ViewBag.IdLoaiTinTuc = new SelectList(db.LoaiTinTucs, "ID", "TenLoaiTinTuc", tinTuc.IdLoaiTinTuc);
             return View(tinTuc);
