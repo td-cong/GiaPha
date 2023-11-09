@@ -20,6 +20,13 @@ namespace GiaPha.Controllers
             return View(db.Videos.ToList());
         }
 
+        // GET: Videos
+        public ActionResult QuanLy()
+        {
+            if (Session["User"] == null) return RedirectToAction("Login", "Home");
+            return View(db.Videos.ToList());
+        }
+
         // GET: Videos/Details/5
         public ActionResult Details(int? id)
         {
@@ -38,6 +45,7 @@ namespace GiaPha.Controllers
         // GET: Videos/Create
         public ActionResult Create()
         {
+            if (Session["User"] == null) return RedirectToAction("Index");
             return View();
         }
 
@@ -46,13 +54,25 @@ namespace GiaPha.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,TieuDe,DuongDan,MoTa,TrangThai")] Video video)
+        public ActionResult Create([Bind(Include = "ID,TieuDe,DuongDan,MoTa,TrangThai")] Video video, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
                 db.Videos.Add(video);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                if (file != null)
+                {
+                    // Xử lý tên file tránh trường hợp tên file có chứa ký tự gây lỗi
+                    string fileName = Common.XuLyTenFile(file);
+                    var folderPath = $"\\Files\\Video\\{video.ID}\\";
+                    // Gọi hàm lưu file
+                    Common.LuuFile(file, fileName, folderPath, true);
+                    // Lưu vị trí file vào trường Video
+                    video.DuongDan = (folderPath + fileName).Replace("\\", "/");
+                }
+                db.Entry(video).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("QuanLy");
             }
 
             return View(video);
@@ -61,6 +81,7 @@ namespace GiaPha.Controllers
         // GET: Videos/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (Session["User"] == null) return RedirectToAction("Index");
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -78,13 +99,23 @@ namespace GiaPha.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,TieuDe,DuongDan,MoTa,TrangThai")] Video video)
+        public ActionResult Edit([Bind(Include = "ID,TieuDe,DuongDan,MoTa,TrangThai")] Video video, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
+                if (file != null)
+                {
+                    // Xử lý tên file tránh trường hợp tên file có chứa ký tự gây lỗi
+                    string fileName = Common.XuLyTenFile(file);
+                    var folderPath = $"\\Files\\Video\\{video.ID}\\";
+                    // Gọi hàm lưu file
+                    Common.LuuFile(file, fileName, folderPath, true);
+                    // Lưu vị trí file vào trường Video
+                    video.DuongDan = (folderPath + fileName).Replace("\\", "/");
+                }
                 db.Entry(video).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("QuanLy");
             }
             return View(video);
         }
@@ -92,6 +123,7 @@ namespace GiaPha.Controllers
         // GET: Videos/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (Session["User"] == null) return RedirectToAction("Index");
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -112,7 +144,7 @@ namespace GiaPha.Controllers
             Video video = db.Videos.Find(id);
             db.Videos.Remove(video);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("QuanLy");
         }
 
         protected override void Dispose(bool disposing)
