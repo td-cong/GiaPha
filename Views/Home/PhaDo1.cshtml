@@ -1,18 +1,9 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Phả Đồ";
     var allData = Model;
-
+    var FamilyTreeColor = System.Configuration.ConfigurationManager.AppSettings["FamilyTreeColor"] ?? "#016e25";
 }
 @model IEnumerable<GiaPha.Models.ThanhVien>
-<style>
-
-
-    #tree {
-        width: 100%;
-        height: 100%;
-    }
-</style>
 <main aria-labelledby="title">
     <div class="container">
         <div class="row">
@@ -57,30 +48,40 @@
                 var ppidString = "";
                 // Render item
                 var node = $"{{ id: {item.ID}," +
-                $" pid: \"{pid}\"," +
-                $" \"Họ tên\": \"{item.HoTen}\"," +
-                $" \"Năm sinh - Năm mất\": \"{item.NamSinh} {(item.NamMat != null ? " - " + item.NamMat : "")}\"," +
-                $" \"img\": \"{(item.Avt?.Length > 0 ? item.Avt : "/Content/img/avt.jpg")}\"{tags}{ppidString}," +
-                $" \"IsTruongHo\": {(item.IsTruongHo == true ? "true" : "false")}," +
-                $" \"IsTruongChi\": {(item.IsTruongChi == true ? "true" : "false")}," +
-                $" }},\n";
+                    $" pid: \"{pid}\"," +
+                    $" \"HoTen\": \"{item.HoTen}\"," +
+                    $" \"NamSinhNamMat\": \"{item.NamSinh} {(item.NamMat != null ? " - " + item.NamMat : "")}\"," +
+                    $" \"img\": \"{(item.Avt?.Length > 0 ? item.Avt : "/Content/img/avt.jpg")}\"{tags}{ppidString}," +
+                    $" \"IsTruongHo\": {(item.IsTruongHo == true ? "true" : "false")}," +
+                    $" \"IsTruongChi\": {(item.IsTruongChi == true ? "true" : "false")}," +
+                    $" }},\n";
                 @Html.Raw(node);
                 // Nếu dùng chung trường PID để xác định cả cha cả vợ chồng thì
             }
         ];
-        
+
+        OrgChart.SEARCH_PLACEHOLDER = "Tìm kiếm";
         var chart = new OrgChart(document.getElementById("tree"), {
             template: "diva",
             enableDragDrop: false,
             scaleInitial: OrgChart.match.width,
             //template: "giaPhaSo",
             nodeBinding: {
-                field_0: "Họ tên",
-                field_1: "Năm sinh - Năm mất",
+                field_0: "HoTen",
+                field_1: "NamSinhNamMat",
                 img_0: "img",
             },
+            editForm: {
+                generateElementsFromFields: false,
+                elements: [
+                    { type: 'textbox', label: 'Ảnh', binding: 'img', btn: 'Upload' },
+                    { type: 'textbox', label: 'Họ tên', binding: 'Họ tên' },
+                    { type: 'textbox', label: 'Năm sinh - Năm mất', binding: 'NamSinhNamMat' },
+                    { type: 'checkbox', label: 'Là trưởng họ', binding: 'IsTruongHo' },
+                    { type: 'checkbox', label: 'Là trưởng chi', binding: 'IsTruongChi' },
+                ]
+            }
         });
-
 
         chart.on('redraw', (sender) => {
             var allNodesRect = document.querySelectorAll('[data-n-id] rect');
@@ -109,16 +110,19 @@
         });
 
         chart.load(nodes);
-
     };
 </script>
 
 <style>
+    #tree {
+        width: 100%;
+        height: 100%;
+    }
     [data-n-id] rect {
-        fill: var(--primary-color, #016e25);
+        fill: var(--family-tree-color, #016e25);
     }
     [data-n-id] circle {
-        stroke: var(--primary-color, #016e25);
+        stroke: var(--family-tree-color, #016e25);
     }
     #tree > svg {
         background-color: #d9aa7166;
@@ -132,7 +136,10 @@
     .boc-edit-form-header,
     .boc-img-button,
     .boc-button {
-        background-color: var(--primary-color, #016e25) !important;
+        background-color: var(--family-tree-color, #016e25) !important;
+    }
+    .boc-light .boc-input > label.focused, .boc-dark .boc-input > label.focused {
+        color: green !important;
     }
     .legend-content-wrapper {
         padding: 3px 6px;
@@ -145,7 +152,7 @@
     .legend-item-dot {
         width: 12px;
         height: 12px;
-        background-color: var(--primary-color, #ccc);
+        background-color: var(--family-tree-color, #ccc);
         display: inline-block;
         border-radius: 50%;
     }

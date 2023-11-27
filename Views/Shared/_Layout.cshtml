@@ -5,6 +5,15 @@
     {
         return currentUri.ToLower().Contains(target.ToLower()) ? " active" : "";
     }
+    var TenDongHo = System.Configuration.ConfigurationManager.AppSettings["TenDongHo"] ?? "Tên dòng họ";
+    var DiaChi = System.Configuration.ConfigurationManager.AppSettings["DiaChi"] ?? "--";
+    var TruongToc_Ten = System.Configuration.ConfigurationManager.AppSettings["TruongToc:Ten"] ?? "--";
+    var TruongToc_SDT = System.Configuration.ConfigurationManager.AppSettings["TruongToc:SDT"] ?? "--";
+    var PrimaryColor = System.Configuration.ConfigurationManager.AppSettings["PrimaryColor"] ?? "#016e25";
+    var SecondaryColor = System.Configuration.ConfigurationManager.AppSettings["SecondaryColor"] ?? "#f5cf7c";
+    var FamilyTreeColor = System.Configuration.ConfigurationManager.AppSettings["FamilyTreeColor"] ?? "#016e25";
+    var TopNavClass = System.Configuration.ConfigurationManager.AppSettings["TopNavClass"] ?? "navbar-dark";
+    var Logo = System.Configuration.ConfigurationManager.AppSettings["Logo"] ?? "/Content/img/logo-footer.png";
 }
 <!DOCTYPE html>
 <html>
@@ -18,7 +27,7 @@
 </head>
 <body>
     @*<div class="bgtren"><div class="logo" align="center"><a href="/"><img src="~/Content/img/logo.png" class="logo_img"></a></div></div>*@
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm @(System.Configuration.ConfigurationManager.AppSettings["TopNavClass"])" style="background-color: @(System.Configuration.ConfigurationManager.AppSettings["PrimaryColor"] ?? "#016e25");">
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm @(TopNavClass)" style="background-color: @(PrimaryColor);">
         <div class="container">
             <a href="/Home" class="navbar-brand"><i class="bi bi-bank"></i> Trang chủ</a>
             <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
@@ -59,12 +68,12 @@
         <footer class="footer mt-3">
             <div class="container py-5">
                 <div class="row">
-                    <div class="col-md-2"><img src='@System.Configuration.ConfigurationManager.AppSettings["Logo"]' width="150"></div>
+                    <div class="col-md-2"><img src='@Logo"]' width="150"></div>
                     <div class="col-md-5">
                         <p class="footer-title fs-5">GIA PHẢ SỐ</p>
-                        <p class="footer-text fs-6"><b>@System.Configuration.ConfigurationManager.AppSettings["TenDongHo"]</b></p>
-                        <p class="footer-text"><b>- Địa chỉ:</b> @System.Configuration.ConfigurationManager.AppSettings["DiaChi"] </p>
-                        <p class="footer-text"><b>- Trưởng tộc:</b> @System.Configuration.ConfigurationManager.AppSettings["TruongToc:Ten"] - <b>Điện thoại:</b> @System.Configuration.ConfigurationManager.AppSettings["TruongToc:SDT"]</p>
+                        <p class="footer-text fs-6"><b>@(TenDongHo)</b></p>
+                        <p class="footer-text"><b>- Địa chỉ:</b> @(DiaChi) </p>
+                        <p class="footer-text"><b>- Trưởng tộc:</b> @(TruongToc_Ten) - <b>Điện thoại:</b> @(TruongToc_SDT)</p>
                     </div>
                     <div class="col-md-5">
                         <div class="row">
@@ -89,12 +98,17 @@
         </footer>
         <hr />
         <footer>
-            <p class="copyright my-2">&copy; @DateTime.Now.Year - Phát triển bởi <a class="text-success" target="_blank" href="https://yenbai.net.vn">Trung tâm Chuyển đổi số tỉnh Yên Bái</a></p>
+            <p class="copyright my-2">&copy; @DateTime.Now.Year - Phát triển bởi <a class="copyright-url" target="_blank" href="https://yenbai.net.vn">Trung tâm Chuyển đổi số tỉnh Yên Bái</a></p>
         </footer>
     </div>
     <style>
         :root {
-            --primary-color: @(System.Configuration.ConfigurationManager.AppSettings["PrimaryColor"] ?? "#016e25");
+            --primary-color: @(PrimaryColor);
+            --secondary-color: @(SecondaryColor);
+            --family-tree-color: @(FamilyTreeColor);
+        }
+        .copyright-url {
+            color: var(--primary-color, #f5cf7c);
         }
     </style>
     @Scripts.Render("~/bundles/bootstrap")

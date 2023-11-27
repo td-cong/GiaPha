@@ -172,10 +172,11 @@ body.bg-about{
   min-height: 200px;
   background: url("img/bg_footer.png") var(--primary-color, #016e25ee) repeat-x;
   background-position: bottom;
+  color: var(--secondary-color, #f5cf7c);
 }
 .footer-title{
   font-family: Roboto, 'Segoe UI', Tahoma, sans-serif;  
-  color: #f5cf7c;
+  color: var(--secondary-color, #f5cf7c);
   font-size: 16px;
   font-weight: bold;
 }
@@ -183,7 +184,7 @@ body.bg-about{
   padding: 0px;
   margin: 0;
   font-family: Roboto, 'Segoe UI', Tahoma, sans-serif;  
-  color: #f5cf7c;
+  color: var(--secondary-color, #f5cf7c);
   font-size: 13px;
   font-weight: normal;
   text-decoration:none;
@@ -195,7 +196,7 @@ body.bg-about{
   line-height: 30px;
 }
 .footer a{
-  color: #f5cf7c;
+  color: var(--secondary-color, #f5cf7c);
   font-size: 13px;
   font-weight: normal;
   text-decoration:none;

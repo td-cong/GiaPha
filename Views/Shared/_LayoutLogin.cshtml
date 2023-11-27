@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@{ 
+    var PrimaryColor = System.Configuration.ConfigurationManager.AppSettings["PrimaryColor"] ?? "#016e25";
+    var SecondaryColor = System.Configuration.ConfigurationManager.AppSettings["SecondaryColor"] ?? "#f5cf7c";
+}
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -13,9 +17,18 @@
         @RenderBody()
         <hr />
         <footer class="w-100 text-center">
-            <p class="copyright my-2">&copy; @DateTime.Now.Year - Phát triển bởi <a class="text-success" target="_blank" href="https://yenbai.net.vn">Trung tâm Chuyển đổi số tỉnh Yên Bái</a></p>
+            <p class="copyright my-2">&copy; @DateTime.Now.Year - Phát triển bởi <a class="copyright-url" target="_blank" href="https://yenbai.net.vn">Trung tâm Chuyển đổi số tỉnh Yên Bái</a></p>
         </footer>
     </div>
+    <style>
+        :root {
+            --primary-color: @(PrimaryColor);
+            --secondary-color: @(SecondaryColor);
+        }
+        .copyright-url {
+            color: var(--primary-color, #f5cf7c);
+        }
+    </style>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
