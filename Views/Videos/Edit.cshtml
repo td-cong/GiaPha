@@ -22,12 +22,14 @@
             <div class="col-md-12 d-flex justify-content-center py-2">
                 <div class="w-100 d-flex flex-column justify-content-center" style="border: 1px solid #aaa; padding: 5px; height: 320px; background-color: #fff">
                     <div class="align-self-start justify-content-center" style="min-height: 160px; text-align: center;">
-                        <img id="imgVideo"
+                        <video id="imgVideo"
                              class="@(Model.DuongDan?.Length > 0 ? "" : "d-none")"
                              src="@(Model.DuongDan ?? "")"
                              style="max-width: 100%; max-height: 100%"
                              title="Video hiện tại"
-                             alt="Video có ảnh" />
+                             alt="Chưa có video"
+                             autoplay
+                             controls />
                         <span id="spanNoImg" class="text-muted align-self-center @(Model.DuongDan?.Length > 0 ? "d-none" : "")">CHƯA CÓ VIDEO</span>
                     </div>
                     <div class="align-self-end" style="width: 100%; text-align: center;">
@@ -45,6 +47,7 @@
                                     function (theFile) {
                                         return function (e) {
                                             document.getElementById('imgVideo').src = e.target.result;
+                                            try { document.getElementById('imgVideo').play(); } catch (e) { console.error(e); }
                                             document.getElementById('imgVideo').classList.remove("d-none");
                                             document.getElementById('spanNoImg').classList.add("d-none");
                                         };

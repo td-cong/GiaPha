@@ -1,4 +1,8 @@
-﻿body {
+﻿:root {
+    --primary-color: #016e25;
+}
+
+body {
   margin: 0;
   padding: 0;
   background-image: url("img/main_bg.jpg");
@@ -166,7 +170,7 @@ body.bg-about{
 }
 .footer{
   min-height: 200px;
-  background: url("img/bg_footer.png") #ab7c2cee repeat-x;
+  background: url("img/bg_footer.png") var(--primary-color, #016e25ee) repeat-x;
   background-position: bottom;
 }
 .footer-title{
@@ -204,7 +208,7 @@ body.bg-about{
   line-height:2;
 }
 .title-news{
-  color: #ab7c2c;
+  color: var(--primary-color, #016e25);
   font-size: 22px;
 }
 .card{
@@ -223,7 +227,7 @@ body.bg-about{
   text-transform:uppercase;
 }
 .card-title a:hover{
-  color: #ab7c2c;
+  color: var(--primary-color, #016e25);
   text-decoration:none;
 }
 .card-text{
@@ -271,14 +275,14 @@ body.bg-about{
 }
 .title-content-tintuc{
   font-size: 22px;
-  color: #ab7c2c;
+  color: var(--primary-color, #016e25);
   font-weight: 600;
   padding: 20px 0px 0px 0px;
   text-decoration:none;
 }
 .title-content-tintuc a{
   font-size: 22px;
-  color: #ab7c2c;
+  color: var(--primary-color, #016e25);
   font-weight: 600;
   padding: 20px 0px 0px 0px;
   text-decoration:none;
@@ -289,7 +293,7 @@ body.bg-about{
   font-size: 13px;
   padding: 15px 0 15px 0;
   margin: 0;
-  color: #ab7c2c;
+  color: var(--primary-color, #016e25);
   border-bottom: 1px solid #a1a1a1;
 }
 .dec-content{
@@ -302,7 +306,7 @@ body.bg-about{
 }
 .dec-content img{width: 95%;}
 .title-content-more{
-  color: #ab7c2c;
+  color: var(--primary-color, #016e25);
   font-size: 16px;
   font-weight: normal;
   text-transform: uppercase;
@@ -349,7 +353,7 @@ body.bg-about{
 }
 .titlegiapha{
   font-size: 22px;
-  color: #ab7c2c;
+  color: var(--primary-color, #016e25);
   font-weight: 600;
   margin-bottom:10px;
   text-decoration:none;
@@ -379,7 +383,7 @@ body.bg-about{
 }
 .clearfix::after{display:block;clear:both;content:""}
 .page-link{position:relative;display:block;padding:.5rem .75rem;margin-left:-1px;line-height:1.25;color:#5e784f;background-color:#fff;border:1px solid #5e784f; text-decoration:none; text-align:center}
-.page-link:hover{z-index:2;color:#fff;text-decoration:none;background-color:#ab7c2c;border-color:#5e784f; text-decoration:none}
+.page-link:hover{z-index:2;color:#fff;text-decoration:none;background-color:var(--primary-color, #016e25);border-color:#5e784f; text-decoration:none}
 .page-link:focus{z-index:2;outline:0;box-shadow:0 0 0 .2rem rgba(0,123,255,.25)}
 .page-link:not(:disabled):not(.disabled){cursor:pointer}
 .page-item:first-child .page-link{margin-left:0;border-top-left-radius:.25rem;border-bottom-left-radius:.25rem}
@@ -439,7 +443,7 @@ body.bg-about{
 .nu a{
   font-size: 15px;
   font-weight: 500;
-  color:#ab7c2c;
+  color:var(--primary-color, #016e25);
   text-decoration:none;
 	}
 .tree li span {
@@ -582,7 +586,7 @@ body.bg-about{
 .title-content-giapha1{
   font-size: 16px;
   font-family: Roboto, 'Segoe UI', Tahoma, sans-serif;  
-  color: #ab7c2c;
+  color: var(--primary-color, #016e25);
   font-weight: 600;
   text-decoration:none;
   text-transform:uppercase;
@@ -596,7 +600,7 @@ body.bg-about{
   text-transform:uppercase;
 }
 .title-content-giapha1 a:hover{
-  color: #ab7c2c;
+  color: var(--primary-color, #016e25);
 }
 .title-content-giapha2{
   font-size: 14px;

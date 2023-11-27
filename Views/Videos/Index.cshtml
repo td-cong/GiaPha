@@ -17,67 +17,23 @@
                     <a href="/Videos/QuanLy" class="btn btn-dark my-2"><i class="bi bi-card-list"></i> Quản lý thư viện</a>
                 }
             </div>
+        </div>
 
-            <div id="carouselVideo" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-indicators d-none">
-                    @foreach (var item in dataList)
-                    {
-                        <button type="button"
-                                data-bs-target="#carouselVideo"
-                                data-bs-slide-to="@(dataList.IndexOf(item))"
-                                class="@(dataList.IndexOf(item) == 0 ? "active" : "")"
-                                aria-current="@(dataList.IndexOf(item) == 0 ? "true" : "")"
-                                aria-label="Video @(item.ID)">
-                        </button>
-                    }
-                </div>
-                <div class="carousel-inner">
-                    @foreach (var item in dataList)
-                    {
-                        <div class="carousel-item @(dataList.IndexOf(item) == 0 ? "active" : "")" data-bs-interval="5000">
-                            <div class="carousel-image-wrapper w-100 d-flex justify-content-center align-items-center position-relative">
-                                <div class="d-block carousel-image-backdrop" style="background: no-repeat center url(@(item.DuongDan)); background-size: cover; filter: blur(90px); height: 100%; width: 100%; position: absolute; top: 0; left: 0; z-index: 0"></div>
-                                <img class="d-block carousel-image-display" src="@(item.DuongDan)" alt="@(item.TieuDe)">
-                            </div>
-                            <div class="carousel-caption d-none d-md-block">
-                                <h5 class="m-1">@(item.TieuDe)</h5>
-                                @if (item.MoTa?.Length > 0)
-                                {<p>@(item.MoTa)</p>}
-                            </div>
+        <div class="row g-0">
+            @foreach (var item in dataList)
+            {
+                <div class="col-md-3 col-sm-6 col-12">
+                    <a class="image-card card mx-1 ml-0"
+                       href="/Videos/watch?v=@(item.ID)">
+                        <video src="@(item.DuongDan)"
+                               class="card-img-top rounded-0"
+                               alt="@(item.TieuDe)"></video>
+                        <div class="card-body">
+                            <h6 class="card-title"><i class="bi bi-play-btn-fill text-danger"></i> @(item.TieuDe)</h6>
                         </div>
-                    }
+                    </a>
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselAnh" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Trước</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselAnh" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Sau</span>
-                </button>
-            </div>
-
-            <div class="col-12 mt-3 p-0">
-                <div class="d-flex flex-row flex-nowrap overflow-x-auto">
-                    @foreach (var item in dataList)
-                    {
-                        <a href="#carouselVideo"
-                           class="image-card card mx-1 ml-0"
-                           data-bs-target="#carouselVideo"
-                           data-bs-slide-to="@(dataList.IndexOf(item))"
-                           aria-current="@(dataList.IndexOf(item) == 0 ? "true" : "")">
-                            <img src="@(item.DuongDan)"
-                                 class="card-img-top"
-                                 alt="@(item.TieuDe)">
-                            <div class="card-body">
-                                <h6 class="card-title">@(item.TieuDe)</h6>
-                                @if (item.MoTa?.Length > 0)
-                                {<p class="card-text">@(item.MoTa)</p>}
-                            </div>
-                        </a>
-                    }
-                </div>
-            </div>
+            }
         </div>
     </div>
 </main>

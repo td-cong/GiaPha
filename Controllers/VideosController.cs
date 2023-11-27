@@ -42,6 +42,22 @@ namespace GiaPha.Controllers
             return View(video);
         }
 
+        // GET: Videos/watch?v=5
+        public ActionResult Watch(int? v)
+        {
+            if (v == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Video video = db.Videos.Find(v);
+            if (video == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.Others = db.Videos.AsNoTracking().Where(x => x.ID != video.ID)?.Take(4)?.ToList();
+            return View(video);
+        }
+
         // GET: Videos/Create
         public ActionResult Create()
         {

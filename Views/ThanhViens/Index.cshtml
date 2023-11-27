@@ -17,8 +17,8 @@
         <tr>
             <th style="min-width: 150px">Họ tên</th>
             <th style="min-width: 100px">Con của cụ</th>
-            <th>Năm sinh</th>
-            <th>Năm mất</th>
+            <th>Năm sinh - Năm mất</th>
+            <th>Vai vế</th>
             <th>Giới tính</th>
             <th style="min-width: 100px">Vợ (chồng)</th>
             <th>Địa phương cư trú</th>
@@ -41,10 +41,11 @@
                 @(parent?.HoTen ?? "")
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.NamSinh)
+                @(string.Join(" - ", new string[] { item.NamSinh?.ToString(), item.NamMat?.ToString() }))
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.NamMat)
+                @(item.IsTruongHo == true ? "Trưởng họ " : "")
+                @(item.IsTruongChi == true ? "Trưởng chi " : "")
             </td>
             <td>
                 @(item.GioiTinh == true ? "Nam" : "Nữ")

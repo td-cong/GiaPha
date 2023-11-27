@@ -55,7 +55,7 @@ namespace GiaPha.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,PID,HoTen,NamSinh,NamMat,GioiTinh,VoChong,DiaPhuong,LyLich,Avt")] ThanhVien thanhVien, HttpPostedFileBase file)
+        public ActionResult Create([Bind(Include = "ID,PID,HoTen,NamSinh,NamMat,GioiTinh,VoChong,DiaPhuong,LyLich,Avt,IsTruongHo,IsTruongChi")] ThanhVien thanhVien, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
@@ -101,7 +101,7 @@ namespace GiaPha.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,PID,HoTen,NamSinh,NamMat,GioiTinh,VoChong,DiaPhuong,LyLich,Avt")] ThanhVien thanhVien, HttpPostedFileBase file)
+        public ActionResult Edit([Bind(Include = "ID,PID,HoTen,NamSinh,NamMat,GioiTinh,VoChong,DiaPhuong,LyLich,Avt,IsTruongHo,IsTruongChi")] ThanhVien thanhVien, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {

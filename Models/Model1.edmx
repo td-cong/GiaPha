@@ -44,6 +44,8 @@
           <Property Name="DiaPhuong" Type="nvarchar" MaxLength="500" />
           <Property Name="LyLich" Type="nvarchar(max)" />
           <Property Name="Avt" Type="nvarchar" MaxLength="500" />
+          <Property Name="IsTruongHo" Type="bit" />
+          <Property Name="IsTruongChi" Type="bit" />
         </EntityType>
         <EntityType Name="TinTuc">
           <Key>
@@ -187,6 +189,8 @@
           <Property Name="DiaPhuong" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="LyLich" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Avt" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IsTruongHo" Type="Boolean" />
+          <Property Name="IsTruongChi" Type="Boolean" />
           <NavigationProperty Name="VoChong1" Relationship="GiaPhaModel.FK_ThanhVien_ThanhVien" FromRole="ThanhVien" ToRole="VoChong" />
         </EntityType>
         <EntityType Name="TinTuc">
@@ -290,6 +294,8 @@
           <EntitySetMapping Name="ThanhViens">
             <EntityTypeMapping TypeName="GiaPhaModel.ThanhVien">
               <MappingFragment StoreEntitySet="ThanhVien">
+                <ScalarProperty Name="IsTruongChi" ColumnName="IsTruongChi" />
+                <ScalarProperty Name="IsTruongHo" ColumnName="IsTruongHo" />
                 <ScalarProperty Name="Avt" ColumnName="Avt" />
                 <ScalarProperty Name="LyLich" ColumnName="LyLich" />
                 <ScalarProperty Name="DiaPhuong" ColumnName="DiaPhuong" />

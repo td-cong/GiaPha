@@ -19,42 +19,61 @@
             <div class="col-md-12" align="center" style="margin-top:20px; margin-bottom:5px"><div class="tab-page-long active"><a href"">Phả đồ</a></div></div>
         </div>
         <div class="row">
-            <link href="https://fonts.googleapis.com/css?family=Gochi+Hand" rel="stylesheet">
-
-            <script src="~/Scripts/orgchart.js"></script>
+            <script src="~/Scripts/orgchart.js?v=202311270854"></script>
 
             <div class="col-md-12">
                 <div id="tree" style="height:calc(100vh - 160px)"></div>
+                <div style="display: none;">
+                    <div id="legend-content">
+                        <div class="legend-content-wrapper">
+                            <div class="legend-item">
+                                <div class="legend-item-dot" style="background-color: red"></div> Trưởng họ
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-item-dot" style="background-color: orange"></div> Trưởng chi
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </main>
 <script>
+    var phaDoInitialized = false;
     window.onload = function () {
         var nodes = [
-                @foreach (var item in allData)
-                {
-                    // Nếu là vợ/chông thì thêm tags partner là OrgChartJs nó hiểu node này là vợ/chồng
-                    var tags = item.VoChong > 0 ? $", tags: [\"partner\"]" : "";
-                    var pid = item.VoChong > 0 ? item.VoChong : item.PID;
-                    // Tìm vợ chồng của pid để đặt ppid, có ppid thì nó mới biết nằm giữa 2 cái
-                    var ppItem = Model.FirstOrDefault(x =>
-                        x.ID != item.ID
-                        && x.VoChong == item.PID
-                    );
-                    //var ppidString = ppItem != null ? $", ppid: {ppItem.ID}" : "";
-                    var ppidString = "";
-                    // Render item
-                    var node = $"{{ id: {item.ID}, pid: \"{pid}\", \"Họ tên\": \"{item.HoTen}\", \"Năm sinh - Năm mất\": \"{item.NamSinh} {(item.NamMat != null ? " - " + item.NamMat : "")}\", \"img\": \"{(item.Avt?.Length > 0 ? item.Avt : "/Content/img/avt.jpg")}\"{tags}{ppidString} }},\n";
-                    @Html.Raw(node);
-                    // Nếu dùng chung trường PID để xác định cả cha cả vợ chồng thì
-                }
-            ];
+            @foreach (var item in allData)
+            {
+                // Nếu là vợ/chông thì thêm tags partner là OrgChartJs nó hiểu node này là vợ/chồng
+                var tags = item.VoChong > 0 ? $", tags: [\"partner\"]" : "";
+                var pid = item.VoChong > 0 ? item.VoChong : item.PID;
+                // Tìm vợ chồng của pid để đặt ppid, có ppid thì nó mới biết nằm giữa 2 cái
+                var ppItem = Model.FirstOrDefault(x =>
+                    x.ID != item.ID
+                    && x.VoChong == item.PID
+                );
+                //var ppidString = ppItem != null ? $", ppid: {ppItem.ID}" : "";
+                var ppidString = "";
+                // Render item
+                var node = $"{{ id: {item.ID}," +
+                $" pid: \"{pid}\"," +
+                $" \"Họ tên\": \"{item.HoTen}\"," +
+                $" \"Năm sinh - Năm mất\": \"{item.NamSinh} {(item.NamMat != null ? " - " + item.NamMat : "")}\"," +
+                $" \"img\": \"{(item.Avt?.Length > 0 ? item.Avt : "/Content/img/avt.jpg")}\"{tags}{ppidString}," +
+                $" \"IsTruongHo\": {(item.IsTruongHo == true ? "true" : "false")}," +
+                $" \"IsTruongChi\": {(item.IsTruongChi == true ? "true" : "false")}," +
+                $" }},\n";
+                @Html.Raw(node);
+                // Nếu dùng chung trường PID để xác định cả cha cả vợ chồng thì
+            }
+        ];
         
         var chart = new OrgChart(document.getElementById("tree"), {
             template: "diva",
-            enableDragDrop: true,
+            enableDragDrop: false,
             scaleInitial: OrgChart.match.width,
+            //template: "giaPhaSo",
             nodeBinding: {
                 field_0: "Họ tên",
                 field_1: "Năm sinh - Năm mất",
@@ -64,27 +83,30 @@
 
 
         chart.on('redraw', (sender) => {
-            let minBtns = document.querySelectorAll('*[data-btn-min]');
+            var allNodesRect = document.querySelectorAll('[data-n-id] rect');
+            for (i = 0; i < allNodesRect.length; i++) {
+                //console.log(node);
+                var id = allNodesRect[i].parentElement.getAttribute('data-n-id');
+                var node = chart.get(id);
+                var fillColor = node.IsTruongHo == true
+                    ? "red"
+                    : node.IsTruongChi == true
+                        ? "orange"
+                        : "";
+                allNodesRect[i].style.fill = fillColor;
+            }
 
-            minBtns.forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    chart.minimize(btn.getAttribute('data-btn-min'));
-                });
-            });
-
-            let maxBtns = document.querySelectorAll('*[data-btn-max]');
-
-            maxBtns.forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    chart.maximize(btn.getAttribute('data-btn-max'));
-                });
-            });
+            if (!phaDoInitialized) {
+                var legend = document.createElement("div");
+                legend.style.position = 'absolute';
+                legend.style.bottom = '10px';
+                legend.style.right = '10px';
+                legend.style.color = '#757575';
+                legend.innerHTML = document.querySelector('#legend-content').innerHTML;
+                chart.element.appendChild(legend);
+                phaDoInitialized = true;
+            }
         });
-
 
         chart.load(nodes);
 
@@ -93,10 +115,10 @@
 
 <style>
     [data-n-id] rect {
-        fill: #016e25;
+        fill: var(--primary-color, #016e25);
     }
     [data-n-id] circle {
-        stroke: #016e25;
+        stroke: var(--primary-color, #016e25);
     }
     #tree > svg {
         background-color: #d9aa7166;
@@ -110,6 +132,21 @@
     .boc-edit-form-header,
     .boc-img-button,
     .boc-button {
-        background-color: #016e25 !important;
+        background-color: var(--primary-color, #016e25) !important;
+    }
+    .legend-content-wrapper {
+        padding: 3px 6px;
+        background-color: #eeeeeeee;
+        border-radius: 6px;
+    }
+    .legend-item {
+        color: #000;
+    }
+    .legend-item-dot {
+        width: 12px;
+        height: 12px;
+        background-color: var(--primary-color, #ccc);
+        display: inline-block;
+        border-radius: 50%;
     }
 </style>

@@ -1,0 +1,76 @@
+﻿@model GiaPha.Models.Video
+
+
+@{
+    var controllerName = "Videos";
+    var controllerTitle = "Video";
+    ViewBag.Title = "Xem " + controllerTitle;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var video = Model;
+    var others = (List<GiaPha.Models.Video>)ViewBag.Others;
+}
+
+@if (video != null && video.ID > 0)
+{
+    <div class="my-2">
+        <a class="btn btn-sm btn-dark" href="javascript: history.back();"><i class="bi bi-arrow-left"></i> Quay lại</a>
+    </div>
+    <div class="container">
+        <div class="row">
+            <video id="videoPlayer"
+                   class="@(Model.DuongDan?.Length > 0 ? "" : "d-none")"
+                   src="@(Model.DuongDan ?? "")"
+                   style="max-width: 100%; max-height: 100%"
+                   title="Video hiện tại"
+                   alt="Video lỗi"
+                   autoplay
+                   controls />
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h4 class="mt-3 mb-1"><i class="bi bi-play-btn-fill text-danger"></i> @(video.TieuDe)</h4>
+                @if (video.MoTa?.Length > 0)
+                {
+                    <div class="">
+                        @Html.Raw(video.MoTa)
+                    </div>
+                }
+            </div>
+        </div>
+        @if (others != null && others.Any())
+        {
+            <div class="row mt-3">
+                <hr />
+                <h5 class="my-2">Video khác</h5>
+                @foreach (var item in others)
+                {
+                    <div class="col-md-3 col-sm-6 col-12">
+                        <a class="image-card card mx-1 ml-0"
+                           href="/Videos/watch?v=@(item.ID)">
+                            <video src="@(item.DuongDan)"
+                                   class="card-img-top"
+                                   alt="@(item.TieuDe)"></video>
+                            <div class="card-body">
+                                <h6 class="card-title">@(item.TieuDe)</h6>
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="d-flex align-items-center justify-content-center vh-100">
+        <div class="text-center row">
+            <div class="col-md-6">
+                <img src="https://www.youtube.com/img/desktop/unavailable/unavailable_video.png" alt="404" class="img-fluid">
+            </div>
+            <div class=" col-md-6 mt-5">
+                <p class="fs-3">Video này không khả dụng.</p>
+                <a href="/Videos" class="btn btn-primary">Chuyển về thư viện video</a>
+            </div>
+        </div>
+    </div>
+}

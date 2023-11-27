@@ -24,6 +24,8 @@ namespace GiaPha.Models
         public string DiaPhuong { get; set; }
         public string LyLich { get; set; }
         public string Avt { get; set; }
+        public Nullable<bool> IsTruongHo { get; set; }
+        public Nullable<bool> IsTruongChi { get; set; }
     
         public virtual VoChong VoChong1 { get; set; }
     }
