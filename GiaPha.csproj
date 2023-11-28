@@ -194,7 +194,10 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\img\avt.jpg" />
     <Content Include="Content\img\bgtren.png" />
+    <Content Include="Content\img\bg_footer.png" />
+    <Content Include="Content\img\logo-footer.png" />
     <Content Include="Content\img\logo.png" />
     <Content Include="Content\img\main_bg.jpg" />
     <Content Include="Content\img\nhatho.png" />

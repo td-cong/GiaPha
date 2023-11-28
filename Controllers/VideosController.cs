@@ -45,16 +45,9 @@ namespace GiaPha.Controllers
         // GET: Videos/watch?v=5
         public ActionResult Watch(int? v)
         {
-            if (v == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            if (v == null) v = 0;
             Video video = db.Videos.Find(v);
-            if (video == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.Others = db.Videos.AsNoTracking().Where(x => x.ID != video.ID)?.Take(4)?.ToList();
+            ViewBag.Others = db.Videos.AsNoTracking().Where(x => x.ID != v)?.Take(4)?.ToList();
             return View(video);
         }
 

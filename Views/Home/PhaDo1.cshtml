@@ -32,7 +32,9 @@
 </main>
 <script>
     var phaDoInitialized = false;
+    var selectedId = null;
     window.onload = function () {
+
         var nodes = [
             @foreach (var item in allData)
             {
@@ -61,6 +63,13 @@
         ];
 
         OrgChart.SEARCH_PLACEHOLDER = "Tìm kiếm";
+        OrgChart.templates.diva.defs += '<filter id="blur"><feGaussianBlur in="SourceGraphic" stdDeviation="4" /><feColorMatrix type="saturate" values="0"/></filter>';
+        OrgChart.templates.diva.ripple = {
+            radius: 100,
+            color: "@(FamilyTreeColor)",
+            rect: null
+        };
+
         var chart = new OrgChart(document.getElementById("tree"), {
             template: "diva",
             enableDragDrop: false,
@@ -74,22 +83,46 @@
             editForm: {
                 generateElementsFromFields: false,
                 elements: [
-                    { type: 'textbox', label: 'Ảnh', binding: 'img', btn: 'Upload' },
-                    { type: 'textbox', label: 'Họ tên', binding: 'Họ tên' },
+                    { type: 'textbox', label: '', binding: 'img', btn: 'Upload' },
+                    { type: 'textbox', label: 'Họ tên', binding: 'HoTen' },
                     { type: 'textbox', label: 'Năm sinh - Năm mất', binding: 'NamSinhNamMat' },
                     { type: 'checkbox', label: 'Là trưởng họ', binding: 'IsTruongHo' },
                     { type: 'checkbox', label: 'Là trưởng chi', binding: 'IsTruongChi' },
-                ]
+                ],
+                buttons: {
+                    edit: {
+                        text: 'Sửa',
+                        hideIfEditMode: true,
+                        hideIfDetailsMode: true,
+                    },
+                    share: {
+                        icon: OrgChart.icon.share(24, 24, '#fff'),
+                        text: 'Chia sẻ',
+                        hideIfEditMode: true,
+                    },
+                    pdf: {
+                        icon: OrgChart.icon.pdf(24, 24, '#fff'),
+                        text: 'Lưu dạng PDF',
+                        hideIfEditMode: true,
+                    },
+                    remove: {
+                        icon: OrgChart.icon.remove(24, 24, '#fff'),
+                        text: 'Xóa',
+                        hideIfDetailsMode: true,
+                        hideIfEditMode: true,
+                    }
+                }
             }
         });
 
         chart.on('redraw', (sender) => {
+            // Trưởng họ, trưởng chi
             var allNodesRect = document.querySelectorAll('[data-n-id] rect');
             for (i = 0; i < allNodesRect.length; i++) {
                 //console.log(node);
                 var id = allNodesRect[i].parentElement.getAttribute('data-n-id');
                 var node = chart.get(id);
-                var fillColor = node.IsTruongHo == true
+                var fillColor = node?.IsTruongHo == true
                     ? "red"
                     : node.IsTruongChi == true
                         ? "orange"
@@ -102,14 +135,63 @@
                 legend.style.position = 'absolute';
                 legend.style.bottom = '10px';
                 legend.style.right = '10px';
-                legend.style.color = '#757575';
+                legend.style.color = '#000';
                 legend.innerHTML = document.querySelector('#legend-content').innerHTML;
                 chart.element.appendChild(legend);
                 phaDoInitialized = true;
             }
-        });
 
+            // Làm mờ các nhánh khác
+            blur();
+        });
+        chart.editUI.on('show', function (sender, id) {
+            selectedId = id;
+            blur();
+            //return false; //uncomment để không hiện chi tiết khi click vào 1 node
+        });
+        chart.editUI.on('hide', function (sender) {
+            var elements = document.querySelectorAll('[filter="url(#blur)"]');
+            for (var i = 0; i < elements.length; i++) {
+                elements[i].removeAttribute('filter');
+            }
+            selectedId = null;
+        });
         chart.load(nodes);
+
+        function blur() {
+            if (selectedId == null) {
+                return;
+            }
+            var node = chart.getNode(selectedId);
+            var skipBlur = [node.id];
+            var skipBlurLink = [];
+            while (node.parent) {
+                skipBlur.push(node.parent.id);
+                skipBlurLink.push('[' + node.parent.id + '][' + node.id + ']')
+                node = node.parent;
+            }
+            var nodeElements = document.querySelectorAll('[data-n-id]');
+            for (var i = 0; i < nodeElements.length; i++) {
+                var id = nodeElements[i].getAttribute('data-n-id');
+                if (skipBlur.indexOf(id) == -1 && skipBlur.indexOf(+id) == -1)
+                    nodeElements[i].setAttribute('filter', 'url(#blur)');
+            }
+
+            var expcollElements = document.querySelectorAll('[data-ctrl-ec-id]');
+            for (var i = 0; i < expcollElements.length; i++) {
+                var id = expcollElements[i].getAttribute('data-ctrl-ec-id');
+                if (skipBlur.indexOf(id) == -1 && skipBlur.indexOf(+id) == -1)
+                    expcollElements[i].setAttribute('filter', 'url(#blur)');
+            }
+
+            var linksElements = document.querySelectorAll('[data-l-id]');
+            for (var i = 0; i < linksElements.length; i++) {
+                var id = linksElements[i].getAttribute('data-l-id');
+
+                if (skipBlurLink.indexOf(id) == -1)
+                    linksElements[i].setAttribute('filter', 'url(#blur)');
+            }
+        }
     };
 </script>
 
@@ -139,7 +221,15 @@
         background-color: var(--family-tree-color, #016e25) !important;
     }
     .boc-light .boc-input > label.focused, .boc-dark .boc-input > label.focused {
-        color: green !important;
+        color: var(--family-tree-color, #016e25) !important;
+    }
+    .boc-edit-form .boc-input > label {
+        color: #000;
+        font-weight: 600;
+        font-family: 'Segoe UI';
+    }
+    .boc-edit-form input[data-binding="img"] {
+        display: none;
     }
     .legend-content-wrapper {
         padding: 3px 6px;
