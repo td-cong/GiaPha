@@ -34,6 +34,12 @@ namespace GiaPha.Controllers
             return View(data);
         }
 
+        public ActionResult AutoClose()
+        {
+            return View();
+        }
+
+
         public ActionResult Login()
         {
             ViewBag.ThongBao = null;

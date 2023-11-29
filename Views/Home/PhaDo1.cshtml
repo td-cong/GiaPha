@@ -2,6 +2,10 @@
     ViewBag.Title = "Phả Đồ";
     var allData = Model;
     var FamilyTreeColor = System.Configuration.ConfigurationManager.AppSettings["FamilyTreeColor"] ?? "#016e25";
+    var templateName = "diva";
+    var truongHoColor = "red";
+    var truongChiColor = "orange";
+    var currentUser = (GiaPha.Controllers.HomeController.TaiKhoan)Session["User"];
 }
 @model IEnumerable<GiaPha.Models.ThanhVien>
 <main aria-labelledby="title">
@@ -18,10 +22,10 @@
                     <div id="legend-content">
                         <div class="legend-content-wrapper">
                             <div class="legend-item">
-                                <div class="legend-item-dot" style="background-color: red"></div> Trưởng họ
+                                <div class="legend-item-dot" style="background-color: @(truongHoColor)"></div> Trưởng họ
                             </div>
                             <div class="legend-item">
-                                <div class="legend-item-dot" style="background-color: orange"></div> Trưởng chi
+                                <div class="legend-item-dot" style="background-color: @(truongChiColor)"></div> Trưởng chi
                             </div>
                         </div>
                     </div>
@@ -34,49 +38,21 @@
     var phaDoInitialized = false;
     var selectedId = null;
     window.onload = function () {
-
-        var nodes = [
-            @foreach (var item in allData)
-            {
-                // Nếu là vợ/chông thì thêm tags partner là OrgChartJs nó hiểu node này là vợ/chồng
-                var tags = item.VoChong > 0 ? $", tags: [\"partner\"]" : "";
-                var pid = item.VoChong > 0 ? item.VoChong : item.PID;
-                // Tìm vợ chồng của pid để đặt ppid, có ppid thì nó mới biết nằm giữa 2 cái
-                var ppItem = Model.FirstOrDefault(x =>
-                    x.ID != item.ID
-                    && x.VoChong == item.PID
-                );
-                //var ppidString = ppItem != null ? $", ppid: {ppItem.ID}" : "";
-                var ppidString = "";
-                // Render item
-                var node = $"{{ id: {item.ID}," +
-                    $" pid: \"{pid}\"," +
-                    $" \"HoTen\": \"{item.HoTen}\"," +
-                    $" \"NamSinhNamMat\": \"{item.NamSinh} {(item.NamMat != null ? " - " + item.NamMat : "")}\"," +
-                    $" \"img\": \"{(item.Avt?.Length > 0 ? item.Avt : "/Content/img/avt.jpg")}\"{tags}{ppidString}," +
-                    $" \"IsTruongHo\": {(item.IsTruongHo == true ? "true" : "false")}," +
-                    $" \"IsTruongChi\": {(item.IsTruongChi == true ? "true" : "false")}," +
-                    $" }},\n";
-                @Html.Raw(node);
-                // Nếu dùng chung trường PID để xác định cả cha cả vợ chồng thì
-            }
-        ];
-
         OrgChart.SEARCH_PLACEHOLDER = "Tìm kiếm";
-        OrgChart.templates.diva.defs += '<filter id="blur"><feGaussianBlur in="SourceGraphic" stdDeviation="4" /><feColorMatrix type="saturate" values="0"/></filter>';
-        OrgChart.templates.diva.ripple = {
-            radius: 100,
-            color: "@(FamilyTreeColor)",
-            rect: null
-        };
+        OrgChart.templates.@(templateName).defs += '<filter id="blur"><feGaussianBlur in="SourceGraphic" stdDeviation="3" /><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope="0.5"/></feComponentTransfer></filter>';
+        OrgChart.templates.@(templateName).ripple = { color: "@(FamilyTreeColor)" };
 
         var chart = new OrgChart(document.getElementById("tree"), {
-            template: "diva",
+            template: "@(templateName)",
             enableDragDrop: false,
             scaleInitial: OrgChart.match.width,
-            //template: "giaPhaSo",
+            toolbar: {
+                zoom: true,
+                fullScreen: true,
+            },
+            //template: "@(templateName)",
             nodeBinding: {
-                field_0: "HoTen",
+                field_0: "name",
                 field_1: "NamSinhNamMat",
                 img_0: "img",
             },
@@ -84,12 +60,18 @@
                 generateElementsFromFields: false,
                 elements: [
                     { type: 'textbox', label: '', binding: 'img', btn: 'Upload' },
-                    { type: 'textbox', label: 'Họ tên', binding: 'HoTen' },
+                    { type: 'textbox', label: 'Họ tên', binding: 'name' },
                     { type: 'textbox', label: 'Năm sinh - Năm mất', binding: 'NamSinhNamMat' },
                     { type: 'checkbox', label: 'Là trưởng họ', binding: 'IsTruongHo' },
                     { type: 'checkbox', label: 'Là trưởng chi', binding: 'IsTruongChi' },
                 ],
                 buttons: {
+                    openEdit: {
+                        icon: OrgChart.icon.edit(24, 24, '#fff'),
+                        text: 'Sửa',
+                        hideIfEditMode: true,
+                        hideIfDetailsMode: @(currentUser != null ? "false" : "true"),
+                    },
                     edit: {
                         text: 'Sửa',
                         hideIfEditMode: true,
@@ -105,16 +87,15 @@
                         text: 'Lưu dạng PDF',
                         hideIfEditMode: true,
                     },
-                    remove: {
-                        icon: OrgChart.icon.remove(24, 24, '#fff'),
-                        text: 'Xóa',
-                        hideIfDetailsMode: true,
-                        hideIfEditMode: true,
-                    }
+                    remove: null,
                 }
             }
         });
-
+        chart.editUI.on('button-click', function (sender, args) {
+            if (args.name == 'openEdit') {
+                window.open(`/ThanhViens/Edit/${args.nodeId}?popup=true`, "_blank", "popup=true");
+            }
+        });
         chart.on('redraw', (sender) => {
             // Trưởng họ, trưởng chi
             var allNodesRect = document.querySelectorAll('[data-n-id] rect');
@@ -123,25 +104,22 @@
                 var id = allNodesRect[i].parentElement.getAttribute('data-n-id');
                 var node = chart.get(id);
                 var fillColor = node?.IsTruongHo == true
-                    ? "red"
+                    ? "@(truongHoColor)"
                     : node.IsTruongChi == true
-                        ? "orange"
+                        ? "@(truongChiColor)"
                         : "";
                 allNodesRect[i].style.fill = fillColor;
             }
-
             if (!phaDoInitialized) {
                 var legend = document.createElement("div");
                 legend.style.position = 'absolute';
-                legend.style.bottom = '10px';
-                legend.style.right = '10px';
+                legend.style.top = '5px';
+                legend.style.left = '5px';
                 legend.style.color = '#000';
                 legend.innerHTML = document.querySelector('#legend-content').innerHTML;
                 chart.element.appendChild(legend);
                 phaDoInitialized = true;
             }
-
-            // Làm mờ các nhánh khác
             blur();
         });
         chart.editUI.on('show', function (sender, id) {
@@ -156,8 +134,7 @@
             }
             selectedId = null;
         });
-        chart.load(nodes);
-
+        // Làm mờ các nhánh khác khi chọn 1 đối tượng
         function blur() {
             if (selectedId == null) {
                 return;
@@ -176,22 +153,100 @@
                 if (skipBlur.indexOf(id) == -1 && skipBlur.indexOf(+id) == -1)
                     nodeElements[i].setAttribute('filter', 'url(#blur)');
             }
-
             var expcollElements = document.querySelectorAll('[data-ctrl-ec-id]');
             for (var i = 0; i < expcollElements.length; i++) {
                 var id = expcollElements[i].getAttribute('data-ctrl-ec-id');
                 if (skipBlur.indexOf(id) == -1 && skipBlur.indexOf(+id) == -1)
                     expcollElements[i].setAttribute('filter', 'url(#blur)');
             }
-
             var linksElements = document.querySelectorAll('[data-l-id]');
             for (var i = 0; i < linksElements.length; i++) {
                 var id = linksElements[i].getAttribute('data-l-id');
-
                 if (skipBlurLink.indexOf(id) == -1)
                     linksElements[i].setAttribute('filter', 'url(#blur)');
             }
         }
+
+        // Custom search UI
+        chart.searchUI.on("add-item", function (sender, args) {
+            var data = sender.instance.get(args.nodeId);
+            args.html = '';
+            args.html += `<tr data-search-item-id="${data.id}">
+                    <td class="boc-search-image-td">
+                        <img style="border-radius: 6px; width: 40px; height: 40px; margin: 0 5px;" src="${data.img}"></img>
+                    </td>
+                    <td class="boc-search-text-td">
+                        <div style="padding: 10px; line-height: 18px;">
+                            <div style="font-size: 14px; padding-bottom: 5px; font-weight: 600">${args.first}</div>
+                            <div>${data.NamSinhNamMat}</div>
+                            <div>${data.IsTruongHo == true ? "Trưởng họ" : ""}</div>
+                            <div>${data.IsTruongChi == true ? "Trưởng chi" : ""}</div>
+                        </div>
+                    </td>
+                </tr>`;
+        });
+        chart.searchUI.on("show-items", function (sender, args) {
+            var nodeElements = sender.searchTableWrapper.querySelectorAll(".search-item-hovered");
+            for (var i = 0; i < nodeElements.length; i++) {
+                nodeElements[i].classList.remove('search-item-hovered');
+            }
+            var itemElements = sender.searchTableWrapper.querySelectorAll("[data-search-item-id]");
+            for (var i = 0; i < itemElements.length; i++) {
+                itemElements[i].addEventListener("mouseenter", function (e) {
+                    var id = this.getAttribute("data-search-item-id");
+                    var nodeElement = sender.instance.getNodeElement(id);
+                    nodeElement.classList.add('search-item-hovered');
+                });
+                itemElements[i].addEventListener("mouseleave", function (e) {
+                    var id = this.getAttribute("data-search-item-id");
+                    var nodeElement = sender.instance.getNodeElement(id);
+                    nodeElement.classList.remove('search-item-hovered');
+                });
+                itemElements[i].addEventListener("click", function (e) {
+                    var id = this.getAttribute("data-search-item-id");
+                    var nodeElement = sender.instance.getNodeElement(id);
+                    selectedId = id;
+                    blur();
+                });
+            }
+        });
+        chart.searchUI.on("hide", function (sender, args) {
+            var nodeElements = sender.searchTableWrapper.querySelectorAll(".search-item-hovered");
+            for (var i = 0; i < nodeElements.length; i++) {
+                nodeElements[i].classList.remove('search-item-hovered');
+            }
+        });
+
+        // Load
+        var nodes = [
+            @foreach (var item in allData)
+            {
+                // Nếu là vợ/chông thì thêm tags partner là OrgChartJs nó hiểu node này là vợ/chồng
+                var tags = item.VoChong > 0 ? $", tags: [\"partner\"]" : "";
+                var pid = item.VoChong > 0 ? item.VoChong : item.PID;
+                // Tìm vợ chồng của pid để đặt ppid, có ppid thì nó mới biết nằm giữa 2 cái
+                //var ppItem = Model.FirstOrDefault(x =>
+                //    x.ID != item.ID
+                //    && x.VoChong == item.PID
+                //);
+                //var ppidString = ppItem != null ? $", ppid: {ppItem.ID}" : "";
+                var ppidString = "";
+                // Render item
+                var node = $"{{ id: {item.ID}," +
+                    $" pid: \"{pid}\"," +
+                    $" \"name\": \"{item.HoTen}\"," +
+                    $" \"img\": \"{(item.Avt?.Length > 0 ? item.Avt : "/Content/img/avt.jpg")}\"{tags}{ppidString}," +
+                    $" \"NamSinh\": \"{item.NamSinh}\"," +
+                    $" \"NamMat\": \"{item.NamMat}\"," +
+                    $" \"NamSinhNamMat\": \"{item.NamSinh} {(item.NamMat != null ? " - " + item.NamMat : "")}\"," +
+                    $" \"IsTruongHo\": {(item.IsTruongHo == true ? "true" : "false")}," +
+                    $" \"IsTruongChi\": {(item.IsTruongChi == true ? "true" : "false")}," +
+                    $" }},\n";
+                @Html.Raw(node);
+                // Nếu dùng chung trường PID để xác định cả cha cả vợ chồng thì
+            }
+        ];
+        chart.load(nodes);
     };
 </script>
 
@@ -215,6 +270,26 @@
         stroke: #000;
         stroke-width: 3px;
     }
+    .legend-content-wrapper {
+        padding: 3px 6px;
+        background-color: #eeeeeeee;
+        border-radius: 6px;
+    }
+    .legend-item {
+        color: #000;
+        font-size: 12px;
+        line-height: 18px;
+    }
+    .legend-item-dot {
+        width: 6px;
+        height: 6px;
+        background-color: var(--family-tree-color, #ccc);
+        display: inline-block;
+        border-radius: 50%;
+    }
+    .search-item-hovered rect {
+        fill: #f57C00;
+    }
     .boc-edit-form-header,
     .boc-img-button,
     .boc-button {
@@ -231,19 +306,23 @@
     .boc-edit-form input[data-binding="img"] {
         display: none;
     }
-    .legend-content-wrapper {
-        padding: 3px 6px;
-        background-color: #eeeeeeee;
-        border-radius: 6px;
+    .boc-search-text-td mark {
+        padding: 0 !important;
     }
-    .legend-item {
-        color: #000;
+    .boc-edit-form-title {
+        font-size: 24px !important;
     }
-    .legend-item-dot {
-        width: 12px;
-        height: 12px;
-        background-color: var(--family-tree-color, #ccc);
-        display: inline-block;
-        border-radius: 50%;
+    .boc-checkbox {
+        margin-left: 10px;
+        padding-left: 26px;
+        margin-bottom: 0;
+    }
+    .boc-checkbox-checkmark {
+        height: 20px;
+        width: 20px;
+    }
+    .boc-checkbox .boc-checkbox-checkmark:after {
+        left: 6px;
+        top: 3px;
     }
 </style>

@@ -14,6 +14,8 @@
     var FamilyTreeColor = System.Configuration.ConfigurationManager.AppSettings["FamilyTreeColor"] ?? "#016e25";
     var TopNavClass = System.Configuration.ConfigurationManager.AppSettings["TopNavClass"] ?? "navbar-dark";
     var Logo = System.Configuration.ConfigurationManager.AppSettings["Logo"] ?? "/Content/img/logo-footer.png";
+
+    var isPopup = Request.QueryString["popup"] == "true";
 }
 <!DOCTYPE html>
 <html>
@@ -27,7 +29,7 @@
 </head>
 <body>
     @*<div class="bgtren"><div class="logo" align="center"><a href="/"><img src="~/Content/img/logo.png" class="logo_img"></a></div></div>*@
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm @(TopNavClass)" style="background-color: @(PrimaryColor);">
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm @(TopNavClass) @(isPopup ? " d-none" : "")" style="background-color: @(PrimaryColor);">
         <div class="container">
             <a href="/Home" class="navbar-brand"><i class="bi bi-bank"></i> Trang chủ</a>
             <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
@@ -65,7 +67,7 @@
     @Scripts.Render("~/bundles/jquery")
     <div class="container body-content">
         @RenderBody()
-        <footer class="footer mt-3">
+        <footer class="footer mt-3 @(isPopup ? " d-none" : "")">
             <div class="container py-5">
                 <div class="row">
                     <div class="col-md-2"><img src='@Logo' width="150"></div>

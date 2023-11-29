@@ -1,5 +1,6 @@
 ﻿:root {
     --primary-color: #016e25;
+    --secondary-color: #01476e;
 }
 
 body {
@@ -9,6 +10,7 @@ body {
   background-repeat: repeat-y;
   background-color: #fff;
   background-position: top left;
+  background-size: 100% auto;
   font-family: Roboto, 'Segoe UI', Tahoma, sans-serif;  
   font-weight: 400;
   color: #212529;
@@ -666,7 +668,7 @@ body.bg-about{
 a.nav-link.active {
     font-weight: 700;
     margin-left: -3px;
-    border-bottom: 3px solid var(--bs-green);
+    border-bottom: 3px solid var(--secondary-color, #01476e);
 }
 
 .page-bg {

@@ -101,7 +101,7 @@ namespace GiaPha.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,PID,HoTen,NamSinh,NamMat,GioiTinh,VoChong,DiaPhuong,LyLich,Avt,IsTruongHo,IsTruongChi")] ThanhVien thanhVien, HttpPostedFileBase file)
+        public ActionResult Edit([Bind(Include = "ID,PID,HoTen,NamSinh,NamMat,GioiTinh,VoChong,DiaPhuong,LyLich,Avt,IsTruongHo,IsTruongChi")] ThanhVien thanhVien, HttpPostedFileBase file, bool popup = false)
         {
             if (ModelState.IsValid)
             {
@@ -117,7 +117,10 @@ namespace GiaPha.Controllers
                 }
                 db.Entry(thanhVien).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                if (popup == true)
+                    return RedirectToAction("AutoClose", "Home");
+                else
+                    return RedirectToAction("Index");
             }
             return View(thanhVien);
         }

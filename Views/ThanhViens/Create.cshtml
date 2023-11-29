@@ -1,5 +1,4 @@
 ﻿@model GiaPha.Models.ThanhVien
-
 @{
     ViewBag.Title = "Thêm mới";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -14,22 +13,19 @@
     @Html.AntiForgeryToken()
 
     <div class="form">
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
         <div class="row">
             <div class="col-md-12 d-flex justify-content-center py-2">
-                <div class="d-flex flex-column justify-content-center" style="border: 1px solid #aaa; padding: 5px; width: 138px; background-color: #fff">
-                    <div class="align-self-start" style="width: 128px; min-height: 160px; text-align: center;">
-                        <img id="imgAvatar"
+                <div class="d-flex flex-column justify-content-center" style="border: 1px solid #aaa; padding: 5px; width: 172px; background-color: #fff">
+                    <div class="align-self-start" style="width: 160px; min-height: 160px; text-align: center;">
+                        <div id="imgAvatar"
                              class="d-none"
-                             src=""
                              width="128"
-                             style="min-width: 128px; min-height: 160px"
-                             title="Ảnh hiện tại"
-                             alt="Chưa có ảnh" />
+                             style="background-image: url(); background-size: auto 100%; background-position: center center; min-width: 160px; min-height: 160px;">
+                        </div>
                         <span id="spanNoImg" class="text-muted align-self-center">ẢNH THÀNH VIÊN</span>
                     </div>
-                    <div class="align-self-end" style="width: 128px; text-align: center;">
+                    <div class="align-self-end" style="width: 160px; text-align: center;">
                         <label for="file" style="cursor: pointer">
                             <a class="text-decoration-none"><i class="bi bi-folder2-open"></i> Chọn ảnh</a>
                             <input type="file" id="file" name="file" style="display:none">
@@ -43,7 +39,7 @@
                                 reader.onload = (
                                     function (theFile) {
                                         return function (e) {
-                                            document.getElementById('imgAvatar').src = e.target.result;
+                                            document.getElementById('imgAvatar').style.backgroundImage = `url(${e.target.result})`;
                                             document.getElementById('imgAvatar').classList.remove("d-none");
                                             document.getElementById('spanNoImg').classList.add("d-none");
                                         };
@@ -83,7 +79,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="form-group col-md-12">
+            <div class="form-group col-md-4">
                 <strong>Giới tính</strong><br>
                 <div class="form-check form-check-inline">
                     @Html.RadioButtonFor(model => model.GioiTinh, true, new { @class = "form-check-input" }) Nam
@@ -92,6 +88,20 @@
                     @Html.RadioButtonFor(model => model.GioiTinh, false, new { @class = "form-check-input" }) Nữ
                 </div>
                 @Html.ValidationMessageFor(model => model.GioiTinh, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group col-md-4">
+                <strong>Là trưởng họ</strong><br>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="IsTruongHo" value="true">
+                </div>
+                @Html.ValidationMessageFor(model => model.IsTruongHo, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group col-md-4">
+                <strong>Là trưởng chi</strong><br>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="IsTruongChi" value="true">
+                </div>
+                @Html.ValidationMessageFor(model => model.IsTruongChi, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="row">

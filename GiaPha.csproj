@@ -321,6 +321,7 @@
     <Content Include="Views\TinTucs\TomTat.cshtml" />
     <Content Include="Views\Videos\QuanLy.cshtml" />
     <Content Include="Views\Videos\Watch.cshtml" />
+    <Content Include="Views\Home\AutoClose.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
