@@ -204,6 +204,7 @@
     <Content Include="Content\img\page-bg.png" />
     <Content Include="Content\img\tab-bg-long-active.png" />
     <Content Include="Content\img\tab-bg-long.png" />
+    <Content Include="Content\quill.snow.css" />
     <Content Include="Content\style.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -267,6 +268,9 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\orgchart.js" />
+    <Content Include="Scripts\quill-image-paste.min.js" />
+    <Content Include="Scripts\quill-image-resize.min.js" />
+    <Content Include="Scripts\quill.min.js" />
     <Content Include="Scripts\thugon.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

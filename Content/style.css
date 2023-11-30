@@ -684,3 +684,7 @@ a.nav-link.active {
 .form-horizontal .form-group {
     margin-top: 12px;
 }
+
+.form-horizontal .form-group strong {
+    color: var(--primary-color, #000);
+}

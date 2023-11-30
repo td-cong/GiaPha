@@ -72,8 +72,8 @@
         <div class="form-group mt-2">
             <strong>Nổi bật</strong>
             <div class="col-md-12">
-                <div class="checkbox">
-                    <input type="checkbox" name="TinNoiBat" value="true" @(Model.TinNoiBat == true ? "checked" : "")) class="form-check" />
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="TinNoiBat" value="true" @(Model.TinNoiBat == true ? "checked" : "") />
                     @Html.ValidationMessageFor(model => model.TinNoiBat, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -81,16 +81,21 @@
         <div class="form-group mt-2">
             <strong>Nội dung</strong>
             <div class="col-md-12 bg-light">
-                <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+                <link href="~/Content/quill.snow.css" rel="stylesheet">
                 <textarea class="d-none" id="NoiDung" name="NoiDung">@Html.Raw(Model.NoiDung)</textarea>
                 @*@Html.EditorFor(model => model.NoiDung, new { htmlAttributes = new { @class = "form-control" } })*@
                 @Html.ValidationMessageFor(model => model.NoiDung, "", new { @class = "text-danger" })
                 <div id="NoiDungEditor" style="height:400px;">@Html.Raw(Model.NoiDung)</div>
-                <script src="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js"></script>
-                <script src="https://gitcdn.link/repo/LiangCY/quill-image-paste/master/image-paste.min.js"></script>
-                <script src="https://cdn.rawgit.com/kensnyder/quill-image-resize-module/3411c9a7/image-resize.min.js"></script>
+                <script src="~/Scripts/quill.min.js"></script>
+                <script src="~/Scripts/quill-image-paste.min.js"></script>
+                <script src="~/Scripts/quill-image-resize.min.js"></script>
 
                 <script>
+                    var ColorClass = Quill.import('attributors/class/color');
+                    var SizeStyle = Quill.import('attributors/style/size');
+                    Quill.register(ColorClass, true);
+                    Quill.register(SizeStyle, true);
+
                     var toolbarOptions = [
                         ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
                         ['blockquote', 'code-block'],
@@ -132,7 +137,7 @@
     <br />
     <div class="col-md-12 text-center">
         <button type="submit" class="btn btn-primary"><i class="bi bi-floppy-fill"></i> Lưu</button>
-        <a class="btn btn-secondary" href="@Url.Action("/Index")">Quay lại</a>
+        <a class="btn btn-secondary" href="@Url.Action("/QuanLy")">Quay lại</a>
     </div>
 
 
