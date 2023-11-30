@@ -5,7 +5,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Tin tức</h2>
+<h4 class="my-3">@(ViewBag.Title)</h4>
+<hr />
 
 <p>
     @Html.ActionLink("+ Thêm mới", "Create", null, new { @class = "btn btn-success" })
@@ -19,30 +20,30 @@
             <th>Loại tin</th>
             <th>Trạng thái</th>
             <th>Tin nổi bật</th>
-            <th style="min-width: 120px"></th>
+            <th style="width: 100px"></th>
         </tr>
     </thead>
     @foreach (var item in Model)
     {
-
         <tr>
             <td>
                 @if (item.AnhDaiDien != null && item.AnhDaiDien.Length > 0)
                 {
-                    <img src="@(item.AnhDaiDien)" width="28" loading="lazy" />
+                    <img src="@(item.AnhDaiDien)" width="32" loading="lazy" />
                 }
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TieuDe)
+                @Html.Raw(item.TieuDe)
+            </td>
+            <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+                title="@(item.TomTat)">
+                @Html.Raw(item.TomTat)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TomTat)
+                @Html.Raw(item.LoaiTinTuc)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.LoaiTinTuc)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TrangThai)
+                @Html.Raw(item.TrangThai)
             </td>
             <td>
                 @if (item.TinNoiBat == true)
@@ -50,10 +51,12 @@
                     <i class="bi bi-check-circle-fill text-success"></i>
                 }
             </td>
-            <td>
-                @Html.ActionLink("Sửa", "Edit", new { id = item.ID }) |
-                @Html.ActionLink("Chi tiết", "Details", new { id = item.ID }) |
-                @Html.ActionLink("Xoá", "Delete", new { id = item.ID })
+            <td class="text-center">
+                <div class="w-100 h-100 d-flex justify-content-center align-items-center">
+                    <a class="btn btn-sm btn-primary m-1" href="@Url.Action("Edit", new { id = item.ID })">Sửa</a>
+                    <a class="btn btn-sm btn-secondary m-1" href="@Url.Action("Details", new { id = item.ID })">Xem</a>
+                    <a class="btn btn-sm btn-danger m-1" href="@Url.Action("Delete", new { id = item.ID })">Xóa</a>
+                </div>
             </td>
         </tr>
     }

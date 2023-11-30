@@ -11,9 +11,9 @@
 @using (Html.BeginForm("Create", "ThanhViens", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
+    <input type="hidden" name="TrangThai" value="AC" />
 
     <div class="form">
-
         <div class="row">
             <div class="col-md-12 d-flex justify-content-center py-2">
                 <div class="d-flex flex-column justify-content-center" style="border: 1px solid #aaa; padding: 5px; width: 172px; background-color: #fff">
@@ -21,7 +21,7 @@
                         <div id="imgAvatar"
                              class="d-none"
                              width="128"
-                             style="background-image: url(); background-size: auto 100%; background-position: center center; min-width: 160px; min-height: 160px;">
+                             style="background-image: url(); background-size: auto 100%; background-position: center center; min-width: 160px; min-height: 160px; background-repeat: no-repeat;">
                         </div>
                         <span id="spanNoImg" class="text-muted align-self-center">ẢNH THÀNH VIÊN</span>
                     </div>

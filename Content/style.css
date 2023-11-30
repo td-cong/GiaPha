@@ -206,7 +206,7 @@ body.bg-about{
 .title-content{
   font-family: Roboto, 'Segoe UI', Tahoma, sans-serif;  
   font-size: 13px;
-  color: #4c4c4c;
+  color: var(--primary-color, #016e25);
   text-align:justify;
   line-height:2;
 }
@@ -223,7 +223,7 @@ body.bg-about{
   font-size: 15px;
   padding: 5px 0 5px 0;
   margin: 0;
-  color: #5e784f;
+  color: var(--primary-color, #016e25);
   font-weight:500;
   text-height:2;
   text-decoration:none;
@@ -236,7 +236,7 @@ body.bg-about{
 .card-text{
   font-family: Roboto, 'Segoe UI', Tahoma, sans-serif;  
   font-size: 13px;
-  color: #4c4c4c;
+  color: #000;
   font-weight: normal;
   line-height:2;
 }
@@ -679,4 +679,8 @@ a.nav-link.active {
 
 .ck-powered-by, .ck-powered-by-balloon {
     display: none !important;
+}
+
+.form-horizontal .form-group {
+    margin-top: 12px;
 }

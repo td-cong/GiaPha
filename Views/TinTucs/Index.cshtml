@@ -8,12 +8,16 @@
     var currentUser = (GiaPha.Controllers.HomeController.TaiKhoan)Session["User"];
 }
 
-
 <div class="container">
+    <div class="row">
+        <div class="col-md-12 text-center my-2">
+            <div class="tab-page-long active d-inline-block"><a href="/tintucs/danhsach">Tin tức dòng họ</a></div>
+        </div>
+    </div>
     @if (currentUser != null)
     {
         <div class="row">
-            <div class="col-md-12" align="center" style="margin-top:20px; margin-bottom:20px">
+            <div class="col-md-12 text-center">
                 <a href="/TinTucs/QuanLy" class="btn btn-dark my-2"><i class="bi bi-card-list"></i> Quản lý tin tức</a>
             </div>
         </div>
@@ -33,7 +37,6 @@
     </div>
 </div>
 <div class="container">
-    <div class="col-md-12" align="center" style="margin-top:20px; margin-bottom:20px"><div class="tab-page-long active"><a href="/tintucs/danhsach">Tin tức dòng họ</a></div></div>
     <div class="col-md-12">
         <div class="row">
             @foreach (var item in dsTinKhac)
