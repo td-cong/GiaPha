@@ -10239,7 +10239,7 @@ OrgChart._defaultConfig = function (t) {
   ,
   void 0 === OrgChart && (OrgChart = {}),
   void 0 === OrgChart.remote && (OrgChart.remote = {}),
-  OrgChart.LIMIT_NODES = !0,
+  OrgChart.LIMIT_NODES = !1,
   OrgChart.remote._fromResDTO = function (t, e, r, i, a) {
     var n = e[t.id];
     t.x = n.p[0],
@@ -10338,7 +10338,8 @@ OrgChart._defaultConfig = function (t) {
   OrgChart.remote._proceed = function (t, e, r, i) {
     if ("string" == typeof e && (e = JSON.parse(e)),
       e.limit && 1 == e.limit)
-      i(e.limit);
+      //i(e.limit);
+      i(999999);
     else {
       for (var a = 0; a < t.length; a++)
         OrgChart.remote._fromResDTO(t[a], e, 0, t, r);
@@ -10351,25 +10352,24 @@ OrgChart._defaultConfig = function (t) {
     if (e)
       t(e);
     else {
-      //for (var r = ["au-e", "au-se", "brs", "ca", "ca-e", "easia", "eus-2", "eus", "fr", "ind", "jp-e", "jp-w", "kr", "n-eu", "se-asia", "s-ind", "uk-s", "uk-w", "us", "us-n-c", "us-s-c", "w-c-us", "w-eu", "w-ind", "w-us-2", "wus"], i = [], a = 0; a < r.length; a++)
-      //  i.push(new XMLHttpRequest);
-      //for (a = 0; a < r.length; a++)
-      //  !function () {
-      //    var e = "https://" + r[a] + "-balkangraph.azurewebsites.net/api/OrgChartJS"
-      var e = window.location.origin;
-            //, n = i[a];
-          //n.onreadystatechange = function () {
-          //  if (4 == this.readyState && 200 == this.status) {
-      OrgChart.localStorage.setItem("funcUrl", e);//,
-          //      t(e);
-          //    for (var r = 0; r < i.length; r++)
-          //      i[r].abort()
-          //  }
-          //}
-          //  ,
-          //  n.open("GET", e, !0),
-          //  n.send()
-        //}()
+      for (var r = ["au-e", "au-se", "brs", "ca", "ca-e", "easia", "eus-2", "eus", "fr", "ind", "jp-e", "jp-w", "kr", "n-eu", "se-asia", "s-ind", "uk-s", "uk-w", "us", "us-n-c", "us-s-c", "w-c-us", "w-eu", "w-ind", "w-us-2", "wus"], i = [], a = 0; a < r.length; a++)
+        i.push(new XMLHttpRequest);
+      for (a = 0; a < r.length; a++)
+        !function () {
+          var e = "https://" + r[a] + "-balkangraph.azurewebsites.net/api/OrgChartJS"
+            , n = i[a];
+          n.onreadystatechange = function () {
+            if (4 == this.readyState && 200 == this.status) {
+              OrgChart.localStorage.setItem("funcUrl", e),
+                t(e);
+              for (var r = 0; r < i.length; r++)
+                i[r].abort()
+            }
+          }
+            ,
+            n.open("GET", e, !0),
+            n.send()
+        }()
     }
   }
   ;
