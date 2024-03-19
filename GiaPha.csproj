@@ -52,6 +52,15 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNetCore.Html.Abstractions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNetCore.Html.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Html.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Razor, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNetCore.Razor.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Razor.Runtime, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNetCore.Razor.Runtime.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Razor.Runtime.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\lib\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
@@ -64,6 +73,9 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Text.Encodings.Web, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Text.Encodings.Web.4.5.0\lib\netstandard2.0\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -127,8 +139,11 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Common.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AnhsController.cs" />
+    <Compile Include="Controllers\BaoLoiController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\OrgController.cs" />
     <Compile Include="Controllers\PhaKysController.cs" />
     <Compile Include="Controllers\ThanhViensController.cs" />
     <Compile Include="Controllers\TinTucsController.cs" />
@@ -136,44 +151,62 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Account.cs">
+      <DependentUpon>GiaPha.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Anh.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>GiaPha.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ChucNang.cs">
+      <DependentUpon>GiaPha.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GiaPha.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GiaPha.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GiaPha.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GiaPha.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GiaPha.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GiaPha.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\LoaiTinTuc.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Model1.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model1.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Model1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Model1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model1.edmx</DependentUpon>
+      <DependentUpon>GiaPha.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PhaKy.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>GiaPha.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PhanQuyen.cs">
+      <DependentUpon>GiaPha.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>GiaPha.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sp_helpdiagrams_Result.cs">
+      <DependentUpon>GiaPha.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sysdiagram.cs">
+      <DependentUpon>GiaPha.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ThanhVien.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>GiaPha.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TinTuc.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>GiaPha.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TocUoc.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>GiaPha.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Video.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>GiaPha.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\VoChong.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>GiaPha.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -194,6 +227,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\getorgchart.css" />
     <Content Include="Content\img\avt.jpg" />
     <Content Include="Content\img\bgtren.png" />
     <Content Include="Content\img\bg_footer.png" />
@@ -209,23 +243,6 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Models\Model1.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model1.edmx</DependentUpon>
-      <LastGenOutput>Model1.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Models\Model1.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model1.edmx</DependentUpon>
-      <LastGenOutput>Model1.cs</LastGenOutput>
-    </Content>
-    <EntityDeploy Include="Models\Model1.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\Model1.edmx.diagram">
-      <DependentUpon>Model1.edmx</DependentUpon>
-    </Content>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
     <Content Include="Content\bootstrap.rtl.css.map" />
     <Content Include="Content\bootstrap.min.css.map" />
@@ -242,8 +259,25 @@
     <Content Include="Content\bootstrap-grid.rtl.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
+    <EntityDeploy Include="Models\GiaPha.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>GiaPha.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\GiaPha.edmx.diagram">
+      <DependentUpon>GiaPha.edmx</DependentUpon>
+    </Content>
     <None Include="Properties\PublishProfiles\GiaPha.HoGiang.pubxml" />
     <None Include="Properties\PublishProfiles\GiaPha.HoSa.pubxml" />
+    <Content Include="Models\GiaPha.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>GiaPha.edmx</DependentUpon>
+      <LastGenOutput>GiaPha.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\GiaPha.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>GiaPha.edmx</DependentUpon>
+      <LastGenOutput>GiaPha.cs</LastGenOutput>
+    </Content>
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -257,11 +291,16 @@
     <Content Include="Scripts\bootstrap.bundle.min.js.map" />
     <Content Include="Scripts\bootstrap.bundle.js.map" />
     <None Include="Scripts\jquery-3.7.1.intellisense.js" />
+    <Content Include="Scripts\getorgchart.js" />
+    <Content Include="Scripts\html2canvas.min.js" />
     <Content Include="Scripts\jquery-3.7.1.js" />
     <Content Include="Scripts\jquery-3.7.1.min.js" />
     <Content Include="Scripts\jquery-3.7.1.slim.js" />
     <Content Include="Scripts\jquery-3.7.1.slim.min.js" />
+    <Content Include="Scripts\jquery.orgchart.min.js.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.min.js" />
+    <Content Include="Scripts\jquery.orgchart.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -300,7 +339,6 @@
     <Content Include="Views\PhaKys\Edit.cshtml" />
     <Content Include="Views\PhaKys\Index.cshtml" />
     <Content Include="Views\Home\PhaDo1.cshtml" />
-    <Content Include="Views\Home\PhaDo1 - Copy.cshtml" />
     <Content Include="Scripts\jquery-3.7.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.7.1.min.map" />
     <Content Include="Views\TinTucs\Create.cshtml" />
@@ -326,6 +364,13 @@
     <Content Include="Views\Videos\QuanLy.cshtml" />
     <Content Include="Views\Videos\Watch.cshtml" />
     <Content Include="Views\Home\AutoClose.cshtml" />
+    <Content Include="Views\BaoLoi\KhongCoQuyen.cshtml" />
+    <Content Include="Views\Account\Index.cshtml" />
+    <Content Include="Views\Account\Details.cshtml" />
+    <Content Include="Views\Account\Edit.cshtml" />
+    <Content Include="Views\Account\Delete.cshtml" />
+    <Content Include="Views\Home\PhaDo2.cshtml" />
+    <Content Include="Views\Org\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

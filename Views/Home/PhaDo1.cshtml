@@ -5,7 +5,8 @@
     var templateName = "diva";
     var truongHoColor = "red";
     var truongChiColor = "orange";
-    var currentUser = (GiaPha.Controllers.HomeController.TaiKhoan)Session["User"];
+    var currentUser = (GiaPha.Models.Account)Session["User"];
+    var quyenQuanLy = (bool)ViewBag.quyenQuanLy;
 }
 @model IEnumerable<GiaPha.Models.ThanhVien>
 <main aria-labelledby="title">
@@ -70,7 +71,7 @@
                         icon: OrgChart.icon.edit(24, 24, '#fff'),
                         text: 'Sửa',
                         hideIfEditMode: true,
-                        hideIfDetailsMode: @(currentUser != null ? "false" : "true"),
+                        hideIfDetailsMode: @(currentUser != null && quyenQuanLy ? "false" : "true"),
                     },
                     edit: {
                         text: 'Sửa',

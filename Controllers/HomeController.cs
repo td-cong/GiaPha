@@ -1,21 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography.X509Certificates;
 using System.Web;
 using System.Web.Mvc;
 using GiaPha.Models;
+
 
 namespace GiaPha.Controllers
 {
     public class HomeController : Controller
     {
+        public bool KiemTraQuyen()
+        {
+            GiaPhaEntities db = new GiaPhaEntities();
+            Account userSession = (Account)Session["User"];
+            var count = 0; 
+            if (userSession != null) {
+                count = db.PhanQuyens.Count(m => m.idAccount == userSession.ID && m.idChucNang == 4);
+            }           
+            if (count == 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
         private GiaPhaEntities db = new GiaPhaEntities();
 
         public ActionResult Index()
-        {
+        {          
             return View();
         }
 
@@ -24,12 +44,23 @@ namespace GiaPha.Controllers
             return View();
         }
 
+        public ActionResult PhaDo2()
+        {
+            return View(db.ThanhViens.ToList());
+        }
+
         public ActionResult PhaDo()
         {
             return View(db.ThanhViens.ToList());
         }
         public ActionResult PhaDo1(int top = 0)
         {
+            //if (KiemTraQuyen() == false)
+            //{
+            //    return Redirect("/BaoLoi/KhongCoQuyen");
+
+            //}
+            ViewBag.quyenQuanLy = KiemTraQuyen();
             var data = db.ThanhViens.AsNoTracking().ToList();
             return View(data);
         }
@@ -39,35 +70,44 @@ namespace GiaPha.Controllers
             return View();
         }
 
-
+        [HttpGet]
         public ActionResult Login()
         {
             ViewBag.ThongBao = null;
             return View();
         }
 
-        public class TaiKhoan
-        {
-            public string UserName { get; set; }
-            public string Password { get; set; }
-        }
+        //public class TaiKhoan
+        //{
+        //    [Required]
+        //    public string UserName { get; set; }
+         //   public string Password { get; set; }
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(TaiKhoan taiKhoan)
+        public ActionResult Login(string user, string password)
         {
-            Session["User"] = taiKhoan;
-            if (taiKhoan.UserName == "admin" && taiKhoan.Password == "admin@123")
-                return RedirectToAction("Index");
+            GiaPhaEntities db = new GiaPhaEntities();
+            var taiKhoan = db.Accounts.SingleOrDefault(m => m.UserName.ToLower() == user.ToLower() && m.Password == password);
+
+            if (taiKhoan != null)
+            {
+                Session["User"] = taiKhoan;
+                return RedirectToAction("Index", "Home");
+            }
             else
+            {
                 ViewBag.ThongBao = "Tài khoản hoặc mật khẩu không chính xác";
-            return View();
+                return View();
+            }        
         }
+
         public ActionResult Logout()
         {
             ViewBag.ThongBao = null;
             Session.Clear();
-            return RedirectToAction("Login");
+            return RedirectToAction("Index");
         }
     }
 }

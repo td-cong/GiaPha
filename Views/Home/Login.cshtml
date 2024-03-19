@@ -14,17 +14,17 @@
                     @Html.AntiForgeryToken()
                     <div class="form-group">
                         <label class="fw-bold" for="username">Tài khoản:</label><br>
-                        <input type="text" name="UserName" id="UserName" class="form-control" value="admin">
+                        <input type="text" name="user" id="user" class="form-control" placeholder="Username">
                     </div>
                     <div class="form-group my-2">
                         <label class="fw-bold" for="password">Mật khẩu:</label><br>
-                        <input type="password" name="Password" id="Password" class="form-control" value="admin@123">
+                        <input type="password" name="password" id="password" class="form-control" placeholder="Password" >
                     </div>
                     <div class="form-group my-2">
-                        <label class="fw-bold" for="remember-me"><span>Lưu tên đăng nhập</span> <span><input id="remember-me" name="remember-me" type="checkbox" checked></span></label><br>
+                        <label class="fw-bold" for="remember-me"><span>Lưu tên đăng nhập</span> <span><input id="remember-me" name="remember-me" type="checkbox" unchecked></span></label><br>
                     </div>
                     <div class="form-group my-2">
-                        <button type="submit" class="btn btn-primary btn-md shadow-sm"><i class="bi bi-key-fill"></i> Đăng nhập</button>
+                        <button type="submit" class="btn btn-primary btn-md shadow-sm"><i class="bi bi-key-fill"></i>Đăng nhập</button>
                     </div>
                     if (ViewBag.ThongBao != null && ViewBag.ThongBao.Length > 0)
                     {

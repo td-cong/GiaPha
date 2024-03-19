@@ -16,13 +16,36 @@ namespace GiaPha.Controllers
         private GiaPhaEntities db = new GiaPhaEntities();
         private string serverRootFolderPath = System.Web.HttpContext.Current.Server.MapPath("~/");
         //private string serverRootFolderPath = System.Web.Hosting.HostingEnvironment.MapPath("~/");
+        
+        public bool KiemTraQuyen()
+        {
+            GiaPhaEntities db = new GiaPhaEntities();
+            Account userSession = (Account)Session["User"];
+            var count = 0;
+            if (userSession != null)
+            {
+                count = db.PhanQuyens.Count(m => m.idAccount == userSession.ID && m.idChucNang == 1);
+            }         
+            if (count == 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
 
         // GET: ThanhViens
         public ActionResult Index()
-        {
-            if (Session["User"] == null) return RedirectToAction("Login", "Home");
+        {           
+            if(KiemTraQuyen()==false)
+            {
+                return Redirect("/BaoLoi/KhongCoQuyen");
+                              
+            }
             ViewBag.VoChongList = db.VoChongs.AsNoTracking().ToList();
-            return View(db.ThanhViens.ToList());
+            return View(db.ThanhViens.ToList());     
         }
 
         // GET: ThanhViens/Details/5

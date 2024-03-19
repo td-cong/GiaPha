@@ -5,16 +5,17 @@
     var danhSachTin = Model;
     var tinNoiBat = danhSachTin.Any(x => x.TinNoiBat == true) ? danhSachTin.OrderByDescending(x => x.ID).FirstOrDefault(x => x.TinNoiBat == true) : danhSachTin?.OrderByDescending(x => x.ID)?.FirstOrDefault();
     var dsTinKhac = tinNoiBat != null ? danhSachTin?.Where(x => x.ID != (tinNoiBat?.ID ?? 0)) : danhSachTin;
-    var currentUser = (GiaPha.Controllers.HomeController.TaiKhoan)Session["User"];
+    var currentUser = (GiaPha.Models.Account)Session["User"];
+    var quyenQuanLy = (bool)ViewBag.quyenQuanLy;
 }
 
 <div class="container">
     <div class="row">
         <div class="col-md-12 text-center my-2">
-            <div class="tab-page-long active d-inline-block"><a href="/tintucs/danhsach">Tin tức dòng họ</a></div>
+            <div class="tab-page-long active d-inline-block"><a href="/tintucs/danhsach">Tin tức dòng họ </a></div>
         </div>
     </div>
-    @if (currentUser != null)
+    @if (currentUser != null && quyenQuanLy)
     {
         <div class="row">
             <div class="col-md-12 text-center">
@@ -31,7 +32,7 @@
                 <a class="h5 text-decoration-none" href="/tintucs/details/@(tinNoiBat.ID)">@Html.Raw(tinNoiBat.TieuDe)</a>
             </div>
             <div class="title-content" style="max-height: 400px; overflow: auto; overflow: hidden; display: -webkit-box; -webkit-line-clamp: var(--heading-max-lines, 3); -webkit-box-orient: vertical; height: calc(3 * 2em);">
-                @Html.Raw(tinNoiBat.TomTat)
+                @Html.Raw(tinNoiBat.NoiDung)
             </div>
         </div>
     </div>

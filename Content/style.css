@@ -688,3 +688,12 @@ a.nav-link.active {
 .form-horizontal .form-group strong {
     color: var(--primary-color, #000);
 }
+
+#chart-container {
+    position: relative;
+    height: 420px;
+    border: 1px solid #aaa;
+    margin: 0.5rem;
+    overflow: auto;
+    text-align: center;
+}

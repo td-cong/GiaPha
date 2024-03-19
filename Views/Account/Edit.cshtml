@@ -1,0 +1,79 @@
+﻿@model GiaPha.Models.Account
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var AccountList = (List<GiaPha.Models.Account>)ViewBag.AccountList;
+    var isPopup = Request.QueryString["popup"] == "true";
+}
+
+<h4 class="my-3">Cập nhật thông tin tài khoản</h4>
+<hr />
+@using (Html.BeginForm("Edit", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.ID)
+    <input type="hidden" name="popup" value="@(isPopup)" />
+
+    <div class="form">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="row">
+            <div class="form-group col-md-6">
+                <strong>ID</strong>
+                <span class="form-control">@Model.ID</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-6">
+                <strong>User name</strong>
+                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-6">
+                <strong>Password</strong>
+                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-6">
+                <strong>Tên</strong>
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-6">
+                <strong>Quyền</strong>
+                @Html.EditorFor(model => model.Role, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group my-3">
+            <div class="col-md-12 text-center">
+                <button type="submit" class="btn btn-primary"><i class="bi bi-floppy-fill"></i> Lưu</button>
+                @if (isPopup == true)
+                {
+                    <a class="btn btn-secondary" href="javascript:window.close();">Đóng</a>
+                }
+                else
+                {
+                    <a class="btn btn-secondary" href="@Url.Action("/Index")">Quay lại</a>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

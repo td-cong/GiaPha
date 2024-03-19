@@ -12,11 +12,35 @@ namespace GiaPha.Controllers
 {
     public class VideosController : Controller
     {
+        public bool KiemTraQuyen()
+        {
+            GiaPhaEntities db = new GiaPhaEntities();
+            Account userSession = (Account)Session["User"];
+            var count = 0;
+            if (userSession != null)
+            {
+                count = db.PhanQuyens.Count(m => m.idAccount == userSession.ID && m.idChucNang == 3);
+            }      
+            if (count == 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
         private GiaPhaEntities db = new GiaPhaEntities();
 
         // GET: Videos
         public ActionResult Index()
         {
+            //if (KiemTraQuyen() == false)
+            //{
+            //    return Redirect("/BaoLoi/KhongCoQuyen");
+
+            //}
+            ViewBag.quyenQuanLy = KiemTraQuyen();
             return View(db.Videos.ToList());
         }
 

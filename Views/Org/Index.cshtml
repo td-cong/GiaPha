@@ -1,0 +1,67 @@
+﻿@model List<GiaPha.Models.ThanhVien>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var templateName = "diva";
+    var truongHoColor = "red";
+    var truongChiColor = "orange";
+    var currentUser = (GiaPha.Models.Account)Session["User"];
+}
+
+<style type="text/css">
+
+    #people {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+<link href="~/Content/getorgchart.css" rel="stylesheet" />
+<script src="~/Scripts/getorgchart.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<main aria-labelledby="title">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12" align="center" style="margin-top:20px; margin-bottom:5px"><div class="tab-page-long active"><a href"">Phả đồ</a></div></div>
+        </div>
+        <div id="people"></div>
+
+        <script type="text/javascript">
+        var readUrl = "@Url.Action("Read")";
+        var updateUrl = "@Url.Action("Update")";
+
+
+        var orgChart = new getOrgChart(document.getElementById("people"), {
+            primaryFields: ["HoTen", "NamSinh"],
+            photoFields: ["Avt"],
+            idField: "ID",
+            parentIdField: "PID",
+            updatedEvent: updatedEvent
+        });
+
+        $.getJSON(readUrl, function (data) {
+            debugger;
+            orgChart.loadFromJSON(data);
+        });
+
+        function updatedEvent(sender, args) {
+            var model = [];
+            for (var id in orgChart.nodes) {
+                var node = orgChart.nodes[id];
+                var data = $.extend(true, { Id: node.id, ParentId: node.pid }, node.data);
+                model.push(data);
+            }
+
+            var model = JSON.stringify({ 'model': model });
+
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: updateUrl,
+                data: model
+            });
+        }
+        </script>
+    </div>
+</main>
+

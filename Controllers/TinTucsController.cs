@@ -12,12 +12,35 @@ namespace GiaPha.Controllers
 {
     public class TinTucsController : Controller
     {
+        public bool KiemTraQuyen()
+        {
+            GiaPhaEntities db = new GiaPhaEntities();
+            Account userSession = (Account)Session["User"];
+            var count = 0;
+            if (userSession != null) {
+                count = db.PhanQuyens.Count(m => m.idAccount == userSession.ID && m.idChucNang == 2);
+            }          
+            if (count == 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
         private GiaPhaEntities db = new GiaPhaEntities();
 
         // GET: TinTucs
         public ActionResult Index()
         {
+            //if (KiemTraQuyen() == false)
+            //{
+            //    return Redirect("/BaoLoi/KhongCoQuyen");
+
+            //}
             var tinTucs = db.TinTucs.Include(t => t.LoaiTinTuc);
+            ViewBag.quyenQuanLy = KiemTraQuyen();
             return View(tinTucs.ToList());
         }
 

@@ -1,5 +1,5 @@
 ﻿@{
-    var currentUser = (GiaPha.Controllers.HomeController.TaiKhoan)Session["User"];
+    var currentUser = (GiaPha.Models.Account)Session["User"];
     var currentUri = HttpContext.Current.Request.Url.AbsoluteUri ?? HttpContext.Current.Request.Url.Scheme + HttpContext.Current.Request.Url.Host + HttpContext.Current.Request.Path ?? "";
     string activeClass(string target)
     {
@@ -48,12 +48,16 @@
                     <li>@Html.ActionLink("Tộc ước", "TocUoc", "Home", new { area = "" }, new { @class = "nav-link" + activeClass("/TocUoc") })</li>
                     <li>@Html.ActionLink("Thư viện ảnh", "Index", "Anhs", new { area = "" }, new { @class = "nav-link" + activeClass("/Anhs") })</li>
                     <li>@Html.ActionLink("Thư viện Video", "Index", "Videos", new { area = "" }, new { @class = "nav-link" + activeClass("/Videos") })</li>
-                    <li>@Html.ActionLink("Phả đồ", "PhaDo1", "Home", new { area = "" }, new { @class = "nav-link" + activeClass("/PhaDo") })</li>
+                    <li>@Html.ActionLink("Phả đồ", "Index", "Org", new { area = "" }, new { @class = "nav-link" + activeClass("/Org") })</li>
+                    @if (currentUser != null)
+                    {
+                        <li>@Html.ActionLink("Quản lý tài khoản", "Index", "Account", new { area = "" }, new { @class = "nav-link" + activeClass("/Account") })</li>
+                    }
                 </ul>
                 <ul class="navbar-nav justify-content-end">
                     @if (currentUser != null)
                     {
-                        <li><span class="nav-link fw-bold"><i class="bi bi-person-circle"></i> @currentUser.UserName</span></li>
+                        <li><span class="nav-link fw-bold"><i class="bi bi-person-circle"></i> @currentUser.Name</span></li>
                         <li><a href="@Url.Action("Logout", "Home")" class="nav-link"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a></li>
                     }
                     else
