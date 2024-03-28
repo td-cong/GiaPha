@@ -19,7 +19,7 @@ namespace GiaPha.Controllers
             var count = 0;
             if (userSession != null)
             {
-                count = db.PhanQuyens.Count(m => m.idAccount == userSession.ID && m.idChucNang == 1);
+                count = db.PhanQuyens.Count(m => m.idAccount == userSession.ID && m.idChucNang == 4);
             }
             if (count == 0)
             {
@@ -37,7 +37,7 @@ namespace GiaPha.Controllers
             {
                 return Redirect("/BaoLoi/KhongCoQuyen");
 
-            }
+            }  
             ViewBag.AccountList = db.Accounts.AsNoTracking().ToList();
             return View(db.Accounts.ToList());
         }

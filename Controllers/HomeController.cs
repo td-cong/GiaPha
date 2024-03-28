@@ -44,11 +44,6 @@ namespace GiaPha.Controllers
             return View();
         }
 
-        public ActionResult PhaDo2()
-        {
-            return View(db.ThanhViens.ToList());
-        }
-
         public ActionResult PhaDo()
         {
             return View(db.ThanhViens.ToList());

@@ -148,12 +148,12 @@
 .orgchart ul li .node.currentDropTarget {
   background-color: rgba(68, 157, 68, 0.9);
 }
-.orgchart ul li .node.selected {
-  background-color: rgba(238, 217, 54, 0.5);
-}
-.orgchart ul li .node:hover {
-  background-color: rgba(238, 217, 54, 0.5);
-}
+    .orgchart ul li .node.selected {
+        background-color: rgba(51, 206, 70, 0.54);
+    }
+    .orgchart ul li .node:hover {
+        background-color: rgba(51, 206, 70, 0.54);
+    }
 /* excluding root node */
 .orgchart > ul > li > ul li > .node::before {
   content: "";
@@ -186,16 +186,16 @@
   height: 140px;
 }
 
-.orgchart .node:hover {
-  background-color: rgba(238, 217, 54, 0.5);
-  transition: .5s;
-  cursor: default;
-  z-index: 20;
-}
+    .orgchart .node:hover {
+        background-color: rgba(30, 240, 80, 0.6);
+        transition: .5s;
+        cursor: default;
+        z-index: 20;
+    }
 
-.orgchart .node.focused {
-  background-color: rgba(238, 217, 54, 0.5);
-}
+    .orgchart .node.focused {
+        background-color: rgba(30, 240, 80, 0.6);
+    }
 
 .orgchart .ghost-node {
   position: fixed;

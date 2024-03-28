@@ -143,7 +143,7 @@
     <Compile Include="Controllers\AnhsController.cs" />
     <Compile Include="Controllers\BaoLoiController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\OrgController.cs" />
+    <Compile Include="Controllers\Org2Controller.cs" />
     <Compile Include="Controllers\PhaKysController.cs" />
     <Compile Include="Controllers\ThanhViensController.cs" />
     <Compile Include="Controllers\TinTucsController.cs" />
@@ -238,6 +238,7 @@
     <Content Include="Content\img\page-bg.png" />
     <Content Include="Content\img\tab-bg-long-active.png" />
     <Content Include="Content\img\tab-bg-long.png" />
+    <Content Include="Content\jquery.orgchart.css" />
     <Content Include="Content\quill.snow.css" />
     <Content Include="Content\style.css" />
     <Content Include="favicon.ico" />
@@ -293,6 +294,7 @@
     <None Include="Scripts\jquery-3.7.1.intellisense.js" />
     <Content Include="Scripts\getorgchart.js" />
     <Content Include="Scripts\html2canvas.min.js" />
+    <Content Include="Scripts\jquery-3.3.1.min.js" />
     <Content Include="Scripts\jquery-3.7.1.js" />
     <Content Include="Scripts\jquery-3.7.1.min.js" />
     <Content Include="Scripts\jquery-3.7.1.slim.js" />
@@ -305,6 +307,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\jspdf.umd.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\orgchart.js" />
     <Content Include="Scripts\quill-image-paste.min.js" />
@@ -333,11 +336,6 @@
     <Content Include="Views\Home\View.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Shared\_LayoutLogin.cshtml" />
-    <Content Include="Views\PhaKys\Create.cshtml" />
-    <Content Include="Views\PhaKys\Delete.cshtml" />
-    <Content Include="Views\PhaKys\Details.cshtml" />
-    <Content Include="Views\PhaKys\Edit.cshtml" />
-    <Content Include="Views\PhaKys\Index.cshtml" />
     <Content Include="Views\Home\PhaDo1.cshtml" />
     <Content Include="Scripts\jquery-3.7.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.7.1.min.map" />
@@ -369,8 +367,7 @@
     <Content Include="Views\Account\Details.cshtml" />
     <Content Include="Views\Account\Edit.cshtml" />
     <Content Include="Views\Account\Delete.cshtml" />
-    <Content Include="Views\Home\PhaDo2.cshtml" />
-    <Content Include="Views\Org\Index.cshtml" />
+    <Content Include="Views\Org2\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

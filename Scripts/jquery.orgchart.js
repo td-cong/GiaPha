@@ -1,4 +1,4 @@
-/*
+﻿/*
  * jQuery OrgChart Plugin
  * https://github.com/dabeng/OrgChart
  *
@@ -48,7 +48,7 @@
       'pan': false,
       'zoom': false,
       'zoominLimit': 7,
-      'zoomoutLimit': 0.5
+      'zoomoutLimit': 0.5,
     };
   };
   //
