@@ -1,0 +1,129 @@
+﻿@{
+    var currentUser = (GiaPha.Models.Account)Session["User"];
+    var allData = Model;
+    var currentUri = HttpContext.Current.Request.Url.AbsoluteUri ?? HttpContext.Current.Request.Url.Scheme + HttpContext.Current.Request.Url.Host + HttpContext.Current.Request.Path ?? "";
+    string activeClass(string target)
+    {
+        return currentUri.ToLower().Contains(target.ToLower()) ? " active" : "";
+    }
+    var TenDongHo = System.Configuration.ConfigurationManager.AppSettings["TenDongHo"] ?? "Tên dòng họ";
+    var DiaChi = System.Configuration.ConfigurationManager.AppSettings["DiaChi"] ?? "--";
+    var TruongToc_Ten = System.Configuration.ConfigurationManager.AppSettings["TruongToc:Ten"] ?? "--";
+    var TruongToc_SDT = System.Configuration.ConfigurationManager.AppSettings["TruongToc:SDT"] ?? "--";
+    var PrimaryColor = System.Configuration.ConfigurationManager.AppSettings["PrimaryColor"] ?? "maroon";
+    var SecondaryColor = System.Configuration.ConfigurationManager.AppSettings["SecondaryColor"] ?? "#f5cf7c";
+    var FamilyTreeColor = System.Configuration.ConfigurationManager.AppSettings["FamilyTreeColor"] ?? "#016e25";
+    var TopNavClass = System.Configuration.ConfigurationManager.AppSettings["TopNavClass"] ?? "navbar-dark";
+    var Logo = System.Configuration.ConfigurationManager.AppSettings["Logo"] ?? "/Content/img/logo-footer.png";
+
+    var isPopup = Request.QueryString["popup"] == "true";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Gia phả số</title>
+    @Styles.Render("~/Content/css")
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    @Scripts.Render("~/bundles/modernizr")
+    <!--Start of Fchat.vn-->
+    <script type="text/javascript" src="https://cdn.fchat.vn/assets/embed/webchat.js?id=677dea5be07fb767aa0bf667" async="async"></script>
+    <!--End of Fchat.vn-->
+</head>
+<body>
+    @*<div class="bgtren"><div class="logo" align="center"><a href="/"><img src="~/Content/img/logo.png" class="logo_img"></a></div></div>*@
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm @(TopNavClass) @(isPopup ? " d-none" : "")" style="background-color: maroon;">
+        <div class="container">
+            <a href="/Home" class="navbar-brand"><i class="bi bi-bank"></i> Trang chủ</a>
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                    @if (currentUser != null)
+                    {
+                        <li>@Html.ActionLink("Quản lý thành viên", "Index", "ThanhViens", new { area = "" }, new { @class = "nav-link" + activeClass("/ThanhViens") })</li>
+                    }
+                    @*<li>@Html.ActionLink("Phả đồ v1", "PhaDo", "Home", new { area = "" }, new { @class = "nav-link" })</li>*@
+                    <li>@Html.ActionLink("Tin tức", "Index", "TinTucs", new { area = "" }, new { @class = "nav-link" + activeClass("/TinTucs") })</li>
+                    <li>@Html.ActionLink("Phả ký", "Index", "PhaKys", new { area = "" }, new { @class = "nav-link" + activeClass("/PhaKys") })</li>
+                    <li>@Html.ActionLink("Tộc ước", "TocUoc", "Home", new { area = "" }, new { @class = "nav-link" + activeClass("/TocUoc") })</li>
+                    <li>@Html.ActionLink("Thư viện ảnh", "Index", "Anhs", new { area = "" }, new { @class = "nav-link" + activeClass("/Anhs") })</li>
+                    <li>@Html.ActionLink("Thư viện Video", "Index", "Videos", new { area = "" }, new { @class = "nav-link" + activeClass("/Videos") })</li>
+                    <li>@Html.ActionLink("Phả đồ", "Index", "Org2", new { area = "" }, new { @class = "nav-link" + activeClass("/Org2") })</li>
+                    @if (currentUser != null)
+                    {
+                        <li>@Html.ActionLink("Quản lý tài khoản", "Index", "Account", new { area = "" }, new { @class = "nav-link" + activeClass("/Account") })</li>
+                    }
+                </ul>
+                <ul class="navbar-nav justify-content-end">
+                    @if (currentUser != null)
+                    {
+                        <li><span class="nav-link fw-bold"><i class="bi bi-person-circle"></i> @currentUser.Name</span></li>
+                        <li><a href="@Url.Action("Logout", "Home")" class="nav-link"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a></li>
+                    }
+                    else
+                    {
+                        <li><a href="@Url.Action("Login", "Home")" class="nav-link"><i class="bi bi-box-arrow-in-right"></i> Đăng nhập</a></li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
+    @Scripts.Render("~/bundles/jquery")
+    <div class="container body-content">
+        @RenderBody()
+
+    </div>
+
+    <footer style="width: 100%; background-color: maroon" class="footer mt-3 @(isPopup ? " d-none" : "")">
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-md-2"><img src='@Logo' width="150"></div>
+                <div class="col-md-5">
+                    <p class="footer-title fs-5">GIA PHẢ SỐ</p>
+                    <p class="footer-text fs-6"><b>Dòng họ Kim</b></p>
+                    <p class="footer-text"><b>- Địa chỉ:</b> @(DiaChi) </p>
+                    <p class="footer-text"><b>- Trưởng tộc:</b> @(TruongToc_Ten) - <b>Điện thoại:</b> @(TruongToc_SDT)</p>
+                </div>
+                <div class="col-md-5">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul>
+                                <li><a href="/TinTucs" target="_self"><i class="bi bi-caret-right-fill"></i> Tin tức</a></li>
+                                <li><a href="/PhaKys" target="_self"><i class="bi bi-caret-right-fill"></i> Phả ký</a></li>
+                                <li><a href="/Home/TocUoc" target="_self"><i class="bi bi-caret-right-fill"></i> Tộc ước</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul>
+                                <li><a href="/Home/PhaDo1" target="_self"><i class="bi bi-caret-right-fill"></i> Phả đồ</a></li>
+                                <li><a href="/Anhs" target="_self"><i class="bi bi-caret-right-fill"></i> Ảnh</a></li>
+                                <li><a href="/Videos" target="_self"><i class="bi bi-caret-right-fill"></i> Video</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <hr />
+    <footer>
+        <p class="copyright my-2">&copy; @DateTime.Now.Year - Phát triển bởi <a class="copyright-url" target="_blank" href="https://chuyendoiso.yenbai.gov.vn">Trung tâm Chuyển đổi số tỉnh Yên Bái</a></p>
+    </footer>
+    <style>
+        :root {
+            --primary-color: @(PrimaryColor);
+            --secondary-color: @(SecondaryColor);
+            --family-tree-color: @(FamilyTreeColor);
+        }
+        .copyright-url {
+            color: var(--primary-color, #f5cf7c);
+        }
+    </style>
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

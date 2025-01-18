@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="40ac9e995cdf48b8ab371f098656c9e2" Name="Diagram1">
+        <EntityTypeShape EntityType="GiaPha.KimTocModel.Account" Width="1.5" PointX="3" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GiaPha.KimTocModel.Anh" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GiaPha.KimTocModel.ChucNang" Width="1.5" PointX="0.75" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="GiaPha.KimTocModel.LoaiTinTuc" Width="1.5" PointX="5.75" PointY="6.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="GiaPha.KimTocModel.PhaKy" Width="1.5" PointX="7.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GiaPha.KimTocModel.sysdiagram" Width="1.5" PointX="0.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GiaPha.KimTocModel.ThanhVien" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="GiaPha.KimTocModel.TinTuc" Width="1.5" PointX="8" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="GiaPha.KimTocModel.TocUoc" Width="1.5" PointX="2.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GiaPha.KimTocModel.Video" Width="1.5" PointX="9.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GiaPha.KimTocModel.VoChong" Width="1.5" PointX="3" PointY="6.125" IsExpanded="true" />
+        <AssociationConnector Association="GiaPha.KimTocModel.FK_Account_ChucNang" ManuallyRouted="false" />
+        <AssociationConnector Association="GiaPha.KimTocModel.FK_ThanhVien_Account" ManuallyRouted="false" />
+        <AssociationConnector Association="GiaPha.KimTocModel.FK_TinTuc_TinTuc" ManuallyRouted="false" />
+        <AssociationConnector Association="GiaPha.KimTocModel.FK_ThanhVien_ThanhVien" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

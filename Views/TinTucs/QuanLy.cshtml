@@ -1,0 +1,73 @@
+﻿@model IEnumerable<GiaPha.Models.TinTuc>
+
+@{
+    ViewBag.Title = "Quản lý tin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4 class="my-3">@(ViewBag.Title)</h4>
+<hr />
+
+<p>
+    @Html.ActionLink("+ Thêm mới", "Create", null, new { @class = "btn btn-success" })
+</p>
+<table id="table" class="table table-bordered table-light table-striped table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th>Ảnh đại diện</th>
+            <th style="min-width: 150px">Tiêu đề</th>
+            <th>Mô tả (Tóm tắt)</th>
+            <th>Loại tin</th>
+            <th>Trạng thái</th>
+            <th>Tin nổi bật</th>
+            <th style="width: 100px"></th>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @if (item.AnhDaiDien != null && item.AnhDaiDien.Length > 0)
+                {
+                    <img src="@(item.AnhDaiDien)" width="32" loading="lazy" />
+                }
+            </td>
+            <td>
+                @Html.Raw(item.TieuDe)
+            </td>
+            <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+                title="@(item.TomTat)">
+                @Html.Raw(item.TomTat)
+            </td>
+            <td>
+                @Html.Raw(item.LoaiTinTuc)
+            </td>
+            <td>
+                @Html.Raw(item.TrangThai)
+            </td>
+            <td>
+                @if (item.TinNoiBat == true)
+                {
+                    <i class="bi bi-check-circle-fill text-success"></i>
+                }
+            </td>
+            <td class="text-center">
+                <div class="w-100 h-100 d-flex justify-content-center align-items-center">
+                    <a class="btn btn-sm btn-primary m-1" href="@Url.Action("Edit", new { id = item.ID })">Sửa</a>
+                    <a class="btn btn-sm btn-secondary m-1" href="@Url.Action("Details", new { id = item.ID })">Xem</a>
+                    <a class="btn btn-sm btn-danger m-1" href="@Url.Action("Delete", new { id = item.ID })">Xóa</a>
+                </div>
+            </td>
+        </tr>
+    }
+</table>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+<script>
+    var dataTable = new DataTable('#table', {
+        language: {
+            url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json'
+        },
+        dom: '<"top d-flex justify-content-between align-items-center"fp>rt<"bottom d-flex justify-content-between align-items-center"il><"clear">'
+    });
+</script>

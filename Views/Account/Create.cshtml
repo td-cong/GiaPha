@@ -1,0 +1,91 @@
+﻿@model GiaPha.Models.Account
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var AccountList = (List<GiaPha.Models.Account>)ViewBag.AccountList;
+    GiaPha.Models.GiaPhaEntities db = new GiaPha.Models.GiaPhaEntities();
+}
+
+@{
+    var newId = db.Accounts.Select(a => a.ID).Max() + 1;
+}
+<h4 class="my-3">Thêm mới thành viên</h4>
+<hr />
+
+@using (Html.BeginForm("Create", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="TrangThai" value="AC" />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.ID)
+    <div class="form">
+        <div class="row">
+            <div class="form-group col-md-6">
+                <strong>ID</strong>
+                <input type="text" value="@newId" class="form-control" readonly />
+            </div>
+            <div class="form-group col-md-6">
+                <strong>UserName</strong>
+                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-6">
+                <strong>Password</strong>
+                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group col-md-6">
+                <strong>Name</strong>
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-6">
+                <strong>ID Chức năng</strong>
+                <select id="idChucNangDropdown" class="form-control" name="idChucNang">
+                    <option value="">- Chọn -</option>
+                    @foreach (var item in db.ChucNangs.Select(x => new { x.idChucNang, x.TenChucNang }).Distinct())
+                    {
+                        <option value="@item.idChucNang" data-tenchucnang="@item.TenChucNang">
+                            @item.idChucNang
+                        </option>
+                    }
+                </select>
+                @Html.ValidationMessageFor(model => model.idChucNang, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group col-md-6">
+                <strong>Chức năng</strong>
+                @Html.EditorFor(model => model.Role, new { htmlAttributes = new { @class = "form-control", @id = "roleInput" } })
+                @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger" })
+            </div>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+            <script>
+                $(document).ready(function () {
+                    $('#idChucNangDropdown').on('change', function () {
+                        
+                        var selectedOption = $(this).find(':selected');
+                        var tenChucNang = selectedOption.data('tenchucnang') || ''; 
+
+                        // Đặt giá trị cho input Role
+                        $('#roleInput').val(tenChucNang);
+                    });
+                });
+            </script>
+        </div>
+        <div class="form-group my-3">
+            <div class="col-md-12 text-center">
+                <button type="submit" class="btn btn-success"><i class="bi bi-plus-circle-fill"></i> Thêm mới</button>
+                <a class="btn btn-secondary" href="@Url.Action("/Index")">Quay lại</a>
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

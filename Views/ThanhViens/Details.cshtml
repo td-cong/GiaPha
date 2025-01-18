@@ -1,0 +1,105 @@
+﻿@model GiaPha.Models.ThanhVien
+
+@{
+    ViewBag.Title = "Chi tiết";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var ThanhVienList = (List<GiaPha.Models.ThanhVien>)ViewBag.ThanhVienList;
+    var VoChongList = (List<GiaPha.Models.VoChong>)ViewBag.VoChongList;
+    var currentUser = (GiaPha.Models.Account)Session["User"];
+
+    var isPopup = Request.QueryString["popup"] == "true";
+}
+
+<h4 class="my-3">Thông tin chi tiết thành viên</h4>
+<hr />
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 d-flex justify-content-center py-2">
+            <div class="d-flex justify-content-center" style="border: 1px solid #aaa; padding: 5px; width: 138px; background-color: #fff">
+                <label for="file" style="width: 128px; min-height: 160px; text-align: center;">
+                    @if (Model.Avt?.Length > 0)
+                    {
+                        <img src="@(Model.Avt)"
+                             width="128"
+                             style="min-width: 128px; min-height: 160px"
+                             title="Ảnh hiện tại"
+                             alt="Chưa có ảnh" />
+                    }
+                    else
+                    {
+                        <span class="text-muted">CHƯA CÓ ẢNH</span>
+                    }
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-6">
+            <strong>Họ tên</strong>
+            @Html.EditorFor(model => model.HoTen, new { htmlAttributes = new { @class = "form-control w-100", @disabled = true } })
+        </div>
+        <div class="form-group col-md-6">
+            <strong>Con của cụ</strong>
+            @Html.DropDownListFor(model => model.PID, new SelectList(ThanhVienList, "ID", "HoTen"), "Không có thông tin", new { @class = "form-control", @disabled = true })
+        </div>
+    </div>
+    <div class="row">
+    </div>
+    <div class="row">
+        <div class="form-group col-md-6">
+            <strong>Năm sinh</strong>
+            @Html.EditorFor(model => model.NamSinh, new { htmlAttributes = new { @class = "form-control", @disabled = true } })
+        </div>
+
+        <div class="form-group col-md-6">
+            <strong>Năm mất</strong>
+            @Html.EditorFor(model => model.NamMat, new { htmlAttributes = new { @class = "form-control", @disabled = true } })
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-12">
+            <strong>Giới tính</strong><br>
+            <div class="form-check form-check-inline">
+                @Html.RadioButtonFor(model => model.GioiTinh, true, new { @class = "form-check-input", @disabled = true }) Nam
+            </div>
+            <div class="form-check form-check-inline">
+                @Html.RadioButtonFor(model => model.GioiTinh, false, new { @class = "form-check-input", @disabled = true }) Nữ
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-6">
+            <strong>Vợ (chồng)</strong>
+            @Html.DropDownListFor(model => model.VoChong, new SelectList(ThanhVienList, "ID", "HoTen"), "Không có thông tin", new { @class = "form-control", @disabled = true })
+        </div>
+        <div class="form-group col-md-6">
+            <strong>Địa phương</strong>
+            @Html.EditorFor(model => model.DiaPhuong, new { htmlAttributes = new { @class = "form-control", @disabled = true } })
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-12">
+            <strong>Lý Lịch</strong>
+            @Html.TextAreaFor(model => model.LyLich, new { @class = "form-control", @row = "5", @disabled = true })
+        </div>
+    </div>
+    <div class="form-group my-3">
+        <div class="col-md-12 text-center">
+            @if (currentUser != null && isPopup == false)
+            {
+                <a class="btn btn-outline-primary" href="@Url.Action("Edit", new { id = Model.ID })"><i class="bi bi-pencil-square"></i> Sửa</a>
+                <a class="btn btn-secondary" href="@Url.Action("Index")">Quay lại danh sách</a>
+            }
+            else if (currentUser != null && isPopup == true)
+            {
+                <a class="btn btn-outline-primary" href="@Url.Action("Edit", new { id = Model.ID })"><i class="bi bi-pencil-square"></i> Sửa</a>
+                <button class="btn btn-secondary" onclick="window.close()">Đóng</button>
+            }
+            else
+            {
+                <button class="btn btn-secondary" onclick="window.close()">Đóng</button>
+            }
+
+        </div>
+    </div>
+</div>

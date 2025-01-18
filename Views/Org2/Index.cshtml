@@ -1,0 +1,1452 @@
+﻿@model IEnumerable<GiaPha.Models.ThanhVien>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var allData = Model;
+    var currentUser = (GiaPha.Models.Account)Session["User"];
+    var quyenQuanLy = ViewBag.quyenQuanLy;
+    var truongHoColor = "purple";
+    var truongChiColor = "CornflowerBlue";
+    var voChongColor = "orange";
+
+    var currentUri = HttpContext.Current.Request.Url.AbsoluteUri ?? HttpContext.Current.Request.Url.Scheme + HttpContext.Current.Request.Url.Host + HttpContext.Current.Request.Path ?? "";
+}
+@{
+    var currentAccount = currentUser != null
+    ? currentUser.ThanhViens.FirstOrDefault(t => t.IdTaiKhoan == currentUser.ID)
+    : allData.FirstOrDefault();
+
+    var truongHo = allData.FirstOrDefault(t => t.IsTruongHo == true);
+
+    var conChau = allData.Where(x => x.ID != truongHo.ID);
+
+    var voChong = conChau.Where(v =>
+    {
+        if (v.VoChong != null)
+        {
+            return allData.Any(a => a.ID == v.VoChong);
+        }
+        return false;
+    });
+
+    var truongHoList = allData.Where(t => t.IsTruongHo == true).ToList();
+
+    if (truongHo != null)
+    {
+        truongHoList.Remove(truongHo);
+    }
+
+    var TruongChi = allData.Where(t => t.IsTruongChi == true).ToList();
+}
+
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12" align="center" style="margin-top:20px; margin-bottom:5px">
+                <div class="tab-page-long active">
+                    <a href"">Phả đồ</a>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div id="chart-container">
+                <div id="legend-content">
+                    <div class="legend-content-wrapper">
+                        <div class="legend-item">
+                            <div class="legend-item-dot" style="background-color: @(truongHoColor)"></div> Trưởng họ
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-item-dot" style="background-color: @(truongChiColor)"></div> Trưởng chi
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-item-dot" style="background-color: @(voChongColor)"></div> Vợ/chồng
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-item-dot" style="background-color: #996633;"></div> Nam
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-item-dot" style="background-color: rgba(217, 83, 79, 0.8)"></div> Nữ
+                        </div>
+                    </div>
+                </div>
+                <div id="edit-panel1" class="view-state row" style="display: flex;">
+
+                    <div class="col-auto p-1 filter-field">
+                        <input class="form-control" type="text" id="key-word" placeholder="Nhập từ khóa">
+                        <button class="btn btn-primary" type="button" id="btn-filter-node" title="Tìm kiếm"><i class="bi bi-search"></i></button>
+                    </div>
+                    <div class="col-auto p-1">
+
+                    </div>
+                    <div class="button-group">
+                        <div class="col-auto p-1">
+                            <button class="btn btn-light" type="button" id="btn-cancel" title="Làm mới"><i class="bi bi-arrow-clockwise"></i></button>
+                        </div>
+                        <div class="col-auto p-1">
+                            <button class="btn btn-light" type="button" id="btn-setting" title="Tùy chọn"><i class="bi bi-gear"></i></button>
+                        </div>
+                        <div class="col-auto p-1">
+                            <select class="level-select" id="visible-level-select">
+                                <option hidden value="20">0 - Không giới hạn cấp độ</option>
+                                <option value="1">1 - Giới hạn xem đến đời 1</option>
+                                <option value="2">2 - Giới hạn xem đến đời 2</option>
+                                <option value="3">3 - Giới hạn xem đến đời 3</option>
+                                <option value="4">4 - Giới hạn xem đến đời 4</option>
+                                <option value="5">5 - Giới hạn xem đến đời 5</option>
+                                <option value="6">6 - Giới hạn xem đến đời 6</option>
+                                <option value="7">7 - Giới hạn xem đến đời 7</option>
+                                <option value="8">8 - Giới hạn xem đến đời 8</option>
+                                <option value="9">9 - Giới hạn xem đến đời 9</option>
+                                <option value="10">10 - Giới hạn xem đến đời 10</option>
+                                <option value="11">11 - Giới hạn xem đến đời 11</option>
+                                <option value="12">12 - Giới hạn xem đến đời 12</option>
+                                <option value="13">13 - Giới hạn xem đến đời 13</option>
+                            </select>
+                        </div>
+
+                        @*<div class="col-auto p-1">
+                            <label>Từ đời:</label>
+                            <select id="start-level" class="form-control">
+                                @for (int i = 1; i <= 13; i++)
+                                {
+                                    <option value="@i">Đời @i</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-auto p-1">
+                            <label>Đến đời:</label>
+                            <select id="end-level" class="form-control">
+                                @for (int i = 1; i <= 13; i++)
+                                {
+                                    <option value="@i">Đời @i</option>
+                                }
+                            </select>
+                        </div>*@
+
+                    </div>
+
+                </div>
+
+
+                <div id="settings-modal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h4>Tùy chọn phả đồ</h4>
+                        <hr />
+                        <form>
+                            <div>
+                                <label>
+                                    <input type="radio" name="option" value="option1" id="option1"> Hiển thị thêm vợ(chồng)
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input type="radio" name="option" value="option2" id="option2"> Chỉ hiển thị đinh(nam)
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input type="radio" name="option" value="option3" id="option3" checked> Hiển thị tất cả
+                                </label>
+                            </div>
+                            <hr />
+                            <div>
+                                <label>
+                                    <input type="radio" name="option" value="option5" id="option5"> Chỉ hiển thị trưởng họ, trường chi
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input type="radio" name="option" value="option4" id="option4"> Hiển thị biểu đồ dọc
+                                </label>
+                            </div>
+                            <hr />
+                            <div class="view-state" style="padding-left: 7px">
+                                <a id="fake-export" class="btn btn-light"><i class="bi bi-card-image"></i> Xuất file</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <script>
+                    document.getElementById('btn-setting').addEventListener('click', function () {
+                        document.getElementById('settings-modal').style.display = 'block';
+                    });
+
+                    document.querySelector('.close').addEventListener('click', function () {
+                        document.getElementById('settings-modal').style.display = 'none';
+                    });
+
+                    window.addEventListener('click', function (event) {
+                        const modal = document.getElementById('settings-modal');
+                        if (event.target === modal) {
+                            modal.style.display = 'none';
+                        }
+                    });
+                </script>
+
+                <div id="node-info-form" style="display: none;">
+                    <div class="info-form-header">
+                        <p class="info-form-name" id="node-name"></p>
+                        <div id="boc-avatar" class="info-form-avatar">
+                            <img style="width: 100%; height: 100%; border-radius: 50%;" src="" id="avatar-image" />
+                        </div>
+                        <div id="close-icon">
+                            <i class="bi bi-x-lg" style="font-size: 30px"></i>
+                        </div>
+                    </div>
+                    <div class="info-form-feature">
+                        <div id="info-pdf" class="boc-img-button" style="background-color: #01476E" title="Lưu PDF">
+                            <img style="width: 25px; height: 25px" src="~/Content/img/file-pdf-regular.svg" />
+                        </div>
+                        <div id="info-png" class="boc-img-button" style="background-color: #01476E" title="Lưu ảnh">
+                            <img style="width: 25px; height: 25px" src="~/Content/img/filetype-png.svg" />
+                        </div>
+                        @if (currentUser != null)
+                        {
+                            <div id="info-edit" class="boc-img-button" style="background-color: #01476E" title="Sửa">
+                                <img style="width: 25px; height: 25px" src="~/Content/img/pen-solid.svg" />
+                            </div>
+                        }
+                    </div>
+                    <div class="info-form-fields">
+                        <div class="info-form-fields-inner">
+                            <div class="form-fieldset">
+                                <div class="form-field">
+                                    <div class="form-field-input" data-boc-input="" data-boc-input-disabled="">
+                                        <label class="form-label" for="input-name">Họ tên:</label>
+                                        <input class="form-input" readonly="" data-binding="name" maxlength="256" id="input-name" name="ten" type="text" autocomplete="off">
+                                    </div>
+                                </div>
+                                <div class="form-field">
+                                    <div class="form-field-input" data-boc-input="" data-boc-input-disabled="">
+                                        <label class="form-label" for="input-name">Giới tính:</label>
+                                        <input class="form-input" readonly="" data-binding="gender" maxlength="256" id="input-gender" name="gender" type="text" autocomplete="off">
+                                    </div>
+                                </div>
+                                <div class="form-field">
+                                    <div class="form-field-input" data-boc-input="" data-boc-input-disabled="">
+                                        <label class="form-label" for="input-birth">Năm sinh - Năm mất:</label>
+                                        <input class="form-input" readonly="" data-binding="birth" maxlength="256" id="input-birth" name="nam" type="text" autocomplete="off">
+                                    </div>
+                                </div>
+                                <div class="form-field" style="min-width: 180px; flex: none">
+                                    <label class="boc-checkbox" data-boc-input="" data-boc-input-disabled="">
+                                        <input onclick="return false;" id="isTruongHo" data-binding="IsTruongHo" type="checkbox">Là trưởng họ
+                                    </label>
+                                </div>
+                                <div class="form-field" style="min-width: 180px; flex: none">
+                                    <label class="boc-checkbox" data-boc-input="" data-boc-input-disabled="">
+                                        <input onclick="return false;" id="isTruongChi" data-binding="IsTruongChi" type="checkbox">Là trưởng chi
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <script>
+            $('#info-png').on('click', function () {
+                const screenshotTarget = document.getElementById('node-info-form');
+
+                const scrollTop = window.scrollY;
+                const scrollLeft = window.scrollX;
+
+                window.scrollTo(0, 0);
+
+                setTimeout(() => {
+                    html2canvas(screenshotTarget).then((canvas) => {
+                        const base64image = canvas.toDataURL("image/png");
+                        var anchor = document.createElement('a');
+                        anchor.setAttribute("href", base64image);
+                        anchor.setAttribute("download", "info-img.png");
+                        anchor.click();
+                        anchor.remove();
+                    });
+                }, 500);               
+
+            });
+        </script>
+
+        <script src="~/Scripts/jquery.min.js"></script>
+        <script src="~/Scripts/html2canvas.min.js"></script>
+        <script src="~/Scripts/jquery.orgchart.js"></script>
+        <script src="~/Scripts/jspdf.umd.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.1.1/es6-promise.auto.min.js"></script>
+        <script src="~/Scripts/html2pdf.bundle.min.js"></script>
+        <script src="~/Scripts/printThis.js"></script>
+        <script orgchart type="text/javascript">
+            @functions{
+                string GetAllConChau (IEnumerable<GiaPha.Models.ThanhVien> allData,int parentID/*, int currentLevel = 1*/) {
+                    var conChauStr = "";
+                    var conChau = allData.Where(x => x.PID == parentID);
+
+                    //var voChong = allData.Where(x => x.VoChong == parentID);
+
+                    //var ketQua = conChau.Concat(voChong).ToList();
+
+                    if (conChau != null)
+                    {
+                        foreach(var item in conChau)
+                        {
+                            var levelOffset = item.VoChong != null ? -1 : 0;
+
+                            conChauStr += $"{{" +
+                                        $"  'id': \"{item.ID}\", " +
+                                        $"  'name': \"{item.HoTen}\", " +
+                                        $"  'namsinh': \"{item.NamSinh} {(item.NamMat != null ? "- " + item.NamMat : "")}\", " +
+                                        $"  'title': \"{(item.IsTruongChi == true ? "Trưởng Chi" : "")} {(item.IsTruongHo == true ? "Trưởng Họ" : "")} \", " +
+                                        $"  'gender': \"{(item.GioiTinh == true ? "Nam" : "Nữ")} \", " +
+                                        $"  'avt': \"{item.Avt}\", " +
+                                        $"  'levelOffset': {levelOffset}, " +
+                                        //$"  'level': {currentLevel}, " +
+                                        $"  'children': [{GetAllConChau(allData, item.ID/*, currentLevel + 1*/)}], " +
+                                        $"  }},";
+                        }
+                    }
+                    return conChauStr;
+                }
+
+                string GetTruongHoVaTruongChi(IEnumerable<GiaPha.Models.ThanhVien> allData)
+                {
+                    var truongHoVaTruongChiStr = "";
+                    var filteredData = allData.Where(x => (x.IsTruongHo.GetValueOrDefault() || x.IsTruongChi.GetValueOrDefault()));
+
+                    if (filteredData != null && filteredData.Any())
+                    {
+                        foreach (var item in filteredData)
+                        {
+                            truongHoVaTruongChiStr += $"{{" +
+                                         $"  'id': \"{item.ID}\", " +
+                                         $"  'name': \"{item.HoTen}\", " +
+                                         $"  'namsinh': \"{item.NamSinh} {(item.NamMat != null ? "- " + item.NamMat : "")}\", " +
+                                         $"  'title': \"{(item.IsTruongChi == true ? "Trưởng Chi" : "")} {(item.IsTruongHo == true ? "Trưởng Họ" : "")} \", " +
+                                         $"  'gender': \"{(item.GioiTinh == true ? "Nam" : "Nữ")} \", " +
+                                         $"  'avt': \"{item.Avt}\" " +
+                                         $"  }},";
+                        }
+                    }
+                    return truongHoVaTruongChiStr;
+                }
+
+            }
+
+            function loopChart($hierarchy) {
+                var $siblings = $hierarchy.children('.nodes').children('.hierarchy');
+                if ($siblings.length) {
+                    $siblings.filter(':not(.hidden)').first().addClass('first-shown')
+                        .end().last().addClass('last-shown');
+                }
+                $siblings.each(function (index, sibling) {
+                    loopChart($(sibling));
+                });
+            }
+
+            function filterNodes(keyWord) {
+                keyWord = keyWord.toLowerCase();
+                if (!keyWord.length) {
+                    window.alert('Nhập từ khóa cần tìm!');
+                    return;
+                } else {
+                    var $chart = $('.orgchart');
+                    // disable the expand/collapse feature
+                    /*$chart.addClass('noncollapsable');*/
+                    // distinguish the matched nodes and the unmatched nodes according to the given key word
+                    $matchedNodes = $chart.find('.node').filter(function (index, node) {
+                        var nodeMatched = $(node).text().toLowerCase().indexOf(keyWord) > -1;
+                        return nodeMatched;
+                    }).addClass('matched')
+                        .closest('.hierarchy').parents('.hierarchy').children('.node').addClass('retained');
+
+                    if ($matchedNodes.length === 0) {
+                        window.alert('Không tìm thấy nút nào chứa từ khóa "' + keyWord + '"!');
+                        return;
+                    }
+                    // hide the unmatched nodes
+                    $chart.find('.matched,.retained').each(function (index, node) {
+                        $(node).removeClass('slide-up')
+                            .closest('.nodes').removeClass('hidden')
+                            .siblings('.hierarchy').removeClass('isChildrenCollapsed');
+                        var $unmatched = $(node).closest('.hierarchy').siblings().find('.node:first:not(.matched,.retained)')
+                            .closest('.hierarchy').addClass('hidden');
+                    });
+                    // hide the redundant descendant nodes of the matched nodes
+                    $chart.find('.matched').each(function (index, node) {
+                        if (!$(node).siblings('.nodes').find('.matched').length) {
+                            $(node).siblings('.nodes').addClass('hidden')
+                                .parent().addClass('isChildrenCollapsed');
+                        }
+                    });
+                    var chartWidth = $chart.outerWidth(true);
+                    var chartHeight = $chart.outerHeight(true);
+                    var nodeWidth = $matchedNodes.outerWidth(true);
+                    var nodeHeight = $matchedNodes.outerHeight(true);
+                    var a = 0.5; // giá trị phóng to theo chiều ngang
+                    var d = 0.5; // giá trị phóng to theo chiều dọc
+                    var e = (chartWidth / 2) - (nodeWidth / 2) * a;
+                    var f = (chartHeight / 2) - (nodeHeight / 2) * d;
+                    $('.orgchart').css('transform', `matrix(${a}, 0, 0, ${d}, -${e}, -${f})`);
+                    // loop chart and adjust lines
+                    loopChart($chart.find('.hierarchy:first'));
+                }
+            }
+
+            function clearFilterResult() {
+                $('.orgchart')
+                    .find('.node').removeClass('matched retained')
+                    .end().find('.hidden, .isChildrenCollapsed, .first-shown, .last-shown').removeClass('hidden isChildrenCollapsed first-shown last-shown')
+                    /*.end().find('.slide-up, .slide-left, .slide-right').removeClass('slide-up slide-right slide-left')*/;
+            }
+            function resetChart() {
+                var $this = $('.orgchart').find('.node').first();
+                var $chart = $this.closest('.orgchart');
+                var newX = window.parseInt(-(($chart.outerWidth(true) / 1.83) - ($this.offset().left - $chart.offset().left) - ($this.outerWidth(true) / 2)));
+                var newY = window.parseInt(-($chart.outerHeight(true) / 5) - ($this.offset().top - $chart.offset().top) - ($this.outerHeight(true) / 2));
+                $chart.css('transform', 'matrix(0.5, 0, 0, 0.5, ' + newX + ', ' + newY + ')');
+            }
+
+            $(function () {
+            var datasource = {
+                'id': `@{@Html.Raw(truongHo?.ID)}`,
+                'name': `@{@Html.Raw(truongHo?.HoTen)<br/>}`,
+                'namsinh': parseInt('@truongHo.NamSinh') || "" + ( parseInt('@truongHo.NamMat') || ""),
+                'title': `@(truongHo?.IsTruongHo ?? true ? "Trưởng Họ" : "")`,
+                'gender': `@(truongHo?.GioiTinh ?? true ? "Nam" : "Nữ")`,
+                'avt': `@{@Html.Raw(truongHo?.Avt)}`,
+                'children': [
+                    @Html.Raw(GetAllConChau(allData, truongHo.ID))
+                    ],
+                };
+
+            var data_thtc = {
+                'id': `@{@Html.Raw(truongHo?.ID)}`,
+                'name': `@{@Html.Raw(truongHo?.HoTen)<br/>}`,
+                'namsinh': parseInt('@truongHo.NamSinh') || "" + ( parseInt('@truongHo.NamMat') || ""),
+                'title': `@(truongHo?.IsTruongHo ?? true ? "Trưởng Họ" : "")`,
+                'gender': `@(truongHo?.GioiTinh ?? true ? "Nam" : "Nữ")`,
+                'avt': `@{@Html.Raw(truongHo?.Avt)}`
+            };
+
+            var nodeTemplate = function (data) {
+            var imgUrl = data.avt || '/Content/img/simpleAvt1.png';
+            return `
+
+                <div class="title">
+                    <img class="avt" crossorigin="anonymous" src="${imgUrl}"/>
+                    <div class="name">${data.name}</div>
+                    <div class="birth">${data.namsinh}</div>
+                </div>
+                <div class="content">${data.title}
+                    <div class="gender">${data.gender}</div>
+                </div>
+                `;
+            };
+
+            var nodeTemplate_MB = function (data) {
+            var imgUrl = data.avt || '/Content/img/simpleAvt1.png';
+            return `
+
+                <div class="title mobile-node">
+                    <div class="name">${data.name}</div>
+                    <div class="birth">${data.namsinh}</div>
+                </div>
+                <div class="content">${data.title}
+                    <div class="gender">${data.gender}</div>
+                </div>
+                `;
+                };
+
+            function isMobile() {
+                return window.innerWidth <= 768;
+
+            }
+
+            var selectedNodeTemplate = isMobile() ? nodeTemplate_MB : nodeTemplate;
+
+            var visibleLevel = 10;
+            var oc = $('#chart-container').orgchart({
+                'exportButton': true,
+                'exportButtonName': 'Xuất file',
+                'exportFilename': 'OrgChart',
+                'exportFileextension': 'png',
+                'data': datasource,
+                'nodeTemplate': selectedNodeTemplate,
+                'nodeTitle': 'name',
+                'nodeContent': 'title',
+                'nodeID': 'id',
+                'visibleLevel': visibleLevel,
+                'toggleSiblingsResp': true,
+                'pan': true,
+                'zoom': true,
+                'zoomoutLimit': 0.1,
+                'zoominLimit': 2,
+
+                'createNode': function ($node, data) {
+
+                if (data.levelOffset == -1) {
+                    $node.css({
+                        'margin-top': (data.levelOffset * 65) + 'px',
+                        '--top': (-11 - data.levelOffset * 70) + 'px',
+                        '--height': (9 + data.levelOffset * 70) + 'px',
+                        '--top-cross-point': (-13 - data.levelOffset * 70) + 'px',
+                        '--height-cross-point': (11 + data.levelOffset * 70) + 'px',
+                });
+                    $node.find('.title').css({
+                        'background-color': 'orange'
+                    })
+                }
+                //avt
+                $node.find('.content').prepend($node.find('.symbol'));
+
+                // VoChong
+                var existingNodeIds = $node.map(function (index, element) {
+                    return $(element).attr('id');
+                }).get();
+
+                //
+                var contentText = $node.find('.content').text().trim();
+                if (contentText.includes('Trưởng Chi')) {
+                    $node.find('.title').css('background-color', '@(truongChiColor)');
+                }
+                else if (contentText.includes('Trưởng Họ')) {
+                    $node.find('.title').css('background-color', '@(truongHoColor)');
+                    }
+                var genderText = $node.find('.gender').text().trim();
+                if (contentText.includes('Nam')) {
+                    $node.addClass('lv11');
+                    }
+                },
+                'initCompleted': function (data) {
+                    resetChart()
+                    var $chartContainer = $('.orgchart');
+                    /*$('.orgchart').addClass('noncollapsable');*/
+                    $('.oc-export-btn').addClass('d-none');
+                    $('#fake-export').on('click', () => {
+
+                        const xValues = {
+                            0: 2, 1: 2,
+                            2: 2, 3: 2,
+                            4: 2, 5: 2,
+                            6: 2, 7: 2,
+                            8: 2, 9: 1.62,
+                            10: 1.4,
+                            11: 1.076,
+                            12: 1.057,
+                            default: 1.053
+                        };
+
+                        const $this = $('.orgchart').find('.node').first();
+                        const $chart = $this.closest('.orgchart');
+
+                        const { [visibleLevel]: x = xValues.default } = xValues;
+
+                        const newX = window.parseInt(-(($chart.outerWidth(true) / x) - ($this.offset().left - $chart.offset().left) - ($this.outerWidth(true) / 2)));
+                        const newY = window.parseInt(-($chart.outerHeight(true) / 3.5) - ($this.offset().top - $chart.offset().top) - ($this.outerHeight(true) / 2));
+
+                        //const scrollValues = {
+                        //    0: 125, 1: 0,
+                        //    2: 0, 3: 0,
+                        //    4: 2, 5: 2,
+                        //    6: 2, 7: 30,
+                        //    8: 2, 9: 1.62,
+                        //    10: 100, 11: 1.076,
+                        //    12: 1.057, 13: 100,
+                        //    default: 50
+                        //};
+                        //const { [visibleLevel]: scrollTop = scrollValues.default } = scrollValues;
+                        //console.log(scrollTop)
+                        window.scrollTo(0, 100);
+
+                        $chart.css('transform', `matrix(0.1, 0, 0, 0.1, ${newX}, ${newY})`);
+
+                        setTimeout(() => {
+                            $('.oc-export-btn').click();
+                        }, 900);
+                    });
+                },
+            });
+
+            $('#visible-level-select').on('change', function () {
+                var newVisibleLevel = parseInt($(this).val());
+                oc.init({
+                    'data': datasource,
+                    'nodeTemplate': selectedNodeTemplate,
+                    'nodeTitle': 'name',
+                    'nodeContent': 'title',
+                    'nodeID': 'id',
+                    'visibleLevel': newVisibleLevel,
+                    'toggleSiblingsResp': true,
+                    'pan': true,
+                    'zoom': true,
+                    'zoomoutLimit': 0.05,
+                    'zoominLimit': 3,
+                    'createNode': function ($node, data) {
+
+                    if (data.levelOffset == -1) {
+                        $node.css({
+                            'margin-top': (data.levelOffset * 65) + 'px',
+                            '--top': (-11 - data.levelOffset * 70) + 'px',
+                            '--height': (9 + data.levelOffset * 70) + 'px',
+                            '--top-cross-point': (-13 - data.levelOffset * 70) + 'px',
+                            '--height-cross-point': (11 + data.levelOffset * 70) + 'px',
+                        });
+                        $node.find('.title').css({
+                            'background-color': 'orange',
+                        })
+                    }
+                    //avt
+                    $node.find('.content').prepend($node.find('.symbol'));
+
+                    // VoChong
+                    var existingNodeIds = $node.map(function (index, element) {
+                        return $(element).attr('id');
+                    }).get();
+
+                    //
+                    var contentText = $node.find('.content').text().trim();
+                    if (contentText.includes('Trưởng Chi')) {
+                        $node.find('.title').css('background-color', '@(truongChiColor)');
+                    }
+                    else if (contentText.includes('Trưởng Họ')) {
+                        $node.find('.title').css('background-color', '@(truongHoColor)');
+                        }
+                    var genderText = $node.find('.gender').text().trim();
+                    if (contentText.includes('Nam')) {
+                        $node.addClass('lv11');
+                        }
+                },
+                    'initCompleted': function () {
+                        var $chartContainer = $('.orgchart');
+                        /*$('.orgchart').addClass('noncollapsable');*/
+                        $('.oc-export-btn').addClass('d-none');
+
+                        $('#fake-export').on('click', () => {
+                            const scrollValues = {
+                                0: 125, 1: 0,
+                                2: 0, 3: 0,
+                                4: 15, 5: 35,
+                                6: 50, 7: 65,
+                                8: 80, 9: 90,
+                                10: 110, 11: 120,
+                                12: 125, 13: 130,
+                                default: 0
+                            };
+                            const { [newVisibleLevel]: scrollTop = scrollValues.default } = scrollValues;
+                            window.scrollTo(0, scrollTop);
+                        });
+                        const xValues = {
+                            0: 2, 1: 2,
+                            2: 2, 3: 2,
+                            4: 2, 5: 2,
+                            6: 2, 7: 2,
+                            8: 2, 9: 1.62,
+                            10: 1.27, 11: 1.076,
+                            12: 1.057,
+                            default: 1.053
+                        };
+
+                        const $this = $('.orgchart').find('.node').first();
+                        const $chart = $this.closest('.orgchart');
+
+                        const { [newVisibleLevel]: x = xValues.default } = xValues;
+
+                        const newX = window.parseInt(-(($chart.outerWidth(true) / x) - ($this.offset().left - $chart.offset().left) - ($this.outerWidth(true) / 2)));
+                        const newY = window.parseInt(-($chart.outerHeight(true) / 4.5) - ($this.offset().top - $chart.offset().top));
+                        $chart.css('transform', `matrix(0.5, 0, 0, 0.5, ${newX}, ${newY})`);
+
+                    },
+                });
+            });
+
+            @*$('.orgchart').append('@foreach (var item in TruongChi) {<div class="node" id="@item.ID" ><div class="title">@item.HoTen</div><div class="content"></div></div>}');*@
+
+            oc.setChartScale(oc.$chart, 0.5);
+
+            //highlight
+            oc.$chart.find('.node')
+                .on('mouseenter', function () {
+                    $(this).addClass('highlight-self');
+                })
+                .on('mouseleave', function () {
+                    oc.$chart.find('.node').removeClass('highlight-self');
+                });
+
+            $('#btn-filter-node').on('click', function () {
+                filterNodes($('#key-word').val());
+
+            });
+
+            const levelSelect = document.getElementById('visible-level-select');
+            $('#btn-cancel').on('click', function (data) {
+                $('#key-word').val('');
+                /*resetChart();*/
+                const selectedLevel = parseInt(levelSelect.value);
+                /*oc.init({ 'visibleLevel': selectedLevel });*/
+                console.log(selectedLevel)
+                const xValues = {
+                    0: 1.83, 1: 2.55,
+                    2: 2.6, 3: 2.7,
+                    4: 3.1, 5: 3.1,
+                    6: 3.4, 7: 3.6,
+                    8: 3.7, 9: 2.63,
+                    10: 1.83, 11: 1.465,
+                    12: 1.432,
+                    20: 1.83,
+                    default: 1.426
+                };
+
+                const $this = $('.orgchart').find('.node').first();
+                const $chart = $this.closest('.orgchart');
+
+                /*const { [selectedLevel]: x = xValues.default } = xValues;*/
+                const x = isNaN(selectedLevel) ? 2 : xValues[selectedLevel] ?? xValues.default;
+
+                const newX = window.parseInt(-(($chart.outerWidth(true) / x) - ($this.offset().left - $chart.offset().left) - ($this.outerWidth(true) / 2)));
+                const newY = window.parseInt(-($chart.outerHeight(true) / 4.2) - ($this.offset().top - $chart.offset().top));
+
+                $chart.css('transform', `matrix(0.5, 0, 0, 0.5, ${newX}, ${newY})`);
+            });
+
+                $('#key-word').on('keyup', function (event) {
+                if (event.which === 13) {
+                    filterNodes(this.value);
+                } else if (event.which === 8 && this.value.length === 0) {
+                    levelSelect == 13;
+                    /*clearFilterResult();*/
+                    resetChart();
+                }
+            });
+
+            //Form thông tin thanh viên
+            var currentNodeId = null;
+            oc.$chartContainer.on('click', '.node', function () {
+                var $this = $(this);
+                var nodeId = $this.attr('id');
+                var name = $this.find('.name').text();
+                var gender = $this.find('.gender').text();
+                var birth = $this.find('.birth').text();
+                var avtUrl = $this.find('img.avt').attr('src');
+                var role = $this.find('.content').text().trim();
+
+                var currentUserId = '@(currentUser != null && currentAccount != null ? currentAccount.ID : null)';
+
+                if (currentNodeId !== nodeId) {
+                    currentNodeId = nodeId; // Update current node ID
+                    $('#node-info-form').css('display', 'unset');
+                }
+
+                if (currentNodeId === currentUserId) {
+                    // Nếu trùng thì hiện nút edit
+                    $('#info-edit').show();
+                } else {
+                    // Nếu không trùng thì ẩn nút edit
+                    $('#info-edit').css('display', 'none');
+                }
+
+                var childNodes = $this.closest('.hierarchy').parents('.hierarchy').children('.node'); // Get child nodes
+                var hasChildWithEditPermission = childNodes.filter(function () {
+                    return $(this).attr('id') === currentUserId;
+                }).length > 0;
+
+                if (hasChildWithEditPermission) {
+                    $('#info-edit').show();
+                }
+
+                oc.$chartContainer.on('click', '.orgchart', function (event) {
+                    if (!$(event.target).closest('.node').length) {
+                        $('#node-info-form').css('display', 'none');
+                    }
+                });
+
+                $('#node-name').text(name).data('node', $this);
+                $('#avatar-image').attr('src', avtUrl).data('node', $this);
+                $('#input-name').val(`${name}`).data('node', $this);
+                $('#input-gender').val(`${gender}`).data('node', $this);
+                $('#input-birth').val(`${birth}`).data('node', $this);
+
+                if (role.includes('Trưởng Chi')) {
+                    $('#isTruongChi').prop('checked', true);
+                }
+                else {
+                    $('#isTruongChi').prop('checked', false);
+                }
+                if (role.includes('Trưởng Họ')) {
+                    $('#isTruongHo').prop('checked', true);
+                }
+                else {
+                    $('#isTruongHo').prop('checked', false);
+                }
+
+                $('#info-edit').on('click', function () {
+                    window.open(`/ThanhViens/Edit/${currentNodeId}?popup=true`, "_blank", "popup=true")
+                });
+
+                $('#node-info-form').css('display', 'unset');
+                console.log(currentNodeId)
+            });
+
+            //pdf
+            $('#info-pdf').on('click', function () {
+                $("#node-info-form").printThis({
+                    debug: false,
+                    importStyle: true,
+                    printContainer: true,
+                    removeInline: false,
+                    copyTagClasses: true,
+                    copyTagStyles: true,
+                });
+            });
+
+            oc.$chartContainer.on('click', '.orgchart', function (event) {
+                if (!$(event.target).closest('.node').length) {
+                    $('#node-info-form').css('display', 'none');
+                }
+            });
+
+            $('#close-icon').on('click', function () {
+                $('#node-info-form').css('display', 'none');
+            });
+
+
+            document.getElementById('option1').addEventListener('change', function() {
+                if (this.checked) {
+                    window.location.href = '@Url.Action("OrgWithSpouse", "Org2")';
+                }
+            });
+            document.getElementById('option2').addEventListener('change', function() {
+                if (this.checked) {
+                    window.location.href = '@Url.Action("OrgMale", "Org2")';
+                }
+            });
+            document.getElementById('option3').addEventListener('change', function() {
+                if (this.checked) {
+                    window.location.href = '@Url.Action("Index", "Org2")';
+                }
+            });
+
+            document.getElementById('option4').addEventListener('change', function() {
+                if (this.checked) {
+                    oc.init({ 'verticalLevel': 4 });
+                }
+            });
+
+                document.getElementById('option5').addEventListener('change', function () {
+                    if (this.checked) {
+                        var nodeTemplate1 = function (data) {
+                            var imgUrl = data.avt || '/Content/img/simpleAvt1.png';
+                            return `
+                                <div class="title">
+                                    <img class="avt" crossorigin="anonymous" src="${imgUrl}"/>
+                                    <div class="name">${data.name}</div>
+                                    <div class="birth">${data.namsinh}</div>
+                                </div>
+                                <div class="content">${data.title}
+                                    <div class="gender">${data.gender}</div>
+                                </div>
+                                @foreach (var item in truongHoList) {
+                                    <div class="node" id="@item.ID" style="margin-left: -1.5px; padding-left: 0">
+                                        <div class="title">
+                                            <img class="avt" crossorigin="anonymous" src="@item.Avt"/>
+                                            <div class="name">@item.HoTen</div>
+                                            <div class="birth">@item.NamSinh</div>
+                                        </div>
+                                        <div class="content">
+                                            <div class= "gender"> @item.GioiTinh</div>
+                                        </div>
+                                    </div>}
+                            `;
+                        };
+
+                        oc.init({
+                            'data': data_thtc,
+                            'nodeTemplate': nodeTemplate1,
+                            'initCompleted': function () {
+                                var $this = $('.orgchart').find('.node').first();
+                                var $chart = $this.closest('.orgchart');
+                                var newX = window.parseInt(-(($chart.outerWidth(true) / 2) - ($this.offset().left - $chart.offset().left) - ($this.outerWidth(true) / 2)));
+                                var newY = window.parseInt(-($chart.outerHeight(true) / 20));
+                                $chart.css('transform', 'matrix(0.5, 0, 0, 0.5, ' + newX + ', ' + newY + ')');
+                            }
+                        });
+                        $('.orgchart').append('@foreach (var item in TruongChi) {
+                            <div class="node" id="@item.ID" ><div class="title" style="background-color: CornflowerBlue"><img class="avt" crossorigin="anonymous" src="@item.Avt"/><div class="name">@item.HoTen</div><div class="birth">@item.NamSinh</div></div><div class="content">Trưởng Chi<div class= "gender"> @item.GioiTinh</div ></div></div>}');
+                        $('.orgchart .node:not(:only-child)').addClass('hide-after');
+                    }
+                });
+
+                $('#start-level, #end-level').on('change', function () {
+                    var startLevel = parseInt($('#start-level').val());
+                    var endLevel = parseInt($('#end-level').val());
+
+                    if (startLevel > endLevel) {
+                        alert('Đời bắt đầu phải nhỏ hơn hoặc bằng đời kết thúc');
+                        return;
+                    }
+
+                    oc.init({
+                        'data': datasource,
+                        'nodeTemplate': nodeTemplate,
+                        'visibleLevel': endLevel,
+                        'initCompleted': function ($node, data) {
+                            // Ẩn các node ngoài khoảng level
+                            if (data.level < startLevel || data.level > endLevel) {
+                                $node.closest('.hierarchy').addClass('hidden');
+                            }
+                        }
+                    });
+                });
+
+            $.ajax({
+                type: "GET",
+                url: "/Org2/GetAllConChau",
+                data: { parentID: @truongHo.ID },
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                    success: function (data) {
+                        console.log(data)
+                    // Xử lý dữ liệu trả về từ API
+                        var datascource = data;
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle error
+                        console.error(xhr.responseText);
+                 }
+            });
+
+        });
+        </script>
+    </div>
+</main>
+
+<link href="~/Content/jquery.orgchart.css" rel="stylesheet" />
+
+<style>
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 260px;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 40px;
+        font-weight: bold;
+    }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+    .orgchart .lv2 .title {
+        background-color: #006699;
+    }
+
+    .orgchart .lv5 .title {
+        background-color: #009933;
+    }
+
+    .orgchart .lv8 .title {
+        background-color: #993366;
+    }
+
+    .orgchart .lv11 .title {
+        background-color: #996633;
+    }
+
+    .orgchart .lv13 .title {
+        background-color: #cc0066;
+    }
+
+    .container {
+        max-width: unset;
+    }
+
+    .level-select {
+        background-color: white;
+        border-color: #ddd;
+        color: grey;
+        color: red;
+        border: 2px solid red;
+        background-color: #ccc;
+        border-radius: 5px;
+        padding: 4px 3px;
+        max-width: 50px;
+        /*font-size: small;*/
+    }
+
+    #node-info-form {
+        position: absolute;
+        right: 0px;
+        z-index: 999;
+        background-color: #fff;
+        width: 400px;
+        height: 100%;
+        border-radius: 10px;
+    }
+
+    #close-icon {
+        position: absolute;
+        top: 0px;
+        right: 10px;
+        color: white;
+    }
+
+    .info-form-header {
+        height: 200px;
+        text-align: center;
+        border-radius: 10px;
+        background-color: #01476E;
+    }
+
+    .info-form-name {
+        line-height: 1;
+        font-size: 24px ;
+        color: #fff;
+        margin: 0;
+        padding: 14px 17px 7px 17px;
+    }
+
+    .info-form-avatar {
+        border-radius: 50%;
+        width: 150px;
+        height: 150px;
+        position: absolute;
+        top: 75px;
+        border: 5px solid #fff;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #cacaca;
+        box-shadow: rgba(0, 0, 0, .2) 0 6px 6px 0, rgba(0, 0, 0, .19) 0 13px 20px 0;
+    }
+
+    .info-form-feature {
+        margin: 42px 10px 0 10px;
+        text-align: center;
+        min-height: 70px;
+    }
+
+    .boc-img-button {
+        width: 48px;
+        height: 48px;
+        cursor: pointer;
+        border-radius: 50%;
+        background-color: #039be5;
+        background-repeat: no-repeat;
+        background-size: 24px 24px;
+        background-position: center center;
+        margin: 3px;
+        display: inline-block;
+    }
+
+        .boc-img-button img {
+            position: relative;
+            top: 10px;
+        }
+
+    .info-form-fields {
+        flex-grow: 1;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .info-form-fields-inner {
+        margin: 0 7px 20px 7px;
+    }
+
+    .form-fieldset {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0 !important;
+    }
+
+    .form-field {
+        flex: 1 0 21%;
+        margin: 3px;
+        min-width: 280px;
+    }
+
+    .form-field-input {
+        position: relative;
+    }
+
+        .form-label {
+            color: #000;
+            font-weight: 600;
+            font-family: 'Segoe UI';
+            position: absolute;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .form-input {
+            height: 50px;
+            padding: 18px 10px 2px 9px;
+            width: 100%;
+            box-sizing: border-box;
+            border-style: solid;
+            border-width: 1px;
+            color: #757575;
+            border-color: #0000 !important;
+        }
+
+        .boc-checkbox {
+            margin-left: 10px;
+            padding-left: 26px;
+            margin-bottom: 0;
+            position: relative;
+        }
+
+            .boc-checkbox input {
+                /*position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;*/
+                background-color: #aeaeae !important;
+                height: 20px;
+                width: 20px;
+                position: absolute;
+                top: 0;
+                left: 0;
+                border-radius: 5px;
+            }
+
+        .boc-checkbox-checkmark {
+            background-color: #aeaeae !important;
+            height: 20px;
+            width: 20px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 5px;
+        }
+
+    .orgchart .node .title .parentNodeSymbol {
+        display: none;
+    }
+
+    .orgchart .node:not(:only-child)::after {
+        background-color: rgb(0 0 0 / 80%);
+    }
+
+    .orgchart > ul > li > ul li > .node::before {
+        background-color: rgb(0 0 0 / 80%);
+    }
+
+    .orgchart .hierarchy::before {
+        border-top: 2px solid rgb(0 0 0 / 80%);
+    }
+
+    .orgchart .nodes.vertical .hierarchy::before, .orgchart .nodes.vertical .hierarchy::before, .orgchart .nodes.vertical .hierarchy::after {
+        border-color: #000;
+    }
+    /*legend content*/
+    #legend-content {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        z-index: 10;
+    }
+
+    .legend-content-wrapper {
+        width: fit-content;
+        padding: 3px 6px;
+        background-color: #eeeeeeee;
+        border-radius: 6px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .legend-item {
+        color: #000;
+        font-size: 12px;
+        line-height: 18px;
+        display: flex;
+        align-items: center;
+        margin-left: 0;
+    }
+
+    .legend-item-dot {
+        width: 6px;
+        height: 6px;
+        background-color: var(--family-tree-color, #ccc);
+        display: inline-block;
+        border-radius: 50%;
+        margin-right: 5px;
+    }
+    /*highlight*/
+    .orgchart .node.highlight-self .title {
+        background-color: rgb(60,179,113);
+    }
+
+    .orgchart .node.highlight-self .content {
+        border: 1px solid rgb(60,179,113);
+    }
+
+
+    #chart-container {
+        background-color: #d9aa7166;
+        background-image: url(/Content/img/page-bg.png);
+        background-size: 102% 102%;
+        height: 650px;
+        border: unset;
+        text-align: center;
+        position: relative;
+    }
+    /**/
+
+    .orgchart {
+        background-image: none;
+    }
+
+
+        .orgchart.edit-state .edge {
+            display: none;
+        }
+
+        .orgchart .node .title {
+            padding-top: 10px;
+            height: 140px;
+            justify-content: space-around;
+            line-height: 25px;
+            width: 100px;
+        }
+
+        .orgchart .node .content {
+            display: none;
+            text-align: left;
+            padding: 0 5px;
+            width: 100px;
+        }
+
+        .orgchart .node .avt {
+            width: 80px;
+            height: 80px;
+            border: 2px solid #01476e;
+            box-shadow: 0 0 0 3px #01476e;
+            outline: 3px solid #fff;
+            background-color: #fff;
+        }
+
+    orgchart .node .content .symbol {
+        color: #aaa;
+        margin-right: 20px;
+    }
+
+    .oci-leader::before, .oci-leader::after {
+        background-color: rgba(217, 83, 79, 0.8);
+    }
+
+    /*.orgchart .node .toggleBtn {
+        visibility: hidden !important;
+    }*/
+
+    .name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: break-spaces;
+    }
+
+    .orgchart .node .avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 30px;
+        float: right;
+        margin: 5px;
+    }
+
+    /*Edit panel*/
+    #edit-panel1 {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        display: flex;
+        /*align-items: center;*/
+        z-index: 10;
+        flex-wrap: nowrap;
+    }
+
+    .filter-field {
+        width: 170px;
+        display: flex;
+    }
+
+    .button-group {
+        display: flex;
+        align-items: center;
+        padding-left: unset;
+    }
+
+    #edit-panel1 .btn-inputs {
+        width: 2rem;
+        padding: 0;
+        font-size: 1.5rem;
+    }
+
+    #edit-panel1 .btn-inputs {
+        vertical-align: sub;
+    }
+
+    #edit-panel1.edit-parent-node .btn-inputs {
+        display: none;
+    }
+
+    #edit-panel1.edit-state > :not(#chart-state-panel) {
+        display: none;
+    }
+
+    #edit-panel1 label {
+        font-weight: bold;
+    }
+
+    #edit-panel1.edit-parent-node .selected-node-group {
+    }
+
+    #chart-state-panel, #selected-node, #btn-remove-input {
+        margin-right: 1rem;
+    }
+
+    /*#edit-panel1 button, #edit-panel input {
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+    }*/
+
+    #edit-panel1.edit-parent-node button:not(#btn-add-nodes) {
+        display: none;
+    }
+
+    #new-nodelist {
+        display: inline-block;
+        list-style: none;
+        margin-top: -0.5rem;
+        padding: 0;
+        vertical-align: text-top;
+    }
+
+        #new-nodelist > * {
+            padding-bottom: 4px;
+        }
+
+    .radio-panel input[type='radio'] {
+        height: 1.25rem;
+        width: 1.25rem;
+        vertical-align: text-bottom;
+    }
+
+    #btn-add-nodes {
+        margin-left: 20px;
+    }
+
+    .orgchart .node.matched {
+        background-color: rgba(215, 185, 38, 0.5);
+    }
+
+        .orgchart .node.matched .title {
+            background-color: rgba(51, 206, 70, 0.54);
+        }
+
+        .orgchart .node.matched .content {
+            border: 1px solid rgba(51, 206, 70, 0.54);
+        }
+
+    .oci-spinner::before {
+        content: none;
+    }
+    .orgchart .hierarchy.first-shown::before {
+        left: calc(50% - 1px);
+        width: calc(50% + 1px);
+    }
+
+    .orgchart .hierarchy.last-shown::before {
+        width: calc(50% + 1px);
+    }
+
+    .orgchart .hierarchy.first-shown.last-shown::before {
+        width: 2px;
+    }
+
+    .hide-after::after {
+        content: none !important; 
+    }
+
+    .mobile-node {
+        width: 50px !important;
+        height: fit-content !important;
+        padding: 5px; /* Adjust padding */
+    }
+
+    @@media only screen and (max-width: 768px) {
+        #edit-panel1 {
+            flex-direction: column;
+            /* Other adjustments as needed */
+        }
+
+        #node-info-form {
+            width: 100%; 
+            max-width: 400px; 
+            margin: 0 auto;
+        }
+
+        .modal {
+            z-index: 99;
+        }
+
+        .button-group {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+            flex-grow: 1;
+        }
+
+        #legend-content {
+            flex-direction: column;
+            font-size: x-small;
+            /* Other adjustments as needed */
+        }
+
+        .legend-item {
+            font-size: 0.8em;
+        }
+
+        #edit-panel1 .form-control,
+        #edit-panel1 .btn,
+        #edit-panel1 .form-select {
+            font-size: 0.8em; /* Reduce font size */
+            padding: 0.5em; /* Reduce padding */
+        }
+
+        .filter-field {
+            width: 128px;
+        }
+
+        #edit-panel1 .col-auto {
+            flex: 1 1 100%; /* Make each item take full width on small screens */
+        }
+    }
+
+
+</style>

@@ -1,0 +1,157 @@
+﻿@model GiaPha.Models.TinTuc
+@{
+    ViewBag.Title = "Thêm mới tin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4 class="my-3">@ViewBag.Title</h4>
+<hr />
+@using (Html.BeginForm("Create", "TinTucs", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @*<div class="form-group">
+                @Html.LabelFor(model => model.IdLoaiTinTuc, "IdLoaiTinTuc", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("IdLoaiTinTuc", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.IdLoaiTinTuc, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+        <div class="form-group">
+            <strong>Ảnh đại diện</strong>
+            <div class="col-md-12">
+                <div class="align-self-start" style="min-width: 160px; min-height: 160px; text-align: center;">
+                    <div id="imgAnh"
+                         class="d-none"
+                         width="160"
+                         style="background-image: url(); background-size: auto 100%; background-position: center center; min-width: 160px; min-height: 160px; background-repeat: no-repeat;">
+                    </div>
+                    <div id="divNoImg" class="text-muted align-self-center bg-light" style="width: 160px; height: 160px; text-align: center;">CHƯA CHỌN ẢNH</div>
+                </div>
+                <div class="input-group mt-1">
+                    <label class="input-group-text" for="file" style="cursor:pointer">
+                        <i class="bi bi-folder2-open"></i>&nbsp;Chọn ảnh
+                    </label>
+                    <input type="text" id="AnhDaiDien" name="AnhDaiDien" value="" class="form-control form-control pointer-event-none" readonly>
+                </div>
+                <input type="file" id="file" name="file" class="d-none">
+                @Html.ValidationMessageFor(model => model.AnhDaiDien, "", new { @class = "text-danger" })
+                <script>
+                    document.getElementById('file').addEventListener('change', handleFileSelect, false);
+                    function handleFileSelect(evt) {
+                        var files = evt.target.files;
+                        var f = files[0];
+                        var reader = new FileReader();
+                        reader.onload = (
+                            function (theFile) {
+                                document.getElementById('AnhDaiDien').value = theFile.name;
+                                return function (e) {
+                                    document.getElementById('imgAnh').style.backgroundImage = `url(${e.target.result})`;
+                                    document.getElementById('imgAnh').classList.remove("d-none");
+                                    document.getElementById('divNoImg').classList.add("d-none");
+                                };
+                            }
+                        )(f);
+                        reader.readAsDataURL(f);
+                    }
+                </script>
+            </div>
+        </div>
+        <div class="form-group mt-2">
+            <strong>Tiêu đề</strong>
+            <div class="col-md-12">
+                <textarea id="TieuDe" name="TieuDe" class="form-control"></textarea>
+                @Html.ValidationMessageFor(model => model.TieuDe, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group mt-2">
+            <strong> Mô tả (Tóm tắt)</strong>
+            <div class="col-md-12">
+                <textarea id="TomTat" name="TomTat" class="form-control" rows="5"></textarea>
+                @Html.ValidationMessageFor(model => model.TomTat, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        @*<div class="form-group">
+                @Html.LabelFor(model => model.TacGia, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.TacGia, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.TacGia, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+
+        <div class="form-group">
+            <strong>Nổi bật</strong>
+            <div class="col-md-12">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-inline" type="checkbox" name="TinNoiBat" value="true" />
+                    @Html.ValidationMessageFor(model => model.TinNoiBat, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="form-group mt-2">
+            <strong>Nội dung</strong>
+            <div class="col-md-12 bg-light">
+                <link href="~/Content/quill.snow.css" rel="stylesheet">
+                <textarea class="d-none" id="NoiDung" name="NoiDung"></textarea>
+                @Html.ValidationMessageFor(model => model.NoiDung, "", new { @class = "text-danger" })
+                <div id="NoiDungEditor" style="height:400px;"></div>
+                <script src="~/Scripts/quill.min.js"></script>
+                <script src="~/Scripts/quill-image-paste.min.js"></script>
+                <script src="~/Scripts/quill-image-resize.min.js"></script>
+
+                <script>
+                    var ColorClass = Quill.import('attributors/class/color');
+                    var SizeStyle = Quill.import('attributors/style/size');
+                    Quill.register(ColorClass, true);
+                    Quill.register(SizeStyle, true);
+
+                    var toolbarOptions = [
+                        ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+                        ['blockquote', 'code-block'],
+
+                        [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                        [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
+                        [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
+                        [{ 'direction': 'rtl' }],                         // text direction
+
+                        [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+                        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                        ['link', 'image', 'video', 'formula'],          // add's image support
+                        [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+                        [{ 'font': [] }],
+                        [{ 'align': [] }],
+
+                        ['clean']                                         // remove formatting button
+                    ];
+
+                    var noiDungInput = document.querySelector('#NoiDung');
+                    var noiDungEditor = new Quill('#NoiDungEditor', {
+                        modules: {
+                            toolbar: toolbarOptions,
+                            imageResize: {
+                                displaySize: true
+                            },
+                        },
+                        theme: 'snow',
+                        placeholder: 'Nhập nội dung...',
+                    });
+                    noiDungEditor.on('text-change', function () {
+                        noiDungInput.innerHTML = noiDungEditor.root.innerHTML;
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="col-md-12 text-center">
+        <button type="submit" class="btn btn-success"><i class="bi bi-plus-circle-fill"></i> Thêm mới</button>
+        <a class="btn btn-secondary" href="@Url.Action("/Index")">Quay lại</a>
+    </div>
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
+}

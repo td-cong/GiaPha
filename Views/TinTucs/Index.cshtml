@@ -1,0 +1,63 @@
+﻿﻿@model IEnumerable<GiaPha.Models.TinTuc>
+@{
+    ViewBag.Title = "Tin tức";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var danhSachTin = Model;
+    var tinNoiBat = danhSachTin.Any(x => x.TinNoiBat == true) ? danhSachTin.OrderByDescending(x => x.ID).FirstOrDefault(x => x.TinNoiBat == true) : danhSachTin?.OrderByDescending(x => x.ID)?.FirstOrDefault();
+    var dsTinKhac = tinNoiBat != null ? danhSachTin?.Where(x => x.ID != (tinNoiBat?.ID ?? 0)) : danhSachTin;
+    var currentUser = (GiaPha.Models.Account)Session["User"];
+    var quyenQuanLy = (bool)ViewBag.quyenQuanLy;
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 text-center my-2">
+            <div class="tab-page-long active d-inline-block"><a href="/tintucs/danhsach">Tin tức dòng họ </a></div>
+        </div>
+    </div>
+    @if (currentUser != null && quyenQuanLy)
+    {
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <a href="/TinTucs/QuanLy" class="btn btn-dark my-2"><i class="bi bi-card-list"></i> Quản lý tin tức</a>
+            </div>
+        </div>
+    }
+    <div class="row page-bg p-3">
+        <div class="col-md-5">
+            <img class="card-img-top" src="@Html.Raw(tinNoiBat.AnhDaiDien)" style="width: 100%; height: auto;">
+        </div>
+        <div class="col-md-7 text-dark">
+            <div class="title-content">
+                <a class="h5 text-decoration-none" href="/tintucs/details/@(tinNoiBat.ID)">@Html.Raw(tinNoiBat.TieuDe)</a>
+            </div>
+            <div class="title-content" style="max-height: 400px; overflow: auto; overflow: hidden; display: -webkit-box; -webkit-line-clamp: var(--heading-max-lines, 3); -webkit-box-orient: vertical; height: calc(3 * 2em);">
+                @Html.Raw(tinNoiBat.NoiDung)
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="col-md-12">
+        <div class="row">
+            @foreach (var item in dsTinKhac)
+            {
+                <div class="col-md-4">
+                    <div class="page-bg border-0 p-2">
+                        <a href="/tintucs/details/@(item.ID)">
+                            <img src="@(item.AnhDaiDien)" alt="@(item.TieuDe)"
+                                 class="card-img-top shadow-sm rounded-0 border-1"
+                                 style="height: 200px; border-color: #7f592b;">
+                        </a>
+                        <div class="card-body pb-2 border-0">
+                            <h5 class="card-title"><a href="/tintucs/details/@(item.ID)"> @item.TieuDe</a></h5>
+                            <p class="card-text" style="overflow: auto; overflow: hidden; display: -webkit-box; -webkit-line-clamp: var(--heading-max-lines, 3); -webkit-box-orient: vertical; height: calc(3 * 2em);">
+                                @(item.TomTat)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

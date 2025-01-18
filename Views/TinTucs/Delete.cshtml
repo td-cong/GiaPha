@@ -1,0 +1,75 @@
+﻿@model GiaPha.Models.TinTuc
+
+@{
+    ViewBag.Title = "Xoá tin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Xoá tin</h2>
+
+
+<div>
+    
+    <hr />
+    <dl class="dl-horizontal">
+        <div class="form-group">
+            <strong>Ảnh đại diện</strong>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.AnhDaiDien, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.AnhDaiDien, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <dl class="dl-horizontal">
+
+            <strong>Tiêu đề</strong>
+            @Html.DisplayFor(model => model.TieuDe, new { htmlAttributes = new { @class = "form-control w-100", @disabled = true } })
+
+
+        </dl>
+
+        <dl class="dl-horizontal">
+
+            <strong>Mô tả (Tóm tắt)</strong>
+            @Html.DisplayFor(model => model.TomTat, new { htmlAttributes = new { @class = "form-control w-100", @disabled = true } })
+
+
+        </dl>
+
+        <dl class="dl-horizontal">
+
+            <strong>Loại tin</strong>
+            @Html.DisplayFor(model => model.TinNoiBat, new { htmlAttributes = new { @class = "form-control w-100", @disabled = true } })
+
+
+        </dl>
+
+        <dl class="dl-horizontal">
+
+            <strong>Trạng thái</strong>
+            @Html.DisplayFor(model => model.TrangThai, new { htmlAttributes = new { @class = "form-control w-100", @disabled = true } })
+
+
+        </dl>
+
+        <dl class="dl-horizontal">
+
+            <strong>Nội dung</strong>
+            @Html.DisplayFor(model => model.NoiDung, new { htmlAttributes = new { @class = "form-control w-100", @disabled = true } })
+
+
+        </dl>
+
+        
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Xoá" class="btn btn-default" /> |
+            @Html.ActionLink("Quay lại", "Index")
+        </div>
+    }
+</div>
