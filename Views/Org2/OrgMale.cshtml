@@ -69,7 +69,7 @@
                         <button class="btn btn-primary" type="button" id="btn-filter-node" title="Tìm kiếm"><i class="bi bi-search"></i></button>
                     </div>
                     <div class="col-auto p-1">
-                        
+
                     </div>
                     <div class="button-group">
                         <div class="col-auto p-1">
@@ -121,7 +121,7 @@
                                     <input type="radio" name="option" value="option3" id="option3"> Hiển thị tất cả
                                 </label>
                             </div>
-                            <hr />    
+                            <hr />
                             <div>
                                 <label>
                                     <input type="radio" name="option" value="option4" id="option4"> Hiển thị biểu đồ dọc
@@ -213,6 +213,42 @@
                     </div>
                 </div>
 
+                <div class="fullscreen-button">
+                    <button id="fullscreen-btn">🔍</button>
+                </div>
+
+                <script>
+                    document.getElementById("fullscreen-btn").addEventListener("click", function () {
+                        let orgChart = document.querySelector('#chart-container');
+
+                        if (!document.fullscreenElement) {
+                            if (orgChart.requestFullscreen) {
+                                orgChart.requestFullscreen();
+                            } else if (orgChart.mozRequestFullScreen) {
+                                orgChart.mozRequestFullScreen();
+                            } else if (orgChart.webkitRequestFullscreen) {
+                                orgChart.webkitRequestFullscreen();
+                            } else if (orgChart.msRequestFullscreen) {
+                                orgChart.msRequestFullscreen();
+                            }
+
+                            if (window.screen.orientation && window.innerWidth < window.innerHeight) {
+                                window.screen.orientation.lock("landscape").catch(error => {
+                                    console.log("Không thể xoay màn hình:", error);
+                                });
+                            }
+                        } else {
+                            if (document.exitFullscreen) {
+                                document.exitFullscreen();
+                            }
+
+                            // 📌 Trả màn hình về dọc khi thoát fullscreen
+                            if (window.screen.orientation) {
+                                window.screen.orientation.unlock();
+                            }
+                        }
+                    });
+                </script>
             </div>
         </div>
 
@@ -779,6 +815,22 @@
                 }
             });
 
+                document.addEventListener('DOMContentLoaded', function () {
+                    const orgChart = document.querySelector('.orgchart');
+
+                    if (/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)) {
+                        orgChart.addEventListener('touchmove', function (event) {
+                            event.stopPropagation();
+                        }, { passive: true });
+
+                        document.body.addEventListener('touchmove', function (event) {
+                            if (document.activeElement.closest('.orgchart')) {
+                                event.preventDefault();
+                            }
+                        }, { passive: false });
+                    }
+                });
+
             $.ajax({
                 type: "GET",
                 url: "/Org2/GetAllConChau",
@@ -804,6 +856,25 @@
 <link href="~/Content/jquery.orgchart.css" rel="stylesheet" />
 
 <style>
+
+    /*full screen*/
+    .fullscreen-button {
+        position: absolute;
+        bottom: 10px; /* Đưa xuống góc dưới */
+        right: 10px; /* Đưa sang bên phải */
+        z-index: 1000;
+    }
+
+    #fullscreen-btn {
+        padding: 8px 12px;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    /**/
     .modal {
         display: none;
         position: fixed;
