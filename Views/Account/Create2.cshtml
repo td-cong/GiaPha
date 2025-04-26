@@ -1,16 +1,16 @@
-﻿@model GiaPha.Models.ThanhVien
+﻿@model GiaPha.Models.ThanhVienN
 
 @{
     ViewBag.Title = "Create2";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var ThanhVienList = (List<GiaPha.Models.ThanhVien>)ViewBag.ThanhVienList;
+    var ThanhVienList = (List<GiaPha.Models.ThanhVienN>)ViewBag.ThanhVienList;
     GiaPha.Models.GiaPhaEntities db = new GiaPha.Models.GiaPhaEntities();
 }
 
 @using (Html.BeginForm("Create2", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    @Html.HiddenFor(model => model.ID)
+    @*@Html.HiddenFor(model => model.ID)*@
 
     <div class="form">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })

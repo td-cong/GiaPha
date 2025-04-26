@@ -1,4 +1,4 @@
-﻿@model IEnumerable<GiaPha.Models.ThanhVien>
+﻿@model IEnumerable<GiaPha.Models.ThanhVienN>
 
 @{
     ViewBag.Title = "Quản lý thành viên";
@@ -11,6 +11,7 @@
 
 <p>
     @Html.ActionLink("+ Thêm mới", "Create", null, new { @class = "btn btn-success" })
+    @Html.ActionLink("Import từ Excel", "Import", null, new { @class = "btn btn-primary ms-2" })
 </p>
 <table id="table" class="table table-bordered table-light table-striped table-hover">
     <thead class="thead-dark">
@@ -21,9 +22,9 @@
             <th>Vai vế</th>
             <th>Giới tính</th>
             <th style="min-width: 100px">Vợ (chồng)</th>
-            <th>Địa phương cư trú</th>
-            @*<th>Lý lịch </th>*@
-            <th style="min-width: 120px"></th>
+            <th>Quê quán</th>
+            <th>Nơi ở</th>
+            <th style="min-width: 120px">Thao tác</th>
         </tr>
     </thead>
     @foreach (var item in Model)
@@ -56,9 +57,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.DiaPhuong)
             </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.LyLich)
-            </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.NoiO)
+            </td>
             <td>
                 @Html.ActionLink("Sửa", "Edit", new { id = item.ID }, new { @class = "text-decoration-none" }) |
                 @Html.ActionLink("Chi tiết", "Details", new { id = item.ID }, new { @class = "text-decoration-none" }) |

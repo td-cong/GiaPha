@@ -1,0 +1,35 @@
+﻿@{
+    ViewBag.Title = "Kết Quả Import";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card shadow">
+    <div class="card-header bg-info text-white">
+        <h4>Kết Quả Import Thành Viên</h4>
+    </div>
+    <div class="card-body">
+        @if (ViewBag.SuccessCount > 0)
+        {
+            <div class="alert alert-success">
+                <i class="fas fa-check-circle"></i> Đã import thành công <strong>@ViewBag.SuccessCount</strong> thành viên!
+            </div>
+        }
+
+        @if (ViewBag.Errors != null && ((List<string>)ViewBag.Errors).Count > 0)
+        {
+            <div class="alert alert-danger">
+                <h5><i class="fas fa-exclamation-triangle"></i> Có @(((List<string>)ViewBag.Errors).Count) lỗi:</h5>
+                <ul>
+                    @foreach (var error in (List<string>)ViewBag.Errors)
+                    {
+                        <li>@error</li>
+                    }
+                </ul>
+            </div>
+        }
+
+        <a href="@Url.Action("Index")" class="btn btn-primary">
+            <i class="fas fa-list"></i> Quay lại danh sách
+        </a>
+    </div>
+</div>

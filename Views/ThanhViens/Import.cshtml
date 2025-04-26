@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "Import Thành Viên";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4 class="my-3">Import Thành Viên từ Excel</h4>
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">@ViewBag.Error</div>
+}
+
+<div class="card shadow">
+    <div class="card-body">
+        @using (Html.BeginForm("Import", "ThanhViens", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="mb-3">
+                <label class="form-label">Chọn file Excel</label>
+                <input type="file" name="excelFile" class="form-control" required accept=".xlsx" />
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-upload me-2"></i> Import
+            </button>
+
+            @Html.ActionLink("Hủy", "Index", null, new { @class = "btn btn-outline-secondary ms-2" })
+        }
+    </div>
+</div>
+
+<div class="card shadow mt-3">
+    <div class="card-body">
+        <h5>Hướng dẫn:</h5>
+        <p>1. File Excel cần có các cột theo thứ tự sau:</p>
+        <ol>
+            <li>ID</li>
+            <li>Họ tên</li>
+            <li>ID cha/mẹ (nếu có)</li>
+            <li>Năm sinh</li>
+            <li>Năm mất</li>
+            <li>Giới tính (Nam/Nữ)</li>
+            <li>ID vợ/chồng (nếu có)</li>
+            <li>Địa phương</li>
+            <li>Nơi ở</li>
+        </ol>
+        <p>2. Tải file mẫu: @Html.ActionLink("Tại đây", "DownloadTemplate")</p>
+    </div>
+</div>

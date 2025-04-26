@@ -1,8 +1,8 @@
-﻿@model IEnumerable<GiaPha.Models.ThanhVien>
+﻿@model IEnumerable<GiaPha.Models.ThanhVienN>
 @{
     ViewBag.Title = "OrgMale";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var allData = Model;
+    var allData = Model.Cast<GiaPha.Models.ThanhVienN>();
     var currentUser = (GiaPha.Models.Account)Session["User"];
     var quyenQuanLy = ViewBag.quyenQuanLy;
     var truongHoColor = "purple";
@@ -13,7 +13,7 @@
 }
 @{
     var currentAccount = currentUser != null
-? currentUser.ThanhViens.FirstOrDefault(t => t.IdTaiKhoan == currentUser.ID)
+? currentUser.ThanhVienNs.FirstOrDefault(t => t.IdTaiKhoan == currentUser.ID)
 : allData.FirstOrDefault();
 
     var truongHo = allData.FirstOrDefault(t => t.IsTruongHo == true);
@@ -108,23 +108,18 @@
                         <form>
                             <div>
                                 <label>
-                                    <input type="radio" name="option" value="option1" id="option1"> Hiển thị thêm vợ(chồng)
+                                    <input type="radio" name="options" data-url="@Url.Action("OrgMale", "Org2")" value="2" checked> Chỉ hiển thị đinh(nam)
                                 </label>
                             </div>
                             <div>
                                 <label>
-                                    <input type="radio" name="option" value="option2" id="option2" checked> Chỉ hiển thị đinh(nam)
-                                </label>
-                            </div>
-                            <div>
-                                <label>
-                                    <input type="radio" name="option" value="option3" id="option3"> Hiển thị tất cả
+                                    <input type="radio" name="options" data-url="@Url.Action("Index", "Org2")" value="3"> Hiển thị tất cả
                                 </label>
                             </div>
                             <hr />
                             <div>
                                 <label>
-                                    <input type="radio" name="option" value="option4" id="option4"> Hiển thị biểu đồ dọc
+                                    <input type="radio" name="option" value="4" id="option4"> Hiển thị biểu đồ dọc
                                 </label>
                             </div>
                             <hr />
@@ -252,16 +247,6 @@
             </div>
         </div>
 
-
-
-        <div class="view-state" style="padding-left: 7px">
-            <a id="fake-export" class="btn btn-light"><i class="bi bi-card-image"></i> Xuất file</a>
-        </div>
-
-        <div class="view-state" style="padding-left: 7px; margin: 10px auto;">
-            <a id="btn-org2" class="btn btn-light">Biểu đồ dọc</a>
-        </div>
-
         <script>
             $('#info-png').on('click', function () {
                 const screenshotTarget = document.getElementById('node-info-form');
@@ -294,7 +279,7 @@
         <script src="~/Scripts/printThis.js"></script>
         <script orgchart type="text/javascript">
             @functions{
-                string GetMale(IEnumerable<GiaPha.Models.ThanhVien> allData, int parentID)
+                string GetMale(IEnumerable<GiaPha.Models.ThanhVienN> allData, int parentID)
                 {
                     var conChauStr = "";
                     var conChau = allData.Where(x => x.PID == parentID && x.GioiTinh == true);
@@ -389,8 +374,8 @@
             function resetChart() {
                 var $this = $('.orgchart').find('.node').first();
                 var $chart = $this.closest('.orgchart');
-                var newX = window.parseInt(-(($chart.outerWidth(true) / 2.1) - ($this.offset().left - $chart.offset().left) - ($this.outerWidth(true) / 2)));
-                var newY = window.parseInt(-($chart.outerHeight(true) / 4) - ($this.offset().top - $chart.offset().top) /*- ($this.outerHeight(true) / 2)*/);
+                var newX = window.parseInt(-(($chart.outerWidth(true) / 2) - ($this.offset().left - $chart.offset().left) - ($this.outerWidth(true) / 2)));
+                var newY = window.parseInt(-($chart.outerHeight(true) / 4.2) - ($this.offset().top - $chart.offset().top) /*- ($this.outerHeight(true) / 2)*/);
                 $chart.css('transform', 'matrix(0.5, 0, 0, 0.5, ' + newX + ', ' + newY + ')');
             }
 
@@ -444,7 +429,7 @@
 
                 var selectedNodeTemplate = isMobile() ? nodeTemplate_MB : nodeTemplate;
 
-            var visibleLevel = 10;
+            var visibleLevel = 8;
             var oc = $('#chart-container').orgchart({
                 'exportButton': true,
                 'exportButtonName': 'Xuất file',
@@ -509,11 +494,23 @@
                             2: 2, 3: 2,
                             4: 2, 5: 2,
                             6: 2, 7: 2,
-                            8: 2, 9: 1.62,
-                            10: 1.4,
+                            8: 1.8, 9: 1.62,
+                            10: 1.2,
                             11: 1.076,
                             12: 1.057,
-                            default: 1.053
+                            default: 2
+                        };
+
+                        const yValues = {
+                            0: 200, 1: 0,
+                            2: 0, 3: 0,
+                            4: 0, 5: 0,
+                            6: 0, 7: 0,
+                            8: 50, 9: 60,
+                            10: 1.2,
+                            11: 1.076,
+                            12: 1.057,
+                            default: 2
                         };
 
                         const $this = $('.orgchart').find('.node').first();
@@ -521,8 +518,10 @@
 
                         const { [visibleLevel]: x = xValues.default } = xValues;
 
-                        const newX = window.parseInt(-(($chart.outerWidth(true) / x) - ($this.offset().left - $chart.offset().left) - ($this.outerWidth(true) / 2)));
-                        const newY = window.parseInt(-($chart.outerHeight(true) / 4.2) - ($this.offset().top - $chart.offset().top) - ($this.outerHeight(true) / 2));
+                        const { [visibleLevel]: y = yValues.default } = yValues;
+
+                        const newX = window.parseInt(-(($chart.outerWidth(true) / x) - ($this.offset().left - $chart.offset().left) + y));
+                        const newY = window.parseInt(-($chart.outerHeight(true) / 4.2) - ($this.offset().top - $chart.offset().top) /*- ($this.outerHeight(true) / 2)*/);
 
                         //const scrollValues = {
                         //    0: 125, 1: 0,
@@ -538,7 +537,7 @@
                         //console.log(scrollTop)
                         window.scrollTo(0, 100);
 
-                        $chart.css('transform', `matrix(0.1, 0, 0, 0.1, ${newX}, ${newY})`);
+                        $chart.css('transform', `matrix(0.348, 0, 0, 0.348, ${newX}, ${newY})`);
 
                         setTimeout(() => {
                             $('.oc-export-btn').click();
@@ -618,10 +617,11 @@
                             0: 2, 1: 2,
                             2: 2, 3: 2,
                             4: 2, 5: 2,
-                            6: 2, 7: 2,
-                            8: 2, 9: 2,
-                            10: 1.4, 11: 1.155,
-                            12: 1.12,
+                            6: 1.82, 7: 1.53,
+                            8: 1.35, 9: 1.144,
+                            10: 1.06, 11: 1.0425,
+                            12: 1.0375,
+                            13: 1.037,
                             default: 1.112
                         };
 
@@ -631,7 +631,7 @@
                         const { [newVisibleLevel]: x = xValues.default } = xValues;
 
                         const newX = window.parseInt(-(($chart.outerWidth(true) / x) - ($this.offset().left - $chart.offset().left) - ($this.outerWidth(true) / 2)));
-                        const newY = window.parseInt(-($chart.outerHeight(true) / 4.2) - ($this.offset().top - $chart.offset().top) /*- ($this.outerHeight(true) / 2)*/);
+                        const newY = window.parseInt(-($chart.outerHeight(true) / 4.5) - ($this.offset().top - $chart.offset().top) /*- ($this.outerHeight(true) / 2)*/);
                         $chart.css('transform', `matrix(0.5, 0, 0, 0.5, ${newX}, ${newY})`);
 
                     },
@@ -666,13 +666,13 @@
                 const xValues = {
                     0: 1.83, 1: 2.55,
                     2: 2.6, 3: 2.7,
-                    4: 3.1, 5: 3.1,
-                    6: 3.4, 7: 3.6,
-                    8: 3.7, 9: 3.75,
-                    10: 2.1, 11: 1.61,
-                    12: 1.55,
-                    20: 2.1,
-                    default: 1.535
+                    4: 3.1, 5: 3.6,
+                    6: 3.2, 7: 2.4,
+                    8: 2, 9: 1.59,
+                    10: 1.44, 11: 1.408,
+                    12: 1.4,
+                    13: 1.398,
+                    default: 2
                 };
 
                 const $this = $('.orgchart').find('.node').first();
@@ -682,7 +682,7 @@
                 const x = isNaN(selectedLevel) ? 2 : xValues[selectedLevel] ?? xValues.default;
 
                 const newX = window.parseInt(-(($chart.outerWidth(true) / x) - ($this.offset().left - $chart.offset().left) - ($this.outerWidth(true) / 2)));
-                const newY = window.parseInt(-($chart.outerHeight(true) / 4) - ($this.offset().top - $chart.offset().top) /*- ($this.outerHeight(true) / 2)*/);
+                const newY = window.parseInt(-($chart.outerHeight(true) / 4.2) - ($this.offset().top - $chart.offset().top) /*- ($this.outerHeight(true) / 2)*/);
 
                 $chart.css('transform', `matrix(0.5, 0, 0, 0.5, ${newX}, ${newY})`);
             });
@@ -791,25 +791,23 @@
                 $('#node-info-form').css('display', 'none');
             });
 
-            document.getElementById('option1').addEventListener('change', function() {
-                if (this.checked) {
-                    window.location.href = '@Url.Action("OrgWithSpouse", "Org2")';
-                }
-            });
+                document.querySelectorAll('input[name="options"]').forEach(option => {
+                    option.addEventListener('change', function () {
+                        if (this.checked) {
+                            window.location.href = this.dataset.url;
+                        }
+                    });
+                });
 
-            document.getElementById('option2').addEventListener('change', function() {
-                if (this.checked) {
-                    window.location.href = '@Url.Action("OrgMale", "Org2")';
-                }
-            });
+                document.querySelectorAll('input[name="option"]').forEach(option => {
+                    option.addEventListener('change', function () {
+                        if (this.checked) {
+                            oc.init({ 'verticalLevel': 4 });
+                        }
+                    });
+                });
 
-            document.getElementById('option3').addEventListener('change', function() {
-                if (this.checked) {
-                    window.location.href = '@Url.Action("Index", "Org2")';
-                }
-            });
-
-            document.getElementById('option4').addEventListener('change', function () {
+            document.getElementById('#option4').addEventListener('change', function () {
                 if (this.checked) {
                     oc.init({ 'verticalLevel': 4 });
                 }

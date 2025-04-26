@@ -34,29 +34,21 @@ namespace GiaPha.Controllers
         {
 
             ViewBag.quyenQuanLy = KiemTraQuyen();
-            var data = db.ThanhViens.ToList();
+            var data = db.ThanhVienNs.ToList();
             return View(data);
         }
         public ActionResult OrgMale()
         {
 
             ViewBag.quyenQuanLy = KiemTraQuyen();
-            var data = db.ThanhViens.ToList();
-            return View(data);
-        }
-
-        public ActionResult OrgWithSpouse()
-        {
-
-            ViewBag.quyenQuanLy = KiemTraQuyen();
-            var data = db.ThanhViens.ToList();
+            var data = db.ThanhVienNs.ToList();
             return View(data);
         }
 
         [HttpGet]
         public ActionResult GetAllConChau(int parentID)
         {
-            var allData = db.ThanhViens.ToList();
+            var allData = db.ThanhVienNs.ToList();
             var conChau = allData.Where(x => x.PID == parentID);
             var voChong = allData.Where(x => x.VoChong == parentID);
 

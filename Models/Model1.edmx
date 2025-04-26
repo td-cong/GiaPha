@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="GiaPha.KimTocModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="GiaPha.KimTocModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Account">
           <Key>
             <PropertyRef Name="ID" />
@@ -72,6 +72,25 @@
           <Property Name="DiaPhuong" Type="nvarchar" MaxLength="500" />
           <Property Name="LyLich" Type="nvarchar(max)" />
           <Property Name="Avt" Type="nvarchar" MaxLength="500" />
+          <Property Name="IsTruongHo" Type="bit" />
+          <Property Name="IsTruongChi" Type="bit" />
+          <Property Name="IdTaiKhoan" Type="int" />
+        </EntityType>
+        <EntityType Name="ThanhVienN">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="PID" Type="int" />
+          <Property Name="HoTen" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="NamSinh" Type="nvarchar" MaxLength="50" />
+          <Property Name="NamMat" Type="nvarchar" MaxLength="50" />
+          <Property Name="GioiTinh" Type="bit" />
+          <Property Name="VoChong" Type="int" />
+          <Property Name="DiaPhuong" Type="nvarchar" MaxLength="100" />
+          <Property Name="NoiO" Type="nvarchar" MaxLength="100" />
+          <Property Name="LyLich" Type="nvarchar" MaxLength="50" />
+          <Property Name="Avt" Type="nvarchar" MaxLength="100" />
           <Property Name="IsTruongHo" Type="bit" />
           <Property Name="IsTruongChi" Type="bit" />
           <Property Name="IdTaiKhoan" Type="int" />
@@ -150,6 +169,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ThanhVienN_Account">
+          <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
+          <End Role="ThanhVienN" Type="Self.ThanhVienN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ThanhVienN">
+              <PropertyRef Name="IdTaiKhoan" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_TinTuc_TinTuc">
           <End Role="LoaiTinTuc" Type="Self.LoaiTinTuc" Multiplicity="0..1" />
           <End Role="TinTuc" Type="Self.TinTuc" Multiplicity="*" />
@@ -170,6 +201,7 @@
           <EntitySet Name="PhaKy" EntityType="Self.PhaKy" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ThanhVien" EntityType="Self.ThanhVien" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ThanhVienN" EntityType="Self.ThanhVienN" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TinTuc" EntityType="Self.TinTuc" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TocUoc" EntityType="Self.TocUoc" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Video" EntityType="Self.Video" Schema="dbo" store:Type="Tables" />
@@ -186,13 +218,16 @@
             <End Role="VoChong" EntitySet="VoChong" />
             <End Role="ThanhVien" EntitySet="ThanhVien" />
           </AssociationSet>
+          <AssociationSet Name="FK_ThanhVienN_Account" Association="Self.FK_ThanhVienN_Account">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="ThanhVienN" EntitySet="ThanhVienN" />
+          </AssociationSet>
           <AssociationSet Name="FK_TinTuc_TinTuc" Association="Self.FK_TinTuc_TinTuc">
             <End Role="LoaiTinTuc" EntitySet="LoaiTinTuc" />
             <End Role="TinTuc" EntitySet="TinTuc" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="GiaPha.KimTocModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -207,7 +242,8 @@
           <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="idChucNang" Type="Int32" />
           <NavigationProperty Name="ChucNang" Relationship="Self.FK_Account_ChucNang" FromRole="Account" ToRole="ChucNang" />
-          <NavigationProperty Name="ThanhViens" Relationship="Self.FK_ThanhVien_Account" FromRole="Account" ToRole="ThanhVien" />
+          <NavigationProperty Name="ThanhViens" Relationship="GiaPha.KimTocModel.FK_ThanhVien_Account" FromRole="Account" ToRole="ThanhVien" />
+          <NavigationProperty Name="ThanhVienNs" Relationship="GiaPha.KimTocModel.FK_ThanhVienN_Account" FromRole="Account" ToRole="ThanhVienN" />
         </EntityType>
         <EntityType Name="Anh">
           <Key>
@@ -253,26 +289,6 @@
           <Property Name="version" Type="Int32" />
           <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
-        <EntityType Name="ThanhVien">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PID" Type="Int32" />
-          <Property Name="HoTen" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="NamSinh" Type="Int32" />
-          <Property Name="NamMat" Type="Int32" />
-          <Property Name="GioiTinh" Type="Boolean" />
-          <Property Name="VoChong" Type="Int32" />
-          <Property Name="DiaPhuong" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="LyLich" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Avt" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="IsTruongHo" Type="Boolean" />
-          <Property Name="IsTruongChi" Type="Boolean" />
-          <Property Name="IdTaiKhoan" Type="Int32" />
-          <NavigationProperty Name="Account" Relationship="Self.FK_ThanhVien_Account" FromRole="ThanhVien" ToRole="Account" />
-          <NavigationProperty Name="VoChong1" Relationship="Self.FK_ThanhVien_ThanhVien" FromRole="ThanhVien" ToRole="VoChong" />
-        </EntityType>
         <EntityType Name="TinTuc">
           <Key>
             <PropertyRef Name="ID" />
@@ -311,7 +327,7 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="HoTen" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="ThanhViens" Relationship="Self.FK_ThanhVien_ThanhVien" FromRole="VoChong" ToRole="ThanhVien" />
+          <NavigationProperty Name="ThanhViens" Relationship="GiaPha.KimTocModel.FK_ThanhVien_ThanhVien" FromRole="VoChong" ToRole="ThanhVien" />
         </EntityType>
         <Association Name="FK_Account_ChucNang">
           <End Role="ChucNang" Type="Self.ChucNang" Multiplicity="0..1" />
@@ -322,18 +338,6 @@
             </Principal>
             <Dependent Role="Account">
               <PropertyRef Name="idChucNang" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ThanhVien_Account">
-          <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
-          <End Role="ThanhVien" Type="Self.ThanhVien" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Account">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="ThanhVien">
-              <PropertyRef Name="IdTaiKhoan" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -349,9 +353,75 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityContainer Name="GiaPhaEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Accounts" EntityType="Self.Account" />
+          <EntitySet Name="Anhs" EntityType="Self.Anh" />
+          <EntitySet Name="ChucNangs" EntityType="Self.ChucNang" />
+          <EntitySet Name="LoaiTinTucs" EntityType="Self.LoaiTinTuc" />
+          <EntitySet Name="PhaKies" EntityType="Self.PhaKy" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="TinTucs" EntityType="Self.TinTuc" />
+          <EntitySet Name="TocUocs" EntityType="Self.TocUoc" />
+          <EntitySet Name="Videos" EntityType="Self.Video" />
+          <EntitySet Name="VoChongs" EntityType="Self.VoChong" />
+          <AssociationSet Name="FK_Account_ChucNang" Association="Self.FK_Account_ChucNang">
+            <End Role="ChucNang" EntitySet="ChucNangs" />
+            <End Role="Account" EntitySet="Accounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TinTuc_TinTuc" Association="Self.FK_TinTuc_TinTuc">
+            <End Role="LoaiTinTuc" EntitySet="LoaiTinTucs" />
+            <End Role="TinTuc" EntitySet="TinTucs" />
+          </AssociationSet>
+          <EntitySet Name="ThanhViens" EntityType="GiaPha.KimTocModel.ThanhVien" />
+          <AssociationSet Name="FK_ThanhVien_Account" Association="GiaPha.KimTocModel.FK_ThanhVien_Account">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="ThanhVien" EntitySet="ThanhViens" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ThanhVien_ThanhVien" Association="GiaPha.KimTocModel.FK_ThanhVien_ThanhVien">
+            <End Role="VoChong" EntitySet="VoChongs" />
+            <End Role="ThanhVien" EntitySet="ThanhViens" />
+          </AssociationSet>
+          <EntitySet Name="ThanhVienNs" EntityType="GiaPha.KimTocModel.ThanhVienN" />
+          <AssociationSet Name="FK_ThanhVienN_Account" Association="GiaPha.KimTocModel.FK_ThanhVienN_Account">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="ThanhVienN" EntitySet="ThanhVienNs" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="ThanhVien">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PID" Type="Int32" />
+          <Property Name="HoTen" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="NamSinh" Type="Int32" />
+          <Property Name="NamMat" Type="Int32" />
+          <Property Name="GioiTinh" Type="Boolean" />
+          <Property Name="VoChong" Type="Int32" />
+          <Property Name="DiaPhuong" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="LyLich" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Avt" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IsTruongHo" Type="Boolean" />
+          <Property Name="IsTruongChi" Type="Boolean" />
+          <Property Name="IdTaiKhoan" Type="Int32" />
+          <NavigationProperty Name="Account" Relationship="GiaPha.KimTocModel.FK_ThanhVien_Account" FromRole="ThanhVien" ToRole="Account" />
+          <NavigationProperty Name="VoChong1" Relationship="GiaPha.KimTocModel.FK_ThanhVien_ThanhVien" FromRole="ThanhVien" ToRole="VoChong" />
+        </EntityType>
+        <Association Name="FK_ThanhVien_Account">
+          <End Type="GiaPha.KimTocModel.Account" Role="Account" Multiplicity="0..1" />
+          <End Type="GiaPha.KimTocModel.ThanhVien" Role="ThanhVien" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ThanhVien">
+              <PropertyRef Name="IdTaiKhoan" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ThanhVien_ThanhVien">
-          <End Role="VoChong" Type="Self.VoChong" Multiplicity="0..1" />
-          <End Role="ThanhVien" Type="Self.ThanhVien" Multiplicity="*" />
+          <End Type="GiaPha.KimTocModel.VoChong" Role="VoChong" Multiplicity="0..1" />
+          <End Type="GiaPha.KimTocModel.ThanhVien" Role="ThanhVien" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="VoChong">
               <PropertyRef Name="ID" />
@@ -361,35 +431,38 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="GiaPhaEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Accounts" EntityType="Self.Account" />
-          <EntitySet Name="Anhs" EntityType="Self.Anh" />
-          <EntitySet Name="ChucNangs" EntityType="Self.ChucNang" />
-          <EntitySet Name="LoaiTinTucs" EntityType="Self.LoaiTinTuc" />
-          <EntitySet Name="PhaKies" EntityType="Self.PhaKy" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
-          <EntitySet Name="ThanhViens" EntityType="Self.ThanhVien" />
-          <EntitySet Name="TinTucs" EntityType="Self.TinTuc" />
-          <EntitySet Name="TocUocs" EntityType="Self.TocUoc" />
-          <EntitySet Name="Videos" EntityType="Self.Video" />
-          <EntitySet Name="VoChongs" EntityType="Self.VoChong" />
-          <AssociationSet Name="FK_Account_ChucNang" Association="Self.FK_Account_ChucNang">
-            <End Role="ChucNang" EntitySet="ChucNangs" />
-            <End Role="Account" EntitySet="Accounts" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ThanhVien_Account" Association="Self.FK_ThanhVien_Account">
-            <End Role="Account" EntitySet="Accounts" />
-            <End Role="ThanhVien" EntitySet="ThanhViens" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TinTuc_TinTuc" Association="Self.FK_TinTuc_TinTuc">
-            <End Role="LoaiTinTuc" EntitySet="LoaiTinTucs" />
-            <End Role="TinTuc" EntitySet="TinTucs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ThanhVien_ThanhVien" Association="Self.FK_ThanhVien_ThanhVien">
-            <End Role="VoChong" EntitySet="VoChongs" />
-            <End Role="ThanhVien" EntitySet="ThanhViens" />
-          </AssociationSet>
-        </EntityContainer>
+        <EntityType Name="ThanhVienN">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="PID" Type="Int32" />
+          <Property Name="HoTen" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NamSinh" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NamMat" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="GioiTinh" Type="Boolean" />
+          <Property Name="VoChong" Type="Int32" />
+          <Property Name="DiaPhuong" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="NoiO" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LyLich" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Avt" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="IsTruongHo" Type="Boolean" />
+          <Property Name="IsTruongChi" Type="Boolean" />
+          <Property Name="IdTaiKhoan" Type="Int32" />
+          <NavigationProperty Name="Account" Relationship="GiaPha.KimTocModel.FK_ThanhVienN_Account" FromRole="ThanhVienN" ToRole="Account" />
+        </EntityType>
+        <Association Name="FK_ThanhVienN_Account">
+          <End Type="GiaPha.KimTocModel.Account" Role="Account" Multiplicity="0..1" />
+          <End Type="GiaPha.KimTocModel.ThanhVienN" Role="ThanhVienN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ThanhVienN">
+              <PropertyRef Name="IdTaiKhoan" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -455,25 +528,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ThanhViens">
-            <EntityTypeMapping TypeName="GiaPha.KimTocModel.ThanhVien">
-              <MappingFragment StoreEntitySet="ThanhVien">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="PID" ColumnName="PID" />
-                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
-                <ScalarProperty Name="NamSinh" ColumnName="NamSinh" />
-                <ScalarProperty Name="NamMat" ColumnName="NamMat" />
-                <ScalarProperty Name="GioiTinh" ColumnName="GioiTinh" />
-                <ScalarProperty Name="VoChong" ColumnName="VoChong" />
-                <ScalarProperty Name="DiaPhuong" ColumnName="DiaPhuong" />
-                <ScalarProperty Name="LyLich" ColumnName="LyLich" />
-                <ScalarProperty Name="Avt" ColumnName="Avt" />
-                <ScalarProperty Name="IsTruongHo" ColumnName="IsTruongHo" />
-                <ScalarProperty Name="IsTruongChi" ColumnName="IsTruongChi" />
-                <ScalarProperty Name="IdTaiKhoan" ColumnName="IdTaiKhoan" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="TinTucs">
             <EntityTypeMapping TypeName="GiaPha.KimTocModel.TinTuc">
               <MappingFragment StoreEntitySet="TinTuc">
@@ -513,6 +567,45 @@
               <MappingFragment StoreEntitySet="VoChong">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ThanhViens">
+            <EntityTypeMapping TypeName="GiaPha.KimTocModel.ThanhVien">
+              <MappingFragment StoreEntitySet="ThanhVien">
+                <ScalarProperty Name="IdTaiKhoan" ColumnName="IdTaiKhoan" />
+                <ScalarProperty Name="IsTruongChi" ColumnName="IsTruongChi" />
+                <ScalarProperty Name="IsTruongHo" ColumnName="IsTruongHo" />
+                <ScalarProperty Name="Avt" ColumnName="Avt" />
+                <ScalarProperty Name="LyLich" ColumnName="LyLich" />
+                <ScalarProperty Name="DiaPhuong" ColumnName="DiaPhuong" />
+                <ScalarProperty Name="VoChong" ColumnName="VoChong" />
+                <ScalarProperty Name="GioiTinh" ColumnName="GioiTinh" />
+                <ScalarProperty Name="NamMat" ColumnName="NamMat" />
+                <ScalarProperty Name="NamSinh" ColumnName="NamSinh" />
+                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ThanhVienNs">
+            <EntityTypeMapping TypeName="GiaPha.KimTocModel.ThanhVienN">
+              <MappingFragment StoreEntitySet="ThanhVienN">
+                <ScalarProperty Name="IdTaiKhoan" ColumnName="IdTaiKhoan" />
+                <ScalarProperty Name="IsTruongChi" ColumnName="IsTruongChi" />
+                <ScalarProperty Name="IsTruongHo" ColumnName="IsTruongHo" />
+                <ScalarProperty Name="Avt" ColumnName="Avt" />
+                <ScalarProperty Name="LyLich" ColumnName="LyLich" />
+                <ScalarProperty Name="NoiO" ColumnName="NoiO" />
+                <ScalarProperty Name="DiaPhuong" ColumnName="DiaPhuong" />
+                <ScalarProperty Name="VoChong" ColumnName="VoChong" />
+                <ScalarProperty Name="GioiTinh" ColumnName="GioiTinh" />
+                <ScalarProperty Name="NamMat" ColumnName="NamMat" />
+                <ScalarProperty Name="NamSinh" ColumnName="NamSinh" />
+                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

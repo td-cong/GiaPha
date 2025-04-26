@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     var AccountList = (List<GiaPha.Models.Account>)ViewBag.AccountList;
     GiaPha.Models.GiaPhaEntities db = new GiaPha.Models.GiaPhaEntities();
-    var tktv = db.ThanhViens.Where(tv => tv.IdTaiKhoan != null).ToList();
+    var tktv = db.ThanhVienNs.Where(tv => tv.IdTaiKhoan != null).ToList();
 }
 
 <h4 class="my-3">Danh sách tài khoản</h4>

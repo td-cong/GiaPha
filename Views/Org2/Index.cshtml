@@ -1,8 +1,8 @@
-﻿@model IEnumerable<GiaPha.Models.ThanhVien>
+﻿@model IEnumerable<GiaPha.Models.ThanhVienN>
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var allData = Model;
+    var allData = Model.Cast<GiaPha.Models.ThanhVienN>();
     var currentUser = (GiaPha.Models.Account)Session["User"];
     var quyenQuanLy = ViewBag.quyenQuanLy;
     var truongHoColor = "purple";
@@ -13,7 +13,7 @@
 }
 @{
     var currentAccount = currentUser != null
-    ? currentUser.ThanhViens.FirstOrDefault(t => t.IdTaiKhoan == currentUser.ID)
+    ? currentUser.ThanhVienNs.FirstOrDefault(t => t.IdTaiKhoan == currentUser.ID)
     : allData.FirstOrDefault();
 
     var truongHo = allData.FirstOrDefault(t => t.IsTruongHo == true);
@@ -88,7 +88,7 @@
                         </div>
                         <div class="col-auto p-1">
                             <select class="level-select" id="visible-level-select">
-                                <option hidden value="20">0 - Không giới hạn cấp độ</option>
+                                <option value="20">0 - Không giới hạn cấp độ</option>
                                 <option value="1">1 - Giới hạn xem đến đời 1</option>
                                 <option value="2">2 - Giới hạn xem đến đời 2</option>
                                 <option value="3">3 - Giới hạn xem đến đời 3</option>
@@ -135,11 +135,6 @@
                         <h4>Tùy chọn phả đồ</h4>
                         <hr />
                         <form>
-                            <div>
-                                <label>
-                                    <input type="radio" name="option" value="option1" id="option1"> Hiển thị thêm vợ(chồng)
-                                </label>
-                            </div>
                             <div>
                                 <label>
                                     <input type="radio" name="option" value="option2" id="option2"> Chỉ hiển thị đinh(nam)
@@ -318,7 +313,7 @@
         <script src="~/Scripts/printThis.js"></script>
         <script orgchart type="text/javascript">
             @functions{
-                string GetAllConChau (IEnumerable<GiaPha.Models.ThanhVien> allData,int parentID/*, int currentLevel = 1*/) {
+                string GetAllConChau (IEnumerable<GiaPha.Models.ThanhVienN> allData,int parentID/*, int currentLevel = 1*/) {
                     var conChauStr = "";
                     var conChau = allData.Where(x => x.PID == parentID);
 
@@ -348,7 +343,7 @@
                     return conChauStr;
                 }
 
-                string GetTruongHoVaTruongChi(IEnumerable<GiaPha.Models.ThanhVien> allData)
+                string GetTruongHoVaTruongChi(IEnumerable<GiaPha.Models.ThanhVienN> allData)
                 {
                     var truongHoVaTruongChiStr = "";
                     var filteredData = allData.Where(x => (x.IsTruongHo.GetValueOrDefault() || x.IsTruongChi.GetValueOrDefault()));
@@ -441,8 +436,8 @@
             function resetChart() {
                 var $this = $('.orgchart').find('.node').first();
                 var $chart = $this.closest('.orgchart');
-                var newX = window.parseInt(-(($chart.outerWidth(true) / 1.83) - ($this.offset().left - $chart.offset().left) - ($this.outerWidth(true) / 2)));
-                var newY = window.parseInt(-($chart.outerHeight(true) / 5) - ($this.offset().top - $chart.offset().top) - ($this.outerHeight(true) / 2));
+                var newX = window.parseInt(-(($chart.outerWidth(true) / 1.98) - ($this.offset().left - $chart.offset().left) - ($this.outerWidth(true) / 2)));
+                var newY = window.parseInt(-($chart.outerHeight(true) / 5.5) - ($this.offset().top - $chart.offset().top) - ($this.outerHeight(true) / 2));
                 $chart.css('transform', 'matrix(0.5, 0, 0, 0.5, ' + newX + ', ' + newY + ')');
             }
 
@@ -504,7 +499,7 @@
 
             var selectedNodeTemplate = isMobile() ? nodeTemplate_MB : nodeTemplate;
 
-            var visibleLevel = 10;
+            var visibleLevel = 8;
             var oc = $('#chart-container').orgchart({
                 'exportButton': true,
                 'exportButtonName': 'Xuất file',
@@ -569,11 +564,23 @@
                             2: 2, 3: 2,
                             4: 2, 5: 2,
                             6: 2, 7: 2,
-                            8: 2, 9: 1.62,
-                            10: 1.4,
+                            8: 1.8, 9: 1.62,
+                            10: 1.2,
                             11: 1.076,
                             12: 1.057,
-                            default: 1.053
+                            default: 2
+                        };
+
+                        const yValues = {
+                            0: 200, 1: 0,
+                            2: 0, 3: 0,
+                            4: 0, 5: 0,
+                            6: 0, 7: 0,
+                            8: 50, 9: 60,
+                            10: 1.2,
+                            11: 1.076,
+                            12: 1.057,
+                            default: 2
                         };
 
                         const $this = $('.orgchart').find('.node').first();
@@ -581,8 +588,10 @@
 
                         const { [visibleLevel]: x = xValues.default } = xValues;
 
-                        const newX = window.parseInt(-(($chart.outerWidth(true) / x) - ($this.offset().left - $chart.offset().left) - ($this.outerWidth(true) / 2)));
-                        const newY = window.parseInt(-($chart.outerHeight(true) / 3.5) - ($this.offset().top - $chart.offset().top) - ($this.outerHeight(true) / 2));
+                        const { [visibleLevel]: y = yValues.default } = yValues;
+
+                        const newX = window.parseInt(-(($chart.outerWidth(true) / x) - ($this.offset().left - $chart.offset().left) + y ));
+                        const newY = window.parseInt(-($chart.outerHeight(true) / 4.2) - ($this.offset().top - $chart.offset().top) /*- ($this.outerHeight(true) / 2)*/);
 
                         //const scrollValues = {
                         //    0: 125, 1: 0,
@@ -598,7 +607,7 @@
                         //console.log(scrollTop)
                         window.scrollTo(0, 100);
 
-                        $chart.css('transform', `matrix(0.1, 0, 0, 0.1, ${newX}, ${newY})`);
+                        $chart.css('transform', `matrix(0.348, 0, 0, 0.348, ${newX}, ${newY})`);
 
                         setTimeout(() => {
                             $('.oc-export-btn').click();
@@ -679,11 +688,12 @@
                             0: 2, 1: 2,
                             2: 2, 3: 2,
                             4: 2, 5: 2,
-                            6: 2, 7: 2,
-                            8: 2, 9: 1.62,
-                            10: 1.27, 11: 1.076,
-                            12: 1.057,
-                            default: 1.053
+                            6: 1.75, 7: 1.5,
+                            8: 1.34, 9: 1.125,
+                            10: 1.033, 11: 1.0195,
+                            12: 1.0155,
+                            13: 1.0155 ,
+                            default: 1.0155
                         };
 
                         const $this = $('.orgchart').find('.node').first();
@@ -691,7 +701,7 @@
 
                         const { [newVisibleLevel]: x = xValues.default } = xValues;
 
-                        const newX = window.parseInt(-(($chart.outerWidth(true) / x) - ($this.offset().left - $chart.offset().left) - ($this.outerWidth(true) / 2)));
+                        const newX = window.parseInt(-(($chart.outerWidth(true) / x) - ($this.offset().left - $chart.offset().left) ));
                         const newY = window.parseInt(-($chart.outerHeight(true) / 4.5) - ($this.offset().top - $chart.offset().top));
                         $chart.css('transform', `matrix(0.5, 0, 0, 0.5, ${newX}, ${newY})`);
 
@@ -727,13 +737,12 @@
                 const xValues = {
                     0: 1.83, 1: 2.55,
                     2: 2.6, 3: 2.7,
-                    4: 3.1, 5: 3.1,
-                    6: 3.4, 7: 3.6,
-                    8: 3.7, 9: 2.63,
-                    10: 1.83, 11: 1.465,
-                    12: 1.432,
-                    20: 1.83,
-                    default: 1.426
+                    4: 3.1, 5: 3.7,
+                    6: 3, 7: 2.3,
+                    8: 1.98, 9: 1.555,
+                    10: 1.391, 11: 1.3665,
+                    12: 1.36, 13: 1.36,
+                    default: 1.98
                 };
 
                 const $this = $('.orgchart').find('.node').first();
@@ -743,7 +752,7 @@
                 const x = isNaN(selectedLevel) ? 2 : xValues[selectedLevel] ?? xValues.default;
 
                 const newX = window.parseInt(-(($chart.outerWidth(true) / x) - ($this.offset().left - $chart.offset().left) - ($this.outerWidth(true) / 2)));
-                const newY = window.parseInt(-($chart.outerHeight(true) / 4.2) - ($this.offset().top - $chart.offset().top));
+                const newY = window.parseInt(-($chart.outerHeight(true) / 4.28) - ($this.offset().top - $chart.offset().top));
 
                 $chart.css('transform', `matrix(0.5, 0, 0, 0.5, ${newX}, ${newY})`);
             });
@@ -848,17 +857,12 @@
                 $('#node-info-form').css('display', 'none');
             });
 
-
-            document.getElementById('option1').addEventListener('change', function() {
-                if (this.checked) {
-                    window.location.href = '@Url.Action("OrgWithSpouse", "Org2")';
-                }
-            });
             document.getElementById('option2').addEventListener('change', function() {
                 if (this.checked) {
                     window.location.href = '@Url.Action("OrgMale", "Org2")';
                 }
             });
+
             document.getElementById('option3').addEventListener('change', function() {
                 if (this.checked) {
                     window.location.href = '@Url.Action("Index", "Org2")';

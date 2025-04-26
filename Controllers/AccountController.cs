@@ -140,19 +140,19 @@ namespace GiaPha.Controllers
         // Account ThanhVien
         public ActionResult Create2()
         {
-            ViewBag.ThanhVienList = db.ThanhViens.AsNoTracking().ToList();
+            ViewBag.ThanhVienList = db.ThanhVienNs.AsNoTracking().ToList();
             return View();
         }
 
         // POST: Account/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create2(ThanhVien model)
+        public ActionResult Create2(ThanhVienN model)
         {
 
             if (ModelState.IsValid)
             {
-                var member = db.ThanhViens.Find(model.ID);
+                var member = db.ThanhVienNs.Find(model.ID);
                 if (member != null)
                 {
                     member.IdTaiKhoan = model.IdTaiKhoan;
@@ -165,7 +165,7 @@ namespace GiaPha.Controllers
 
         public ActionResult GetMemberInfo(int id)
         {
-            var member = db.ThanhViens.Find(id);
+            var member = db.ThanhVienNs.Find(id);
             if (member != null)
             {
                 return Json(new { idTaiKhoan = member.IdTaiKhoan }, JsonRequestBehavior.AllowGet);
@@ -179,8 +179,8 @@ namespace GiaPha.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ViewBag.ThanhVienList = db.ThanhViens.AsNoTracking().ToList();
-            ThanhVien thanhVien = db.ThanhViens.Find(id);
+            ViewBag.ThanhVienList = db.ThanhVienNs.AsNoTracking().ToList();
+            ThanhVienN thanhVien = db.ThanhVienNs.Find(id);
             if (thanhVien == null)
             {
                 return HttpNotFound();
@@ -193,7 +193,7 @@ namespace GiaPha.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit2(int id, int IdTaiKhoan)
         {
-            ThanhVien thanhVien = db.ThanhViens.Find(id);
+            ThanhVienN thanhVien = db.ThanhVienNs.Find(id);
             if (thanhVien == null)
             {
                 return HttpNotFound();
@@ -207,7 +207,7 @@ namespace GiaPha.Controllers
         // GET: Delete
         public ActionResult Delete2(int id)
         {
-            ThanhVien thanhVien = db.ThanhViens.Find(id);
+            ThanhVienN thanhVien = db.ThanhVienNs.Find(id);
             if (thanhVien == null)
             {
                 return HttpNotFound();
@@ -219,7 +219,7 @@ namespace GiaPha.Controllers
         [HttpPost, ActionName("Delete2")]
         public ActionResult DeleteConfirmed(int id)
         {
-            ThanhVien thanhVien = db.ThanhViens.Find(id);
+            ThanhVienN thanhVien = db.ThanhVienNs.Find(id);
             if (thanhVien == null)
             {
                 return HttpNotFound();

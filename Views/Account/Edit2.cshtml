@@ -1,9 +1,9 @@
-﻿@model GiaPha.Models.ThanhVien
+﻿@model GiaPha.Models.ThanhVienN
 
 @{
     ViewBag.Title = "Edit2";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var ThanhVienList = (List<GiaPha.Models.ThanhVien>)ViewBag.ThanhVienList;
+    var ThanhVienList = (List<GiaPha.Models.ThanhVienN>)ViewBag.ThanhVienList;
 }
 
 @using (Html.BeginForm("Edit2", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))

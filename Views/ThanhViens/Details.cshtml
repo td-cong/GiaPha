@@ -1,9 +1,9 @@
-﻿@model GiaPha.Models.ThanhVien
+﻿@model GiaPha.Models.ThanhVienN
 
 @{
     ViewBag.Title = "Chi tiết";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var ThanhVienList = (List<GiaPha.Models.ThanhVien>)ViewBag.ThanhVienList;
+    var ThanhVienList = (List<GiaPha.Models.ThanhVienN>)ViewBag.ThanhVienList;
     var VoChongList = (List<GiaPha.Models.VoChong>)ViewBag.VoChongList;
     var currentUser = (GiaPha.Models.Account)Session["User"];
 

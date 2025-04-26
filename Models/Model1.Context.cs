@@ -31,10 +31,11 @@ namespace GiaPha.Models
         public virtual DbSet<LoaiTinTuc> LoaiTinTucs { get; set; }
         public virtual DbSet<PhaKy> PhaKies { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
-        public virtual DbSet<ThanhVien> ThanhViens { get; set; }
         public virtual DbSet<TinTuc> TinTucs { get; set; }
         public virtual DbSet<TocUoc> TocUocs { get; set; }
         public virtual DbSet<Video> Videos { get; set; }
         public virtual DbSet<VoChong> VoChongs { get; set; }
+        public virtual DbSet<ThanhVien> ThanhViens { get; set; }
+        public virtual DbSet<ThanhVienN> ThanhVienNs { get; set; }
     }
 }
