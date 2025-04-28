@@ -1,8 +1,8 @@
-﻿@model IEnumerable<GiaPha.Models.ThanhVienN>
+﻿@model IEnumerable<GiaPha.Models.ThanhVien>
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "OrgWithSpouse";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var allData = Model.Cast<GiaPha.Models.ThanhVienN>();
+    var allData = Model.Cast<GiaPha.Models.ThanhVien>();
     var currentUser = (GiaPha.Models.Account)Session["User"];
     var quyenQuanLy = ViewBag.quyenQuanLy;
     var truongHoColor = "purple";
@@ -13,8 +13,8 @@
 }
 @{
     var currentAccount = currentUser != null
-    ? currentUser.ThanhVienNs.FirstOrDefault(t => t.IdTaiKhoan == currentUser.ID)
-    : allData.FirstOrDefault();
+? currentUser.ThanhViens.FirstOrDefault(t => t.IdTaiKhoan == currentUser.ID)
+: allData.FirstOrDefault();
 
     var truongHo = allData.FirstOrDefault(t => t.IsTruongHo == true);
 
@@ -28,15 +28,6 @@
         }
         return false;
     });
-
-    var truongHoList = allData.Where(t => t.IsTruongHo == true).ToList();
-
-    if (truongHo != null)
-    {
-        truongHoList.Remove(truongHo);
-    }
-
-    var TruongChi = allData.Where(t => t.IsTruongChi == true).ToList();
 }
 
 <main>
@@ -88,7 +79,7 @@
                         </div>
                         <div class="col-auto p-1">
                             <select class="level-select" id="visible-level-select">
-                                <option value="20">0 - Không giới hạn cấp độ</option>
+                                <option hidden value="20">0 - Không giới hạn cấp độ</option>
                                 <option value="1">1 - Giới hạn xem đến đời 1</option>
                                 <option value="2">2 - Giới hạn xem đến đời 2</option>
                                 <option value="3">3 - Giới hạn xem đến đời 3</option>
@@ -106,28 +97,27 @@
                         </div>
 
                         @*<div class="col-auto p-1">
-                    <label>Từ đời:</label>
-                    <select id="start-level" class="form-control">
-                        @for (int i = 1; i <= 13; i++)
-                        {
-                            <option value="@i">Đời @i</option>
-                        }
-                    </select>
-                </div>
-                <div class="col-auto p-1">
-                    <label>Đến đời:</label>
-                    <select id="end-level" class="form-control">
-                        @for (int i = 1; i <= 13; i++)
-                        {
-                            <option value="@i">Đời @i</option>
-                        }
-                    </select>
-                </div>*@
+                                <label>Từ đời:</label>
+                                <select id="start-level" class="form-control">
+                                    @for (int i = 1; i <= 13; i++)
+                                    {
+                                        <option value="@i">Đời @i</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-auto p-1">
+                                <label>Đến đời:</label>
+                                <select id="end-level" class="form-control">
+                                    @for (int i = 1; i <= 13; i++)
+                                    {
+                                        <option value="@i">Đời @i</option>
+                                    }
+                                </select>
+                            </div>*@
 
                     </div>
 
                 </div>
-
 
                 <div id="settings-modal" class="modal">
                     <div class="modal-content">
@@ -137,7 +127,7 @@
                         <form>
                             <div>
                                 <label>
-                                    <input type="radio" name="option" value="option1" id="option1" checked> Hiển thị với vợ(chồng)
+                                    <input type="radio" name="option" value="option1" id="option1" checked> Hiển thị thêm vợ(chồng)
                                 </label>
                             </div>
                             <div>
@@ -147,15 +137,10 @@
                             </div>
                             <div>
                                 <label>
-                                    <input type="radio" name="option" value="option3" id="option3" checked> Hiển thị tất cả
+                                    <input type="radio" name="option" value="option3" id="option3"> Hiển thị tất cả
                                 </label>
                             </div>
                             <hr />
-                            <div>
-                                <label>
-                                    <input type="radio" name="option" value="option5" id="option5"> Chỉ hiển thị trưởng họ, trường chi
-                                </label>
-                            </div>
                             <div>
                                 <label>
                                     <input type="radio" name="option" value="option4" id="option4"> Hiển thị biểu đồ dọc
@@ -247,6 +232,7 @@
                     </div>
                 </div>
 
+
                 <div class="fullscreen-button">
                     <button id="fullscreen-btn">🔍</button>
                 </div>
@@ -258,14 +244,14 @@
                         if (!document.fullscreenElement) {
                             if (orgChart.requestFullscreen) {
                                 orgChart.requestFullscreen();
-                            } else if (orgChart.mozRequestFullScreen) { 
+                            } else if (orgChart.mozRequestFullScreen) {
                                 orgChart.mozRequestFullScreen();
-                            } else if (orgChart.webkitRequestFullscreen) { 
+                            } else if (orgChart.webkitRequestFullscreen) {
                                 orgChart.webkitRequestFullscreen();
-                            } else if (orgChart.msRequestFullscreen) { 
+                            } else if (orgChart.msRequestFullscreen) {
                                 orgChart.msRequestFullscreen();
                             }
-                        
+
                             if (window.screen.orientation && window.innerWidth < window.innerHeight) {
                                 window.screen.orientation.lock("landscape").catch(error => {
                                     console.log("Không thể xoay màn hình:", error);
@@ -286,6 +272,8 @@
             </div>
         </div>
 
+
+
         <script>
             $('#info-png').on('click', function () {
                 const screenshotTarget = document.getElementById('node-info-form');
@@ -304,7 +292,7 @@
                         anchor.click();
                         anchor.remove();
                     });
-                }, 500);               
+                }, 500);
 
             });
         </script>
@@ -318,17 +306,18 @@
         <script src="~/Scripts/printThis.js"></script>
         <script orgchart type="text/javascript">
             @functions{
-                string GetAllConChau (IEnumerable<GiaPha.Models.ThanhVienN> allData,int parentID/*, int currentLevel = 1*/) {
+                string GetAllConChau (IEnumerable<GiaPha.Models.ThanhVien> allData,int parentID) {
                     var conChauStr = "";
                     var conChau = allData.Where(x => x.PID == parentID);
+                    var voChong = allData.Where(x => x.VoChong == parentID);
 
-                    //var voChong = allData.Where(x => x.VoChong == parentID);
+                    var ketQua = (from c in conChau select c)
+                         .Concat(from v in voChong select v)
+                         .ToList();
 
-                    //var ketQua = conChau.Concat(voChong).ToList();
-
-                    if (conChau != null)
+                    if (ketQua != null)
                     {
-                        foreach(var item in conChau)
+                        foreach(var item in ketQua)
                         {
                             var levelOffset = item.VoChong != null ? -1 : 0;
 
@@ -339,35 +328,13 @@
                                         $"  'title': \"{(item.IsTruongChi == true ? "Trưởng Chi" : "")} {(item.IsTruongHo == true ? "Trưởng Họ" : "")} \", " +
                                         $"  'gender': \"{(item.GioiTinh == true ? "Nam" : "Nữ")} \", " +
                                         $"  'avt': \"{item.Avt}\", " +
+                                        $"  'spouse': \"{item.VoChong}\", " +
                                         $"  'levelOffset': {levelOffset}, " +
-                                        //$"  'level': {currentLevel}, " +
-                                        $"  'children': [{GetAllConChau(allData, item.ID/*, currentLevel + 1*/)}], " +
+                                        $"  'children': [{GetAllConChau(allData, item.ID)}], " +
                                         $"  }},";
                         }
                     }
                     return conChauStr;
-                }
-
-                string GetTruongHoVaTruongChi(IEnumerable<GiaPha.Models.ThanhVienN> allData)
-                {
-                    var truongHoVaTruongChiStr = "";
-                    var filteredData = allData.Where(x => (x.IsTruongHo.GetValueOrDefault() || x.IsTruongChi.GetValueOrDefault()));
-
-                    if (filteredData != null && filteredData.Any())
-                    {
-                        foreach (var item in filteredData)
-                        {
-                            truongHoVaTruongChiStr += $"{{" +
-                                         $"  'id': \"{item.ID}\", " +
-                                         $"  'name': \"{item.HoTen}\", " +
-                                         $"  'namsinh': \"{item.NamSinh} {(item.NamMat != null ? "- " + item.NamMat : "")}\", " +
-                                         $"  'title': \"{(item.IsTruongChi == true ? "Trưởng Chi" : "")} {(item.IsTruongHo == true ? "Trưởng Họ" : "")} \", " +
-                                         $"  'gender': \"{(item.GioiTinh == true ? "Nam" : "Nữ")} \", " +
-                                         $"  'avt': \"{item.Avt}\" " +
-                                         $"  }},";
-                        }
-                    }
-                    return truongHoVaTruongChiStr;
                 }
 
             }
@@ -441,8 +408,8 @@
             function resetChart() {
                 var $this = $('.orgchart').find('.node').first();
                 var $chart = $this.closest('.orgchart');
-                var newX = window.parseInt(-(($chart.outerWidth(true) / 1.98) - ($this.offset().left - $chart.offset().left) - ($this.outerWidth(true) / 2)));
-                var newY = window.parseInt(-($chart.outerHeight(true) / 5.5) - ($this.offset().top - $chart.offset().top) - ($this.outerHeight(true) / 2));
+                var newX = window.parseInt(-(($chart.outerWidth(true) / 1.83) - ($this.offset().left - $chart.offset().left) - ($this.outerWidth(true) / 2)));
+                var newY = window.parseInt(-($chart.outerHeight(true) / 4) - ($this.offset().top - $chart.offset().top));
                 $chart.css('transform', 'matrix(0.5, 0, 0, 0.5, ' + newX + ', ' + newY + ')');
             }
 
@@ -454,22 +421,14 @@
                 'title': `@(truongHo?.IsTruongHo ?? true ? "Trưởng Họ" : "")`,
                 'gender': `@(truongHo?.GioiTinh ?? true ? "Nam" : "Nữ")`,
                 'avt': `@{@Html.Raw(truongHo?.Avt)}`,
+                'spouse': `@{@Html.Raw(truongHo?.VoChong)}`,
                 'children': [
                     @Html.Raw(GetAllConChau(allData, truongHo.ID))
                     ],
                 };
 
-            var data_thtc = {
-                'id': `@{@Html.Raw(truongHo?.ID)}`,
-                'name': `@{@Html.Raw(truongHo?.HoTen)<br/>}`,
-                'namsinh': parseInt('@truongHo.NamSinh') || "" + ( parseInt('@truongHo.NamMat') || ""),
-                'title': `@(truongHo?.IsTruongHo ?? true ? "Trưởng Họ" : "")`,
-                'gender': `@(truongHo?.GioiTinh ?? true ? "Nam" : "Nữ")`,
-                'avt': `@{@Html.Raw(truongHo?.Avt)}`
-            };
-
             var nodeTemplate = function (data) {
-            var imgUrl = data.avt || '/Content/img/simpleAvt1.png';
+                var imgUrl = data.avt || '/Content/img/simpleAvt1.png';
             return `
 
                 <div class="title">
@@ -481,30 +440,30 @@
                     <div class="gender">${data.gender}</div>
                 </div>
                 `;
-            };
-
-            var nodeTemplate_MB = function (data) {
-            var imgUrl = data.avt || '/Content/img/simpleAvt1.png';
-            return `
-
-                <div class="title mobile-node">
-                    <div class="name">${data.name}</div>
-                    <div class="birth">${data.namsinh}</div>
-                </div>
-                <div class="content">${data.title}
-                    <div class="gender">${data.gender}</div>
-                </div>
-                `;
                 };
 
-            function isMobile() {
-                return window.innerWidth <= 768;
+                var nodeTemplate_MB = function (data) {
+                    var imgUrl = data.avt || '/Content/img/simpleAvt1.png';
+                    return `
 
-            }
+                        <div class="title mobile-node">
+                            <div class="name">${data.name}</div>
+                            <div class="birth">${data.namsinh}</div>
+                        </div>
+                        <div class="content">${data.title}
+                            <div class="gender">${data.gender}</div>
+                        </div>
+                    `;
+                };
 
-            var selectedNodeTemplate = isMobile() ? nodeTemplate_MB : nodeTemplate;
+                function isMobile() {
+                    return window.innerWidth <= 768;
 
-            var visibleLevel = 8;
+                }
+
+                var selectedNodeTemplate = isMobile() ? nodeTemplate_MB : nodeTemplate;
+
+            var visibleLevel = 10;
             var oc = $('#chart-container').orgchart({
                 'exportButton': true,
                 'exportButtonName': 'Xuất file',
@@ -569,23 +528,11 @@
                             2: 2, 3: 2,
                             4: 2, 5: 2,
                             6: 2, 7: 2,
-                            8: 1.8, 9: 1.62,
-                            10: 1.2,
+                            8: 2, 9: 1.62,
+                            10: 1.4,
                             11: 1.076,
                             12: 1.057,
-                            default: 2
-                        };
-
-                        const yValues = {
-                            0: 200, 1: 0,
-                            2: 0, 3: 0,
-                            4: 0, 5: 0,
-                            6: 0, 7: 0,
-                            8: 50, 9: 60,
-                            10: 1.2,
-                            11: 1.076,
-                            12: 1.057,
-                            default: 2
+                            default: 1.053
                         };
 
                         const $this = $('.orgchart').find('.node').first();
@@ -593,10 +540,8 @@
 
                         const { [visibleLevel]: x = xValues.default } = xValues;
 
-                        const { [visibleLevel]: y = yValues.default } = yValues;
-
-                        const newX = window.parseInt(-(($chart.outerWidth(true) / x) - ($this.offset().left - $chart.offset().left) + y ));
-                        const newY = window.parseInt(-($chart.outerHeight(true) / 4.2) - ($this.offset().top - $chart.offset().top) /*- ($this.outerHeight(true) / 2)*/);
+                        const newX = window.parseInt(-(($chart.outerWidth(true) / x) - ($this.offset().left - $chart.offset().left) - ($this.outerWidth(true) / 2)));
+                        const newY = window.parseInt(-($chart.outerHeight(true) / 3.5) - ($this.offset().top - $chart.offset().top) - ($this.outerHeight(true) / 2));
 
                         //const scrollValues = {
                         //    0: 125, 1: 0,
@@ -612,7 +557,7 @@
                         //console.log(scrollTop)
                         window.scrollTo(0, 100);
 
-                        $chart.css('transform', `matrix(0.348, 0, 0, 0.348, ${newX}, ${newY})`);
+                        $chart.css('transform', `matrix(0.1, 0, 0, 0.1, ${newX}, ${newY})`);
 
                         setTimeout(() => {
                             $('.oc-export-btn').click();
@@ -650,6 +595,7 @@
                         })
                     }
                     //avt
+                    /*$node.find('.title').append(`<img class="avatar" src="/Content/img/avt.jpg" crossorigin="anonymous"/>`);*/
                     $node.find('.content').prepend($node.find('.symbol'));
 
                     // VoChong
@@ -693,12 +639,11 @@
                             0: 2, 1: 2,
                             2: 2, 3: 2,
                             4: 2, 5: 2,
-                            6: 1.75, 7: 1.5,
-                            8: 1.34, 9: 1.125,
-                            10: 1.033, 11: 1.0195,
-                            12: 1.0155,
-                            13: 1.0155 ,
-                            default: 1.0155
+                            6: 2, 7: 2,
+                            8: 2, 9: 1.62,
+                            10: 1.27, 11: 1.076,
+                            12: 1.057,
+                            default: 1.053
                         };
 
                         const $this = $('.orgchart').find('.node').first();
@@ -706,15 +651,15 @@
 
                         const { [newVisibleLevel]: x = xValues.default } = xValues;
 
-                        const newX = window.parseInt(-(($chart.outerWidth(true) / x) - ($this.offset().left - $chart.offset().left) ));
-                        const newY = window.parseInt(-($chart.outerHeight(true) / 4.5) - ($this.offset().top - $chart.offset().top));
+                        const newX = window.parseInt(-(($chart.outerWidth(true) / x) - ($this.offset().left - $chart.offset().left) - ($this.outerWidth(true) / 2)));
+                        const newY = window.parseInt(-($chart.outerHeight(true) / 4) - ($this.offset().top - $chart.offset().top));
                         $chart.css('transform', `matrix(0.5, 0, 0, 0.5, ${newX}, ${newY})`);
 
                     },
                 });
             });
 
-            @*$('.orgchart').append('@foreach (var item in TruongChi) {<div class="node" id="@item.ID" ><div class="title">@item.HoTen</div><div class="content"></div></div>}');*@
+            @*$('.orgchart').append('@foreach (var item in voChong) {<div class="node" id="@item.ID" data-parent="@item.VoChong"><div class="title">@item.HoTen</div><div class="content"></div></div>}');*@
 
             oc.setChartScale(oc.$chart, 0.5);
 
@@ -742,12 +687,13 @@
                 const xValues = {
                     0: 1.83, 1: 2.55,
                     2: 2.6, 3: 2.7,
-                    4: 3.1, 5: 3.7,
-                    6: 3, 7: 2.3,
-                    8: 1.98, 9: 1.555,
-                    10: 1.391, 11: 1.3665,
-                    12: 1.36, 13: 1.36,
-                    default: 1.98
+                    4: 3.1, 5: 3.1,
+                    6: 3.4, 7: 3.6,
+                    8: 3.7, 9: 2.63,
+                    10: 1.83, 11: 1.465,
+                    12: 1.432,
+                    20: 1.83,
+                    default: 1.426
                 };
 
                 const $this = $('.orgchart').find('.node').first();
@@ -757,7 +703,7 @@
                 const x = isNaN(selectedLevel) ? 2 : xValues[selectedLevel] ?? xValues.default;
 
                 const newX = window.parseInt(-(($chart.outerWidth(true) / x) - ($this.offset().left - $chart.offset().left) - ($this.outerWidth(true) / 2)));
-                const newY = window.parseInt(-($chart.outerHeight(true) / 4.28) - ($this.offset().top - $chart.offset().top));
+                const newY = window.parseInt(-($chart.outerHeight(true) / 4) - ($this.offset().top - $chart.offset().top));
 
                 $chart.css('transform', `matrix(0.5, 0, 0, 0.5, ${newX}, ${newY})`);
             });
@@ -858,99 +804,36 @@
                 }
             });
 
+            $('#btn-org2').on('click', function (argument) {
+                oc.init({ 'verticalLevel': 4 });
+            });
+
             $('#close-icon').on('click', function () {
                 $('#node-info-form').css('display', 'none');
             });
+
 
             document.getElementById('option1').addEventListener('change', function() {
                 if (this.checked) {
                     window.location.href = '@Url.Action("OrgSpouse", "Org2")';
                 }
             });
-
             document.getElementById('option2').addEventListener('change', function() {
                 if (this.checked) {
                     window.location.href = '@Url.Action("OrgMale", "Org2")';
                 }
             });
-
             document.getElementById('option3').addEventListener('change', function() {
                 if (this.checked) {
                     window.location.href = '@Url.Action("Index", "Org2")';
                 }
             });
-
-            document.getElementById('option4').addEventListener('change', function() {
-                if (this.checked) {
-                    oc.init({ 'verticalLevel': 4 });
-                }
-            });
-
-                document.getElementById('option5').addEventListener('change', function () {
+                document.getElementById('option4').addEventListener('change', function () {
                     if (this.checked) {
-                        var nodeTemplate1 = function (data) {
-                            var imgUrl = data.avt || '/Content/img/simpleAvt1.png';
-                            return `
-                                <div class="title">
-                                    <img class="avt" crossorigin="anonymous" src="${imgUrl}"/>
-                                    <div class="name">${data.name}</div>
-                                    <div class="birth">${data.namsinh}</div>
-                                </div>
-                                <div class="content">${data.title}
-                                    <div class="gender">${data.gender}</div>
-                                </div>
-                                @foreach (var item in truongHoList) {
-                                    <div class="node" id="@item.ID" style="margin-left: -1.5px; padding-left: 0">
-                                        <div class="title">
-                                            <img class="avt" crossorigin="anonymous" src="@item.Avt"/>
-                                            <div class="name">@item.HoTen</div>
-                                            <div class="birth">@item.NamSinh</div>
-                                        </div>
-                                        <div class="content">
-                                            <div class= "gender"> @item.GioiTinh</div>
-                                        </div>
-                                    </div>}
-                            `;
-                        };
-
-                        oc.init({
-                            'data': data_thtc,
-                            'nodeTemplate': nodeTemplate1,
-                            'initCompleted': function () {
-                                var $this = $('.orgchart').find('.node').first();
-                                var $chart = $this.closest('.orgchart');
-                                var newX = window.parseInt(-(($chart.outerWidth(true) / 2) - ($this.offset().left - $chart.offset().left) - ($this.outerWidth(true) / 2)));
-                                var newY = window.parseInt(-($chart.outerHeight(true) / 20));
-                                $chart.css('transform', 'matrix(0.5, 0, 0, 0.5, ' + newX + ', ' + newY + ')');
-                            }
-                        });
-                        $('.orgchart').append('@foreach (var item in TruongChi) {
-                            <div class="node" id="@item.ID" ><div class="title" style="background-color: CornflowerBlue"><img class="avt" crossorigin="anonymous" src="@item.Avt"/><div class="name">@item.HoTen</div><div class="birth">@item.NamSinh</div></div><div class="content">Trưởng Chi<div class= "gender"> @item.GioiTinh</div ></div></div>}');
-                        $('.orgchart .node:not(:only-child)').addClass('hide-after');
+                        oc.init({ 'verticalLevel': 4 });
                     }
                 });
 
-                $('#start-level, #end-level').on('change', function () {
-                    var startLevel = parseInt($('#start-level').val());
-                    var endLevel = parseInt($('#end-level').val());
-
-                    if (startLevel > endLevel) {
-                        alert('Đời bắt đầu phải nhỏ hơn hoặc bằng đời kết thúc');
-                        return;
-                    }
-
-                    oc.init({
-                        'data': datasource,
-                        'nodeTemplate': nodeTemplate,
-                        'visibleLevel': endLevel,
-                        'initCompleted': function ($node, data) {
-                            // Ẩn các node ngoài khoảng level
-                            if (data.level < startLevel || data.level > endLevel) {
-                                $node.closest('.hierarchy').addClass('hidden');
-                            }
-                        }
-                    });
-                });
 
                 document.addEventListener('DOMContentLoaded', function () {
                     const orgChart = document.querySelector('.orgchart');
@@ -967,7 +850,6 @@
                         }, { passive: false });
                     }
                 });
-
 
             $.ajax({
                 type: "GET",
@@ -994,6 +876,7 @@
 <link href="~/Content/jquery.orgchart.css" rel="stylesheet" />
 
 <style>
+
     /*full screen*/
     .fullscreen-button {
         position: absolute;
@@ -1109,7 +992,7 @@
 
     .info-form-name {
         line-height: 1;
-        font-size: 24px ;
+        font-size: 24px;
         color: #fff;
         margin: 0;
         padding: 14px 17px 7px 17px;
@@ -1178,49 +1061,39 @@
         position: relative;
     }
 
-        .form-label {
-            color: #000;
-            font-weight: 600;
-            font-family: 'Segoe UI';
-            position: absolute;
-            padding-left: 10px;
-            padding-right: 10px;
-        }
+    .form-label {
+        color: #000;
+        font-weight: 600;
+        font-family: 'Segoe UI';
+        position: absolute;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
 
-        .form-input {
-            height: 50px;
-            padding: 18px 10px 2px 9px;
-            width: 100%;
-            box-sizing: border-box;
-            border-style: solid;
-            border-width: 1px;
-            color: #757575;
-            border-color: #0000 !important;
-        }
+    .form-input {
+        height: 50px;
+        padding: 18px 10px 2px 9px;
+        width: 100%;
+        box-sizing: border-box;
+        border-style: solid;
+        border-width: 1px;
+        color: #757575;
+        border-color: #0000 !important;
+    }
 
-        .boc-checkbox {
-            margin-left: 10px;
-            padding-left: 26px;
-            margin-bottom: 0;
-            position: relative;
-        }
+    .boc-checkbox {
+        margin-left: 10px;
+        padding-left: 26px;
+        margin-bottom: 0;
+        position: relative;
+    }
 
-            .boc-checkbox input {
-                /*position: absolute;
+        .boc-checkbox input {
+            /*position: absolute;
             opacity: 0;
             cursor: pointer;
             height: 0;
             width: 0;*/
-                background-color: #aeaeae !important;
-                height: 20px;
-                width: 20px;
-                position: absolute;
-                top: 0;
-                left: 0;
-                border-radius: 5px;
-            }
-
-        .boc-checkbox-checkmark {
             background-color: #aeaeae !important;
             height: 20px;
             width: 20px;
@@ -1229,6 +1102,16 @@
             left: 0;
             border-radius: 5px;
         }
+
+    .boc-checkbox-checkmark {
+        background-color: #aeaeae !important;
+        height: 20px;
+        width: 20px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        border-radius: 5px;
+    }
 
     .orgchart .node .title .parentNodeSymbol {
         display: none;
@@ -1462,6 +1345,7 @@
     .oci-spinner::before {
         content: none;
     }
+
     .orgchart .hierarchy.first-shown::before {
         left: calc(50% - 1px);
         width: calc(50% + 1px);
@@ -1476,7 +1360,7 @@
     }
 
     .hide-after::after {
-        content: none !important; 
+        content: none !important;
     }
 
     .mobile-node {
@@ -1492,8 +1376,8 @@
         }
 
         #node-info-form {
-            width: 100%; 
-            max-width: 400px; 
+            width: 100%;
+            max-width: 400px;
             margin: 0 auto;
         }
 
@@ -1533,6 +1417,4 @@
             flex: 1 1 100%; /* Make each item take full width on small screens */
         }
     }
-
-
 </style>

@@ -45,6 +45,13 @@ namespace GiaPha.Controllers
             return View(data);
         }
 
+        public ActionResult OrgSpouse()
+        {
+            ViewBag.quyenQuanLy = KiemTraQuyen();
+            var data = db.ThanhViens.ToList();
+            return View(data);
+        }
+
         [HttpGet]
         public ActionResult GetAllConChau(int parentID)
         {

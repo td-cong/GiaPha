@@ -400,6 +400,13 @@
     <Content Include="Content\getorgchart.css" />
     <Content Include="Content\img\bgtren.png" />
     <Content Include="Content\img\bg_footer.png" />
+    <Content Include="Content\img\event.jpg" />
+    <Content Include="Content\img\event1.jpg" />
+    <Content Include="Content\img\event3.jpg" />
+    <Content Include="Content\img\event4.jpg" />
+    <Content Include="Content\img\event5.jpg" />
+    <Content Include="Content\img\event6.jpg" />
+    <Content Include="Content\img\event7.jpg" />
     <Content Include="Content\img\file-pdf-regular.svg" />
     <Content Include="Content\img\filetype-png.svg" />
     <Content Include="Content\img\logo-footer.png" />
@@ -558,6 +565,7 @@
     <Content Include="Views\PhaKys\Index.cshtml" />
     <Content Include="Views\ThanhViens\Import.cshtml" />
     <Content Include="Views\ThanhViens\ImportResult.cshtml" />
+    <Content Include="Views\Org2\OrgSpouse.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
