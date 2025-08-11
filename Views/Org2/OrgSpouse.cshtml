@@ -329,7 +329,8 @@
                                         $"  'gender': \"{(item.GioiTinh == true ? "Nam" : "Nữ")} \", " +
                                         $"  'avt': \"{item.Avt}\", " +
                                         $"  'spouse': \"{item.VoChong}\", " +
-                                        $"  'levelOffset': {levelOffset}, " +
+                                        //$"  'levelOffset': {levelOffset}, " +
+                                        $"  'outsider': \"{true}\", " +
                                         $"  'children': [{GetAllConChau(allData, item.ID)}], " +
                                         $"  }},";
                         }
@@ -422,6 +423,7 @@
                 'gender': `@(truongHo?.GioiTinh ?? true ? "Nam" : "Nữ")`,
                 'avt': `@{@Html.Raw(truongHo?.Avt)}`,
                 'spouse': `@{@Html.Raw(truongHo?.VoChong)}`,
+                'outsider': @Json.Encode(true),
                 'children': [
                     @Html.Raw(GetAllConChau(allData, truongHo.ID))
                     ],
@@ -876,6 +878,31 @@
 <link href="~/Content/jquery.orgchart.css" rel="stylesheet" />
 
 <style>
+    /*spouse*/
+    .orgchart .couple:has(> .nodes) > .node:first-child::after {
+        top: 148px;
+    }
+
+    .orgchart .couple::after {
+        top: 148px;
+        width: 30px;
+        left: calc(50% - 15px);
+    }
+
+    .orgchart .couple:first-child:not(:only-child)::before {
+        width: calc(100% - 74px);
+        left: 74px;
+    }
+
+    .orgchart .hierarchy.couple:only-child::before {
+        width: 152px;
+        left: calc(50% - 76px);
+    }
+
+    .orgchart .couple:last-child:not(:only-child)::before {
+        width: calc(50% + 76px);
+    }
+
 
     /*full screen*/
     .fullscreen-button {

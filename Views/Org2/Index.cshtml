@@ -104,28 +104,28 @@
                                 <option value="13">13 - Giới hạn xem đến đời 13</option>
                             </select>
                         </div>
-
-                        @*<div class="col-auto p-1">
-                    <label>Từ đời:</label>
-                    <select id="start-level" class="form-control">
-                        @for (int i = 1; i <= 13; i++)
-                        {
-                            <option value="@i">Đời @i</option>
-                        }
-                    </select>
-                </div>
-                <div class="col-auto p-1">
-                    <label>Đến đời:</label>
-                    <select id="end-level" class="form-control">
-                        @for (int i = 1; i <= 13; i++)
-                        {
-                            <option value="@i">Đời @i</option>
-                        }
-                    </select>
-                </div>*@
-
+                        <!-- Thêm vào khu vực edit-panel1 -->
+                        <div class="col-auto p-1">
+                            <div class="level-range-selector">
+                                <label>Từ đời:</label>
+                                <select class="level-select" id="start-level">
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <!-- Thêm các option đến đời tối đa -->
+                                </select>
+                                <label>Đến đời:</label>
+                                <select class="level-select" id="end-level">
+                                    <option value="20">Không giới hạn</option>
+                                    <option value="5">5</option>
+                                    <option value="9">9</option>
+                                    <!-- Thêm các option đến đời tối đa -->
+                                </select>
+                                <button class="btn btn-primary" id="btn-apply-level">Áp dụng</button>
+                            </div>
+                        </div>
                     </div>
-
+                   
                 </div>
 
 
@@ -306,7 +306,7 @@
                     });
                 }, 500);               
 
-            });
+            });           
         </script>
 
         <script src="~/Scripts/jquery.min.js"></script>
@@ -318,7 +318,7 @@
         <script src="~/Scripts/printThis.js"></script>
         <script orgchart type="text/javascript">
             @functions{
-                string GetAllConChau (IEnumerable<GiaPha.Models.ThanhVienN> allData,int parentID/*, int currentLevel = 1*/) {
+                string GetAllConChau (IEnumerable<GiaPha.Models.ThanhVienN> allData,int parentID, int currentLevel = 1) {
                     var conChauStr = "";
                     var conChau = allData.Where(x => x.PID == parentID);
 
@@ -340,8 +340,8 @@
                                         $"  'gender': \"{(item.GioiTinh == true ? "Nam" : "Nữ")} \", " +
                                         $"  'avt': \"{item.Avt}\", " +
                                         $"  'levelOffset': {levelOffset}, " +
-                                        //$"  'level': {currentLevel}, " +
-                                        $"  'children': [{GetAllConChau(allData, item.ID/*, currentLevel + 1*/)}], " +
+                                        $"  'level': {currentLevel}, " +
+                                        $"  'children': [{GetAllConChau(allData, item.ID, currentLevel + 1)}], " +
                                         $"  }},";
                         }
                     }
@@ -930,28 +930,6 @@
                     }
                 });
 
-                $('#start-level, #end-level').on('change', function () {
-                    var startLevel = parseInt($('#start-level').val());
-                    var endLevel = parseInt($('#end-level').val());
-
-                    if (startLevel > endLevel) {
-                        alert('Đời bắt đầu phải nhỏ hơn hoặc bằng đời kết thúc');
-                        return;
-                    }
-
-                    oc.init({
-                        'data': datasource,
-                        'nodeTemplate': nodeTemplate,
-                        'visibleLevel': endLevel,
-                        'initCompleted': function ($node, data) {
-                            // Ẩn các node ngoài khoảng level
-                            if (data.level < startLevel || data.level > endLevel) {
-                                $node.closest('.hierarchy').addClass('hidden');
-                            }
-                        }
-                    });
-                });
-
                 document.addEventListener('DOMContentLoaded', function () {
                     const orgChart = document.querySelector('.orgchart');
 
@@ -967,6 +945,57 @@
                         }, { passive: false });
                     }
                 });
+
+                function applyLevelFilter() {
+                    const startLevel = parseInt($('#start-level').val()) || 0;
+                    const endLevel = parseInt($('#end-level').val()) || 20;
+
+                    if (startLevel > endLevel) {
+                        alert('Đời bắt đầu phải nhỏ hơn hoặc bằng đời kết thúc');
+                        return;
+                    }
+
+                    // 1. Ẩn các node ngoài phạm vi
+                    $('.orgchart .hierarchy').each(function () {
+                        const level = $(this).data('level');
+                        const isInRange = level >= startLevel && level <= endLevel;
+                        $(this).toggleClass('out-of-range', !isInRange);
+                        $(this).find('.node').toggleClass('out-of-range', !isInRange);
+                    });
+
+                    // 2. Ẩn các đường kết nối liên quan
+                    updateConnections();
+                }
+
+                function updateConnections() {
+                    // Ẩn tất cả đường kết nối trước
+                    $('.orgchart .hierarchy::before, .orgchart .node::before, .orgchart .node::after').css({
+                        'display': 'none',
+                        'opacity': '0'
+                    });
+
+                    // Hiển thị lại đường kết nối cho các node trong phạm vi
+                    $('.hierarchy:not(.out-of-range)').each(function () {
+                        const $hierarchy = $(this);
+                        const $node = $hierarchy.find('.node');
+
+                        // Hiển thị đường ngang (nếu có node kế tiếp cùng level)
+                        if ($hierarchy.next('.hierarchy:not(.out-of-range)').length) {
+                            $hierarchy.css('--line-display', 'block');
+                        }
+
+                        // Hiển thị đường dọc (nếu có node con trong phạm vi)
+                        if ($hierarchy.find('.hierarchy:not(.out-of-range)').length) {
+                            $node.css({
+                                '--before-display': 'block',
+                                '--after-display': 'block'
+                            });
+                        }
+                    });
+                }
+
+                // Gọi khi click nút Áp dụng
+                $('#btn-apply-level').on('click', applyLevelFilter);
 
 
             $.ajax({
@@ -994,6 +1023,13 @@
 <link href="~/Content/jquery.orgchart.css" rel="stylesheet" />
 
 <style>
+    /*Level-range*/
+    /* Ẩn node và đường kết nối */
+    .orgchart .out-of-range,
+    .orgchart .out-of-range .node {
+        display: none !important;
+        visibility: hidden !important;
+    }
     /*full screen*/
     .fullscreen-button {
         position: absolute;
